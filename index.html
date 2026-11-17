@@ -82,7 +82,7 @@
     <!-- Topic Input Card -->
     <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
       <h2 class="text-lg font-bold text-slate-900 mb-1">Enter Blog Topic</h2>
-      <p class="text-sm text-slate-500 mb-4">Type any technical topic to generate verified CMS fields, customized technical description, and an AI banner graphic.</p>
+      <p class="text-sm text-slate-500 mb-4">Type any technical topic to generate verified CMS fields, customized technical description, and an infographic banner graphic.</p>
       
       <div class="flex flex-col sm:flex-row gap-3">
         <div class="flex-1 relative">
@@ -90,7 +90,7 @@
             type="text" 
             id="topicInput" 
             value=""
-            placeholder="Type any topic (e.g. Microservices, Microsoft Fabric, SQL Server Performance, Power BI)..." 
+            placeholder="Type any topic (e.g. Sage Invoice Automation, Microservices, Microsoft Fabric)..." 
             class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition text-sm"
             onkeydown="if(event.key === 'Enter') generateBlog();"
             autofocus
@@ -109,11 +109,11 @@
       <!-- Quick Topic Pills -->
       <div class="mt-3.5 flex flex-wrap items-center gap-2 text-xs">
         <span class="text-slate-400 font-medium">Quick examples:</span>
-        <button onclick="setTopic('Microservices')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md transition cursor-pointer font-medium">Microservices</button>
-        <button onclick="setTopic('Microsoft Fabric')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md transition cursor-pointer font-medium">Microsoft Fabric</button>
+        <button onclick="setTopic('Sage Invoice Automation: Reducing Manual Work and Improving Finance Operations')" class="px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 rounded-md transition cursor-pointer font-semibold border border-emerald-200">Sage Invoice Automation</button>
+        <button onclick="setTopic('Microservices Architecture')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md transition cursor-pointer font-medium">Microservices</button>
+        <button onclick="setTopic('Microsoft Fabric Lakehouse Guide')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md transition cursor-pointer font-medium">Microsoft Fabric</button>
         <button onclick="setTopic('SQL Server Performance Optimization')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md transition cursor-pointer font-medium">SQL Server</button>
         <button onclick="setTopic('Power BI Enterprise Analytics & DAX')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md transition cursor-pointer font-medium">Power BI</button>
-        <button onclick="setTopic('Building Enterprise AI Agents with RAG')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md transition cursor-pointer font-medium">AI Agents &amp; RAG</button>
       </div>
     </div>
 
@@ -159,12 +159,12 @@
             <label class="text-xs font-bold text-slate-700 uppercase tracking-wide">Meta Description *</label>
             <button onclick="copyField('fieldMetaDesc')" class="text-xs text-brand-500 hover:text-brand-700 font-semibold cursor-pointer">Copy Meta Description</button>
           </div>
-          <textarea id="fieldMetaDesc" rows="5" readonly class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-md text-sm text-slate-800 resize-none"></textarea>
+          <textarea id="fieldMetaDesc" rows="6" readonly class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-md text-sm text-slate-800 resize-none"></textarea>
         </div>
 
         <div>
           <div class="flex items-center justify-between mb-1.5">
-            <label class="text-xs font-bold text-slate-700 uppercase tracking-wide">Image * (Banner Image)</label>
+            <label class="text-xs font-bold text-slate-700 uppercase tracking-wide">Image * (Infographic Banner)</label>
             <div class="flex items-center space-x-2">
               <button onclick="refreshBannerOnly()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold px-2 py-1 rounded border border-slate-300 transition cursor-pointer flex items-center space-x-1">
                 <span>🔄 Refresh Image</span>
@@ -173,13 +173,10 @@
               <a id="downloadImageBtn" href="#" download="blog_banner.jpg" class="text-xs text-white bg-brand-500 hover:bg-brand-600 px-2.5 py-1 rounded font-semibold cursor-pointer">⬇ Download Banner</a>
             </div>
           </div>
-          <div class="border border-slate-200 rounded-md p-1 bg-slate-900 h-[120px] flex items-center justify-center overflow-hidden relative">
-            <img id="bannerImagePreview" src="" alt="Banner Preview" class="w-full h-full object-cover rounded">
-            <div id="imageLoading" class="absolute inset-0 bg-slate-900/80 flex items-center justify-center text-xs text-slate-300 font-medium hidden">
-              Generating High-Res Banner...
-            </div>
+          <div class="border border-slate-200 rounded-md p-1 bg-white h-[145px] flex items-center justify-center overflow-hidden relative shadow-inner">
+            <img id="bannerImagePreview" src="" alt="Infographic Banner Preview" class="w-full h-full object-contain rounded">
           </div>
-          <p class="text-[11px] text-slate-400 mt-1">Download this banner and upload directly via "Choose file" in the CMS.</p>
+          <p class="text-[11px] text-slate-400 mt-1">1200×630 Infographic Banner (Zero Watermarks). Download &amp; upload to CMS.</p>
         </div>
       </div>
 
@@ -231,7 +228,7 @@
             <span>Direct paste into CKEditor normal typing window</span>
             <button onclick="copyField('fieldDescriptionText')" class="text-brand-500 hover:text-brand-700 font-bold cursor-pointer">📋 Copy Visual Text</button>
           </div>
-          <textarea id="fieldDescriptionText" rows="15" readonly class="w-full p-4 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-800 font-mono leading-relaxed resize-y"></textarea>
+          <textarea id="fieldDescriptionText" rows="16" readonly class="w-full p-4 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-800 font-mono leading-relaxed resize-y"></textarea>
         </div>
 
         <!-- Tab 2: Source HTML -->
@@ -240,7 +237,7 @@
             <span>Click <strong>'Source'</strong> button in CKEditor toolbar, paste this HTML, and click <strong>'Source'</strong> again for perfect tables & styling.</span>
             <button onclick="copyField('fieldDescriptionHtml')" class="text-brand-500 hover:text-brand-700 font-bold cursor-pointer">📋 Copy Source HTML</button>
           </div>
-          <textarea id="fieldDescriptionHtml" rows="15" readonly class="w-full p-4 bg-slate-900 text-emerald-400 border border-slate-800 rounded-lg text-xs font-mono leading-relaxed resize-y"></textarea>
+          <textarea id="fieldDescriptionHtml" rows="16" readonly class="w-full p-4 bg-slate-900 text-emerald-400 border border-slate-800 rounded-lg text-xs font-mono leading-relaxed resize-y"></textarea>
         </div>
 
         <!-- Tab 3: Live Preview -->
@@ -265,179 +262,7 @@
   <script>
     let currentImagePrompt = '';
     let currentThemeIndex = 0;
-    let currentActiveTitle = '';
-    let currentActiveCategory = '';
-    let currentActiveSlug = '';
-
-    function refreshBannerOnly() {
-      if (!currentActiveTitle) {
-        showToast('Generate a blog first to refresh its image!');
-        return;
-      }
-      currentThemeIndex++;
-      const dataUrl = renderCanvasBanner(currentActiveTitle, currentActiveCategory, currentThemeIndex);
-      document.getElementById('bannerImagePreview').src = dataUrl;
-      const dlBtn = document.getElementById('downloadImageBtn');
-      dlBtn.href = dataUrl;
-      dlBtn.download = `${currentActiveSlug}_banner.jpg`;
-      showToast('New image variation generated!');
-    }
-
-    function renderCanvasBanner(title, category, themeIndex) {
-      const canvas = document.createElement('canvas');
-      canvas.width = 1200;
-      canvas.height = 630;
-      const ctx = canvas.getContext('2d');
-
-      const themes = [
-        { bgStart: '#030712', bgMid: '#0f172a', bgEnd: '#0284c7', accent: '#38bdf8', pillBg: '#0369a1' },
-        { bgStart: '#020617', bgMid: '#1e293b', bgEnd: '#2563eb', accent: '#60a5fa', pillBg: '#1d4ed8' },
-        { bgStart: '#090d16', bgMid: '#0e2439', bgEnd: '#0d9488', accent: '#2dd4bf', pillBg: '#0f766e' },
-        { bgStart: '#0f172a', bgMid: '#1e1b4b', bgEnd: '#6366f1', accent: '#a5b4fc', pillBg: '#4338ca' }
-      ];
-
-      const t = themes[themeIndex % themes.length];
-
-      // Background gradient
-      const grad = ctx.createLinearGradient(0, 0, 1200, 630);
-      grad.addColorStop(0, t.bgStart);
-      grad.addColorStop(0.55, t.bgMid);
-      grad.addColorStop(1, t.bgEnd);
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, 1200, 630);
-
-      // Subtle tech grid pattern
-      ctx.strokeStyle = '#334155';
-      ctx.lineWidth = 0.8;
-      ctx.globalAlpha = 0.22;
-      for (let x = 0; x < 1200; x += 40) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, 630);
-        ctx.stroke();
-      }
-      for (let y = 0; y < 630; y += 40) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(1200, y);
-        ctx.stroke();
-      }
-      ctx.globalAlpha = 1.0;
-
-      // Right-side geometric network
-      ctx.save();
-      ctx.strokeStyle = t.accent;
-      ctx.lineWidth = 2;
-      ctx.globalAlpha = 0.25;
-      ctx.beginPath();
-      ctx.arc(960, 315, 230, 0, Math.PI * 2);
-      ctx.stroke();
-
-      ctx.setLineDash([12, 8]);
-      ctx.strokeStyle = t.accent;
-      ctx.lineWidth = 1.5;
-      ctx.globalAlpha = 0.4;
-      ctx.beginPath();
-      ctx.arc(960, 315, 160, 0, Math.PI * 2);
-      ctx.stroke();
-      ctx.setLineDash([]);
-
-      ctx.globalAlpha = 0.55;
-      ctx.beginPath();
-      ctx.arc(960, 315, 80, 0, Math.PI * 2);
-      ctx.stroke();
-
-      const nodes = [
-        { x: 960, y: 155 }, { x: 1120, y: 315 }, { x: 960, y: 475 }, { x: 800, y: 315 },
-        { x: 1073, y: 202 }, { x: 1073, y: 428 }, { x: 847, y: 428 }, { x: 847, y: 202 }
-      ];
-      ctx.fillStyle = t.accent;
-      nodes.forEach(n => {
-        ctx.beginPath();
-        ctx.arc(n.x, n.y, 5, 0, Math.PI * 2);
-        ctx.fill();
-      });
-      ctx.restore();
-
-      // MagnusMinds Brand Badge (Top Left)
-      ctx.save();
-      ctx.fillStyle = '#1e293b';
-      ctx.strokeStyle = t.accent;
-      ctx.lineWidth = 1.5;
-      roundRect(ctx, 90, 80, 260, 40, 20, true, true);
-      ctx.fillStyle = t.accent;
-      ctx.font = 'bold 14px Inter, sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText('MAGNUSMINDS TECH BLOG', 220, 105);
-      ctx.restore();
-
-      // Category Pill
-      ctx.save();
-      ctx.fillStyle = t.pillBg;
-      roundRect(ctx, 90, 140, 200, 32, 6, true, false);
-      ctx.fillStyle = '#ffffff';
-      ctx.font = '600 13px Inter, sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText(category.toUpperCase(), 190, 161);
-      ctx.restore();
-
-      // Title with wrapping
-      ctx.save();
-      ctx.fillStyle = '#ffffff';
-      ctx.font = '800 46px Inter, sans-serif';
-      ctx.textAlign = 'left';
-      
-      const words = title.split(' ');
-      let line = '';
-      let y = 265;
-      for (let n = 0; n < words.length; n++) {
-        const testLine = line + words[n] + ' ';
-        const metrics = ctx.measureText(testLine);
-        if (metrics.width > 700 && n > 0) {
-          ctx.fillText(line.trim(), 90, y);
-          line = words[n] + ' ';
-          y += 56;
-        } else {
-          line = testLine;
-        }
-      }
-      ctx.fillText(line.trim(), 90, y);
-
-      // Subtitle
-      ctx.fillStyle = '#94a3b8';
-      ctx.font = '400 22px Inter, sans-serif';
-      ctx.fillText('Enterprise Architecture & Engineering Guide', 90, y + 48);
-      ctx.restore();
-
-      // Bottom accent bar & footer branding
-      const barGrad = ctx.createLinearGradient(90, 0, 1110, 0);
-      barGrad.addColorStop(0, t.accent);
-      barGrad.addColorStop(1, '#0052a3');
-      ctx.fillStyle = barGrad;
-      roundRect(ctx, 90, 535, 1020, 4, 2, true, false);
-
-      ctx.fillStyle = '#64748b';
-      ctx.font = '500 14px Inter, sans-serif';
-      ctx.fillText('MagnusMinds IT Solution • www.magnusminds.net', 90, 575);
-
-      return canvas.toDataURL('image/jpeg', 0.95);
-    }
-
-    function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
-      ctx.beginPath();
-      ctx.moveTo(x + radius, y);
-      ctx.lineTo(x + width - radius, y);
-      ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
-      ctx.lineTo(x + width, y + height - radius);
-      ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
-      ctx.lineTo(x + radius, y + height);
-      ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
-      ctx.lineTo(x, y + radius);
-      ctx.quadraticCurveTo(x, y + radius, x, y);
-      ctx.closePath();
-      if (fill) ctx.fill();
-      if (stroke) ctx.stroke();
-    }
+    let currentActiveDetails = null;
 
     function setTopic(val) {
       document.getElementById('topicInput').value = val;
@@ -513,11 +338,16 @@
       return str.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-');
     }
 
-    // Precise Topic Domain Classifier
+    // Domain Classifier
     function classifyTopic(raw) {
       const s = raw.toLowerCase();
 
-      // 1. Architecture & Microservices (Highest priority for system design)
+      // 1. Sage / ERP / Invoicing
+      if (s.includes('sage') || s.includes('invoice') || s.includes('billing') || s.includes('intacct') || s.includes('erp')) {
+        return 'sage';
+      }
+
+      // 2. Microservices & Architecture
       if (s.includes('microservice') || s.includes('system design') || s.includes('clean architecture') ||
           s.includes('domain driven') || s.includes('ddd') || s.includes('event-driven') || s.includes('kafka') ||
           s.includes('rabbitmq') || s.includes('message queue') || s.includes('cqrs') || s.includes('distributed') ||
@@ -525,61 +355,42 @@
         return 'architecture';
       }
 
-      // 2. Microsoft Fabric
+      // 3. Microsoft Fabric
       if (s.includes('fabric') || s.includes('lakehouse') || s.includes('onelake') || s.includes('delta lake') ||
           s.includes('medallion') || s.includes('synapse')) {
         return 'fabric';
       }
 
-      // 3. Power BI
+      // 4. Power BI
       if (s.includes('power bi') || s.includes('powerbi') || s.includes('dax') || s.includes('kpi report') ||
           (s.includes('bi') && (s.includes('report') || s.includes('dashboard')))) {
         return 'powerbi';
       }
 
-      // 4. SQL Server & Databases
+      // 5. SQL Server & Databases
       if (s.includes('sql') || s.includes('database') || s.includes('postgres') || s.includes('query') ||
           s.includes('index') || s.includes('t-sql') || s.includes('stored procedure') || s.includes('mysql') ||
           s.includes('mongodb') || s.includes('nosql')) {
         return 'sql';
       }
 
-      // 5. Artificial Intelligence
+      // 6. Artificial Intelligence
       if (s.includes('ai') || s.includes('rag') || s.includes('llm') || s.includes('agent') ||
           s.includes('vector') || s.includes('openai') || s.includes('gemini') || s.includes('copilot') ||
           s.includes('prompt') || s.includes('machine learning') || s.includes('deep learning')) {
         return 'ai';
       }
 
-      // 6. Azure Cloud
+      // 7. Azure Cloud
       if (s.includes('azure') || s.includes('aws') || s.includes('gcp') || s.includes('serverless') ||
           s.includes('cloud') || s.includes('app service') || s.includes('blob storage')) {
         return 'azure';
       }
 
-      // 7. C# & .NET (Only if explicitly C# / .NET!)
+      // 8. C# & .NET
       if (s.includes('.net') || s.includes('dotnet') || s.includes('c#') || s.includes('csharp') ||
           s.includes('asp.net') || s.includes('ef core') || s.includes('dapper')) {
         return 'csharp';
-      }
-
-      // 8. Frontend
-      if (s.includes('react') || s.includes('angular') || s.includes('vue') || s.includes('frontend') ||
-          s.includes('typescript') || s.includes('javascript') || s.includes('next.js') || s.includes('tailwind') ||
-          s.includes('css') || s.includes('html')) {
-        return 'frontend';
-      }
-
-      // 9. DevOps & Infrastructure
-      if (s.includes('devops') || s.includes('docker') || s.includes('kubernetes') || s.includes('ci/cd') ||
-          s.includes('github action') || s.includes('terraform') || s.includes('helm') || s.includes('pipeline')) {
-        return 'infrastructure';
-      }
-
-      // 10. Cybersecurity
-      if (s.includes('security') || s.includes('cyber') || s.includes('oauth') || s.includes('auth') ||
-          s.includes('zero trust') || s.includes('jwt') || s.includes('penetration')) {
-        return 'cybersecurity';
       }
 
       return 'architecture';
@@ -587,70 +398,577 @@
 
     function getDomainMetadata(domain, cleanTitle) {
       switch(domain) {
+        case 'sage':
+          return {
+            category: 'Architecture',
+            tags: ['Sage-Intacct', 'Invoice-Automation', 'ERP-Integration', 'Finance-Operations', 'Workflow-Automation', 'Enterprise-Software'],
+            brand: 'Sage | Intacct',
+            summary: 'Automate Sales Order to Invoice processing in Sage Intacct with intelligent workflows, ensuring accuracy, visibility, and efficiency.',
+            badges: [
+              { label: 'Automate Tasks', sub: 'Repetitive Orders', icon: 'clock', color: '#0284c7' },
+              { label: 'Prevent Duplicates', sub: 'Invoice Protection', icon: 'shield', color: '#059669' },
+              { label: 'Daily Visibility', sub: 'Reconciliation', icon: 'chart', color: '#7c3aed' },
+              { label: 'Focus Exceptions', sub: 'Finance Teams', icon: 'handshake', color: '#0d9488' }
+            ],
+            workflow: ['Identify', 'Validate', 'Process', 'Reconcile', 'Report'],
+            visualType: 'invoice'
+          };
+
         case 'architecture':
           return {
             category: 'Architecture',
             tags: ['Microservices', 'Distributed-Systems', 'Architecture', 'System-Design', 'Cloud-Architecture', 'API-Gateway'],
-            imagePrompt: 'Cinematic 3D isometric blueprint of enterprise microservices architecture, floating decoupled service nodes connected by radiant glowing optical data fibers, dark sleek corporate obsidian and cobalt blue background, volumetric studio lighting, award-winning concept art, 8k resolution, minimalist, photorealistic, no text, no letters, no words, no watermark'
+            brand: 'MagnusMinds | Architecture',
+            summary: 'Decompose monolithic bottlenecks into decoupled, autonomous domain services with event-driven resilience.',
+            badges: [
+              { label: 'Decoupled', sub: 'Domain Services', icon: 'cube', color: '#0284c7' },
+              { label: 'Event-Driven', sub: 'Outbox Broker', icon: 'bolt', color: '#f59e0b' },
+              { label: 'Elastic Scale', sub: 'High Throughput', icon: 'chart', color: '#10b981' },
+              { label: 'Fault Isolated', sub: 'Circuit Breakers', icon: 'shield', color: '#6366f1' }
+            ],
+            workflow: ['Gateway', 'Validate', 'Route', 'Publish', 'Observe'],
+            visualType: 'network'
           };
+
         case 'fabric':
           return {
             category: 'Microsoft-Fabric',
             tags: ['Microsoft-Fabric', 'Lakehouse', 'Data-Engineering', 'Data-Management', 'Power-BI', 'Cloud-Data-Architecture'],
-            imagePrompt: 'Modern enterprise unified cloud data lakehouse architecture, glowing digital data streams converging into crystalline data lake nodes, holographic business analytics display, sleek futuristic corporate server room, deep midnight navy and vibrant azure cyan lighting, photorealistic 3d isometric render, 8k resolution, cinematic lighting, ultra-detailed, clean minimalist composition, no text, no words, no letters, no logos, no watermark'
+            brand: 'Microsoft | Fabric',
+            summary: 'Unify data engineering, warehousing, and real-time business intelligence on a single OneLake data foundation.',
+            badges: [
+              { label: 'OneLake', sub: 'Single Truth Copy', icon: 'cube', color: '#0284c7' },
+              { label: 'Medallion', sub: 'Bronze-Silver-Gold', icon: 'layers', color: '#10b981' },
+              { label: 'Direct Lake', sub: 'Instant BI Refreshes', icon: 'bolt', color: '#f59e0b' },
+              { label: 'Governance', sub: 'Purview Security', icon: 'shield', color: '#6366f1' }
+            ],
+            workflow: ['Ingest', 'Cleanse', 'Curate', 'Direct Lake', 'Govern'],
+            visualType: 'data'
           };
-        case 'powerbi':
-          return {
-            category: 'PowerBI',
-            tags: ['Power-BI', 'DAX', 'Business-Intelligence', 'Data-Visualization', 'Analytics', 'Reporting'],
-            imagePrompt: 'Executive enterprise business intelligence analytics dashboard, elegant 3D holographic data charts and interactive telemetry nodes, sleek floating translucent metrics, midnight navy blue and gold-amber glowing highlights, premium corporate technology illustration, 8k render, clean composition, no text, no words, no letters, no watermark'
-          };
+
         case 'sql':
           return {
             category: 'SQL-Server',
             tags: ['SQL-Server', 'Database', 'Query-Optimization', 'Indexing', 'Performance-Tuning', 'High-Availability'],
-            imagePrompt: 'Modern high performance enterprise relational database architecture, gleaming cylindrical data storage clusters, radiant optical fiber data streams, dark corporate navy and electric blue illumination, sophisticated 3D isometric tech rendering, clean minimalist aesthetic, 8k resolution, no text, no words, no letters, no watermark'
+            brand: 'SQL Server | Database',
+            summary: 'Systematic query tuning, covering index optimization, and high-concurrency memory configuration for maximum throughput.',
+            badges: [
+              { label: 'Covering Index', sub: 'Zero Key Lookups', icon: 'cube', color: '#0284c7' },
+              { label: 'Plan Cache', sub: 'Mitigate Sniffing', icon: 'layers', color: '#10b981' },
+              { label: 'Snapshot RCSI', sub: 'Non-Blocking Reads', icon: 'bolt', color: '#f59e0b' },
+              { label: 'TempDB Scale', sub: 'Multi-File I/O', icon: 'shield', color: '#6366f1' }
+            ],
+            workflow: ['Identify', 'Analyze Plan', 'Index Tuning', 'Concurrency', 'Baseline'],
+            visualType: 'database'
           };
-        case 'ai':
+
+        case 'powerbi':
+          return {
+            category: 'PowerBI',
+            tags: ['Power-BI', 'DAX', 'Business-Intelligence', 'Data-Visualization', 'Analytics', 'Reporting'],
+            brand: 'Power BI | Analytics',
+            summary: 'Deliver executive analytics that load in under 1 second with optimized DAX, star schemas, and enterprise security.',
+            badges: [
+              { label: 'Star Schema', sub: 'Fact & Dimensions', icon: 'cube', color: '#0284c7' },
+              { label: 'Lean DAX', sub: 'Calculated Dynamic', icon: 'bolt', color: '#f59e0b' },
+              { label: 'Dynamic RLS', sub: 'User Role Security', icon: 'shield', color: '#10b981' },
+              { label: 'Incremental', sub: 'Partition Refresh', icon: 'chart', color: '#6366f1' }
+            ],
+            workflow: ['Discover', 'Transform', 'Model', 'Visualize', 'Publish'],
+            visualType: 'chart'
+          };
+
+        default:
           return {
             category: 'Artificial-Intelligence',
             tags: ['AI', 'Generative-AI', 'Autonomous-Agents', 'Architecture', 'Software-Engineering', 'RAG'],
-            imagePrompt: 'Futuristic minimalist 3D concept of enterprise autonomous AI agents and neural intelligence network, sleek floating translucent geometric nodes, delicate glowing data threads, deep dark obsidian and cobalt background, cinematic rim lighting, octane render, 8k, sharp focus, award-winning digital technology artwork, no text, no words, no letters, no watermark'
-          };
-        case 'azure':
-          return {
-            category: 'Azure',
-            tags: ['Azure', 'Cloud-Architecture', 'Enterprise-Cloud', 'Serverless', 'DevOps', 'Scalability'],
-            imagePrompt: 'Global enterprise cloud infrastructure blueprint, floating serverless microservices nodes, interconnected optical network lattice, deep dark slate and cyan illumination, modern 3d technology blueprint, crisp studio render, 8k, no text, no words, no letters, no watermark'
-          };
-        case 'csharp':
-          return {
-            category: 'csharp',
-            tags: ['C#', '.NET', 'ASP.NET-Core', 'Architecture', 'Web-API', 'Clean-Architecture'],
-            imagePrompt: 'High performance enterprise software engineering blueprint, modular microservices architecture, precision digital technology nodes, deep dark navy and royal blue glowing circuits, futuristic 3D isometric render, 8k, no text, no words, no letters, no watermark'
-          };
-        case 'frontend':
-          return {
-            category: 'Frontend-Technology',
-            tags: ['Frontend', 'React', 'TypeScript', 'JavaScript', 'UI-UX', 'Web-Development'],
-            imagePrompt: 'Ultra modern responsive frontend web application interface design, clean isometric layered UI components, floating glass panels, vibrant cobalt and violet accents, dark corporate background, modern 3d illustration, 8k, no text, no words, no letters, no watermark'
-          };
-        case 'infrastructure':
-          return {
-            category: 'Infrastructure',
-            tags: ['DevOps', 'CI/CD', 'Docker', 'Kubernetes', 'Infrastructure', 'Automation'],
-            imagePrompt: 'Enterprise DevOps continuous integration pipeline, automated deployment gears, glowing containerized pods, dark industrial high-tech atmosphere, cyan and emerald status indicators, 3d isometric render, 8k, no text, no words, no letters, no watermark'
-          };
-        case 'cybersecurity':
-          return {
-            category: 'Cybersecurity',
-            tags: ['Cybersecurity', 'Security', 'Zero-Trust', 'Authentication', 'OAuth', 'Data-Protection'],
-            imagePrompt: 'Enterprise zero trust cybersecurity architecture, glowing cryptographic shield, fortified biometric vault nodes, dark obsidian navy background, deep emerald and cyan security beams, 3d isometric digital render, 8k, no text, no words, no letters, no watermark'
+            brand: 'AI | Agent Systems',
+            summary: 'Build grounded autonomous agent systems with typed tool protocols, vector retrieval, and human-in-the-loop governance.',
+            badges: [
+              { label: 'Grounded RAG', sub: 'Semantic Vectors', icon: 'cube', color: '#0284c7' },
+              { label: 'Typed Tools', sub: 'Protocol Schemas', icon: 'bolt', color: '#10b981' },
+              { label: 'Task Graphs', sub: 'Deterministic DAG', icon: 'layers', color: '#f59e0b' },
+              { label: 'Governance', sub: 'Human Approval', icon: 'shield', color: '#6366f1' }
+            ],
+            workflow: ['Intent', 'Retrieve', 'Tool Execute', 'Validate', 'Audit'],
+            visualType: 'ai'
           };
       }
     }
 
+    // Refresh Image only without resetting text
+    function refreshBannerOnly() {
+      if (!currentActiveDetails) {
+        showToast('Generate a blog first to refresh its image!');
+        return;
+      }
+      currentThemeIndex++;
+      const dataUrl = renderInfographicBanner(currentActiveDetails, currentThemeIndex);
+      document.getElementById('bannerImagePreview').src = dataUrl;
+      const dlBtn = document.getElementById('downloadImageBtn');
+      dlBtn.href = dataUrl;
+      dlBtn.download = `${currentActiveDetails.slug}_banner.jpg`;
+      showToast('New infographic banner variation generated!');
+    }
+
+    // High-End Infographic Banner Canvas Generator (Matching User's Reference Layout)
+    function renderInfographicBanner(d, themeIdx) {
+      const canvas = document.createElement('canvas');
+      canvas.width = 1200;
+      canvas.height = 630;
+      const ctx = canvas.getContext('2d');
+
+      const isExecutiveBright = (themeIdx % 2 === 0);
+
+      // 1. Background
+      if (isExecutiveBright) {
+        // Bright White / Clean Executive Theme
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, 1200, 630);
+
+        // Top right decorative soft pastel gradient wave
+        const topGrad = ctx.createRadialGradient(1050, 100, 50, 1050, 100, 450);
+        topGrad.addColorStop(0, '#e0f2fe');
+        topGrad.addColorStop(0.6, '#ecfdf5');
+        topGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+        ctx.fillStyle = topGrad;
+        ctx.fillRect(600, 0, 600, 400);
+
+        // Top right subtle dot matrix
+        ctx.fillStyle = '#cbd5e1';
+        for (let r = 0; r < 4; r++) {
+          for (let c = 0; c < 8; c++) {
+            ctx.beginPath();
+            ctx.arc(1020 + c * 16, 40 + r * 16, 2.5, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+
+        // Bottom curved wave
+        ctx.save();
+        ctx.fillStyle = '#065f46';
+        ctx.beginPath();
+        ctx.moveTo(0, 630);
+        ctx.lineTo(0, 600);
+        ctx.bezierCurveTo(300, 560, 700, 620, 1200, 550);
+        ctx.lineTo(1200, 630);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.fillStyle = '#0284c7';
+        ctx.globalAlpha = 0.5;
+        ctx.beginPath();
+        ctx.moveTo(0, 630);
+        ctx.lineTo(0, 615);
+        ctx.bezierCurveTo(400, 580, 800, 635, 1200, 575);
+        ctx.lineTo(1200, 630);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+      } else {
+        // Dark Obsidian / Cyan Executive Theme
+        const darkGrad = ctx.createLinearGradient(0, 0, 1200, 630);
+        darkGrad.addColorStop(0, '#020617');
+        darkGrad.addColorStop(0.6, '#0f172a');
+        darkGrad.addColorStop(1, '#0369a1');
+        ctx.fillStyle = darkGrad;
+        ctx.fillRect(0, 0, 1200, 630);
+
+        // Tech grid
+        ctx.strokeStyle = '#334155';
+        ctx.lineWidth = 0.8;
+        ctx.globalAlpha = 0.2;
+        for (let x = 0; x < 1200; x += 40) {
+          ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, 630); ctx.stroke();
+        }
+        for (let y = 0; y < 630; y += 40) {
+          ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(1200, y); ctx.stroke();
+        }
+        ctx.globalAlpha = 1.0;
+      }
+
+      // 2. Top-Left Brand Logo / Badge
+      ctx.save();
+      const brandColor = isExecutiveBright ? '#059669' : '#38bdf8';
+      ctx.fillStyle = brandColor;
+      ctx.font = 'bold 28px Inter, sans-serif';
+      ctx.fillText(d.meta.brand, 70, 75);
+
+      // Green / Cyan Accent Underline
+      ctx.fillStyle = isExecutiveBright ? '#10b981' : '#0284c7';
+      roundRect(ctx, 70, 92, 70, 4, 2, true, false);
+      ctx.restore();
+
+      // 3. Main Headline (Left Column)
+      ctx.save();
+      ctx.fillStyle = isExecutiveBright ? '#0f172a' : '#ffffff';
+      ctx.font = 'bold 38px Inter, sans-serif';
+      
+      const words = d.title.split(' ');
+      let line = '';
+      let y = 160;
+      for (let i = 0; i < words.length; i++) {
+        const testLine = line + words[i] + ' ';
+        const metrics = ctx.measureText(testLine);
+        if (metrics.width > 600 && i > 0) {
+          ctx.fillText(line.trim(), 70, y);
+          line = words[i] + ' ';
+          y += 48;
+        } else {
+          line = testLine;
+        }
+      }
+      ctx.fillText(line.trim(), 70, y);
+
+      // Subtitle / 2-Line Value Proposition
+      ctx.fillStyle = isExecutiveBright ? '#475569' : '#94a3b8';
+      ctx.font = '500 16px Inter, sans-serif';
+      const summaryWords = d.meta.summary.split(' ');
+      let sLine = '';
+      let sy = y + 42;
+      for (let j = 0; j < summaryWords.length; j++) {
+        const testS = sLine + summaryWords[j] + ' ';
+        if (ctx.measureText(testS).width > 580 && j > 0) {
+          ctx.fillText(sLine.trim(), 70, sy);
+          sLine = summaryWords[j] + ' ';
+          sy += 24;
+        } else {
+          sLine = testS;
+        }
+      }
+      ctx.fillText(sLine.trim(), 70, sy);
+      ctx.restore();
+
+      // 4. Four Key Value Badges (Bottom Left)
+      const badgeY = 445;
+      const badges = d.meta.badges;
+      for (let b = 0; b < badges.length; b++) {
+        const bx = 70 + b * 135;
+        ctx.save();
+
+        // Circle Badge
+        ctx.fillStyle = isExecutiveBright ? '#f0fdf4' : '#1e293b';
+        ctx.strokeStyle = badges[b].color;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(bx + 26, badgeY + 26, 26, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        // Icon inside circle
+        ctx.fillStyle = badges[b].color;
+        ctx.font = 'bold 18px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        const symbol = b === 0 ? '⏱' : (b === 1 ? '🛡' : (b === 2 ? '📊' : '🤝'));
+        ctx.fillText(symbol, bx + 26, badgeY + 33);
+
+        // Labels below circle
+        ctx.textAlign = 'left';
+        ctx.fillStyle = isExecutiveBright ? '#1e293b' : '#ffffff';
+        ctx.font = 'bold 11px Inter, sans-serif';
+        ctx.fillText(badges[b].label, bx - 10, badgeY + 70);
+
+        ctx.fillStyle = isExecutiveBright ? '#64748b' : '#94a3b8';
+        ctx.font = '500 10px Inter, sans-serif';
+        ctx.fillText(badges[b].sub, bx - 10, badgeY + 84);
+
+        ctx.restore();
+      }
+
+      // 5. Top Right 5-Step Process Pipeline
+      ctx.save();
+      const pipeX = 720;
+      const pipeY = 70;
+      const pipeW = 430;
+      const pipeH = 110;
+
+      // Pipeline Box
+      ctx.fillStyle = isExecutiveBright ? '#ffffff' : '#1e293b';
+      ctx.strokeStyle = isExecutiveBright ? '#e2e8f0' : '#334155';
+      ctx.lineWidth = 1.5;
+      roundRect(ctx, pipeX, pipeY, pipeW, pipeH, 14, true, true);
+
+      // Workflow nodes
+      const steps = d.meta.workflow;
+      const nodeColors = ['#0284c7', '#10b981', '#8b5cf6', '#14b8a6', '#0ea5e9'];
+      const nodeIcons = ['🔍', '✓', '⚙', '🏁', '📈'];
+
+      for (let s = 0; s < steps.length; s++) {
+        const nx = pipeX + 40 + s * 78;
+        const ny = pipeY + 45;
+
+        // Node Circle
+        ctx.fillStyle = nodeColors[s];
+        ctx.beginPath();
+        ctx.arc(nx, ny, 18, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Icon inside node
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '12px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(nodeIcons[s], nx, ny + 4);
+
+        // Step Label below
+        ctx.fillStyle = isExecutiveBright ? '#334155' : '#cbd5e1';
+        ctx.font = 'bold 10px Inter, sans-serif';
+        ctx.fillText(steps[s], nx, ny + 32);
+
+        // Arrow to next step
+        if (s < steps.length - 1) {
+          ctx.fillStyle = '#94a3b8';
+          ctx.font = '12px Inter, sans-serif';
+          ctx.fillText('→', nx + 39, ny + 4);
+        }
+      }
+      ctx.restore();
+
+      // 6. Bottom Right 3D Visual Centerpiece (Laptop, Document & Automation Elements)
+      ctx.save();
+      const lx = 740;
+      const ly = 240;
+
+      // Laptop Base Shadow
+      ctx.fillStyle = 'rgba(0,0,0,0.12)';
+      ctx.beginPath();
+      ctx.ellipse(lx + 160, ly + 250, 160, 24, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Laptop Screen Shell
+      ctx.fillStyle = '#0f172a';
+      roundRect(ctx, lx + 30, ly + 40, 240, 160, 10, true, false);
+
+      // Laptop Display Inner Screen
+      const screenGrad = ctx.createLinearGradient(lx + 40, ly + 50, lx + 260, ly + 190);
+      screenGrad.addColorStop(0, '#f8fafc');
+      screenGrad.addColorStop(1, '#e2e8f0');
+      ctx.fillStyle = screenGrad;
+      roundRect(ctx, lx + 38, ly + 48, 224, 144, 6, true, false);
+
+      // Invoice Document on Screen
+      ctx.fillStyle = '#ffffff';
+      roundRect(ctx, lx + 60, ly + 60, 180, 120, 6, true, false);
+
+      // Document Header
+      ctx.fillStyle = '#0f172a';
+      ctx.font = 'bold 13px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(d.meta.visualType === 'invoice' ? 'INVOICE' : 'SYSTEM READY', lx + 150, ly + 80);
+
+      // Document Fake Text Lines
+      ctx.fillStyle = '#cbd5e1';
+      for (let l = 0; l < 4; l++) {
+        roundRect(ctx, lx + 75, ly + 95 + l * 12, 130 - l * 15, 5, 2, true, false);
+      }
+
+      // Verified Green Badge on Document
+      ctx.fillStyle = '#10b981';
+      ctx.beginPath();
+      ctx.arc(lx + 190, ly + 145, 18, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 16px Inter, sans-serif';
+      ctx.fillText('✓', lx + 190, ly + 151);
+
+      // Laptop Keyboard Base
+      ctx.fillStyle = '#334155';
+      ctx.beginPath();
+      ctx.moveTo(lx, ly + 200);
+      ctx.lineTo(lx + 300, ly + 200);
+      ctx.lineTo(lx + 320, ly + 230);
+      ctx.lineTo(lx - 20, ly + 230);
+      ctx.closePath();
+      ctx.fill();
+
+      // Trackpad
+      ctx.fillStyle = '#475569';
+      roundRect(ctx, lx + 115, ly + 206, 70, 18, 3, true, false);
+
+      // Carton / Shipment Packages beside Laptop
+      ctx.fillStyle = '#d97706';
+      roundRect(ctx, lx - 70, ly + 140, 65, 65, 4, true, false);
+      ctx.fillStyle = '#b45309';
+      roundRect(ctx, lx - 45, ly + 110, 50, 50, 4, true, false);
+      ctx.fillStyle = '#fde68a';
+      ctx.fillRect(lx - 45, ly + 170, 65, 6); // Tape
+
+      // Robot Automation Helper Mascot
+      const rx = lx + 320;
+      const ry = ly + 120;
+      // Head
+      ctx.fillStyle = '#ffffff';
+      ctx.strokeStyle = '#38bdf8';
+      ctx.lineWidth = 3;
+      roundRect(ctx, rx, ry, 64, 52, 16, true, true);
+      // Face screen
+      ctx.fillStyle = '#0f172a';
+      roundRect(ctx, rx + 8, ry + 8, 48, 36, 10, true, false);
+      // Eyes
+      ctx.fillStyle = '#38bdf8';
+      ctx.beginPath(); ctx.arc(rx + 22, ry + 25, 5, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(rx + 42, ry + 25, 5, 0, Math.PI * 2); ctx.fill();
+      // Body
+      ctx.fillStyle = '#ffffff';
+      roundRect(ctx, rx + 8, ry + 56, 48, 50, 14, true, true);
+      // Heart / Status light
+      ctx.fillStyle = '#10b981';
+      ctx.beginPath(); ctx.arc(rx + 32, ry + 80, 8, 0, Math.PI * 2); ctx.fill();
+      // Thumbs up arm
+      ctx.fillStyle = '#ffffff';
+      roundRect(ctx, rx + 56, ry + 62, 22, 12, 6, true, true);
+      ctx.fillStyle = '#10b981';
+      ctx.font = 'bold 16px Inter, sans-serif';
+      ctx.fillText('👍', rx + 78, ry + 73);
+
+      ctx.restore();
+
+      return canvas.toDataURL('image/jpeg', 0.95);
+    }
+
+    function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.lineTo(x + width - radius, y);
+      ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+      ctx.lineTo(x + width, y + height - radius);
+      ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+      ctx.lineTo(x + radius, y + height);
+      ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+      ctx.lineTo(x, y + radius);
+      ctx.quadraticCurveTo(x, y + radius, x, y);
+      ctx.closePath();
+      if (fill) ctx.fill();
+      if (stroke) ctx.stroke();
+    }
+
     function generateDomainContent(domain, cleanTitle) {
+      if (domain === 'sage') {
+        return {
+          visual: `Introduction
+As shipment and order volumes grow, finance teams using Sage Intacct can spend significant time performing repetitive Sales Order to Sales Invoice processing. Organizations need to handle surging shipment throughput without replacing their financial system of record. The challenge lies in the manual overhead surrounding the ERP: checking shipped orders, validating eligibility, processing full and partial shipments, handling Order Changes, managing freight and tax charges, and investigating reconciliation gaps.
+
+Implementing **${cleanTitle}** establishes an automated operational workload engine that works alongside Sage Intacct, transforming manual data entry into an exception-based financial workflow.
+
+1. Essential Pillars of Sage Sales Order to Invoice Automation
+A controlled automation architecture relies on cohesive operational foundations:
+
+Automated Shipment & Eligibility Validation
+Continuously evaluates shipped orders against configured business rules, verifying ship dates, Sales Order statuses, and customer exclusions before initiating conversion.
+
+Full, Partial, and Order Change Processing
+Automatically determines processing paths: converting fully shipped orders, invoicing partial shipments while keeping remaining line items open, and safely evaluating Order Changes against historical records to prevent double-billing.
+
+Tax, Freight, and Additional Fee Calculations
+Consistently applies order-level and line-level charges—including freight, packaging, tax, and promotional discounts—even during multi-stage partial shipments.
+
+Duplicate Protection & Exception Management
+Maintains immutable transaction history to guarantee zero duplicate invoice creation. Transactions requiring review are flagged with actionable root-cause diagnostics for rapid finance team resolution.
+
+2. Traditional Manual Invoicing vs Automated Sage Workflow
+Operational Dimension | Manual Invoicing Process | Automated Sage Workflow
+Order Identification | Manual lookup of tracking numbers and shipped orders | Automated scheduled batch evaluation of eligible orders
+Partial Shipments | Manual split and calculation of open vs billed items | Automated split; shipped items billed, open items tracked
+Order Changes | High risk of duplicate invoices or missed revisions | Automatic reconciliation against previous invoice records
+Fee Calculations | Manual calculation of freight, packaging, and tax | Automated rule-based calculation across all line items
+Exception Handling | Investigating errors individually during billing | Centralized daily summary of reconciliation gaps
+
+3. The 5-Step Automated Workflow
+The automation follows a disciplined, auditable lifecycle:
+1. Identify: A scheduled service scans ERP records for recently shipped Sales Orders.
+2. Validate: Business rules check customer exclusions, item readiness, and previous invoice status.
+3. Process: Eligible transactions are converted directly into Sales Invoices within Sage Intacct.
+4. Reconcile: Line items, payments, and remaining balances are matched against shipment records.
+5. Report: Operational summaries deliver instant visibility into successful runs and exception items.
+
+4. Strategic Business Advantages
+Accelerated Cash Flow: Invoices generate immediately upon shipment verification, speeding up billing cycles.
+Zero Duplicate Invoices: System-level guards prevent duplicate billing across complex split shipments.
+Exception-Based Finance Operations: Finance specialists focus on genuine discrepancies rather than repetitive data entry.
+ERP Longevity: Preserves Sage Intacct as the single source of truth without costly custom ERP replacements.
+
+Conclusion
+Automating high-volume invoicing around Sage Intacct eliminates routine operational bottlenecks while preserving strict financial compliance. Finance teams gain predictable billing velocity, lower operational risk, and complete audit visibility.
+
+Build Better Software with MagnusMinds
+At MagnusMinds IT Solution, our enterprise software engineers build custom ERP integrations, intelligent workflow automations, and scalable cloud solutions for finance and operations leaders.
+
+Connect with MagnusMinds to streamline your enterprise invoicing and ERP workflows.`,
+
+          html: `<h2>Introduction</h2>
+<p>As shipment and order volumes grow, finance teams using Sage Intacct can spend significant time performing repetitive Sales Order to Sales Invoice processing. Organizations need to handle surging shipment throughput without replacing their financial system of record. The challenge lies in the manual overhead surrounding the ERP: checking shipped orders, validating eligibility, processing full and partial shipments, handling Order Changes, managing freight and tax charges, and investigating reconciliation gaps.</p>
+<p>Implementing <strong>${cleanTitle}</strong> establishes an automated operational workload engine that works alongside Sage Intacct, transforming manual data entry into an exception-based financial workflow.</p>
+
+<h2>1. Essential Pillars of Sage Sales Order to Invoice Automation</h2>
+<p>A controlled automation architecture relies on cohesive operational foundations:</p>
+<p><strong>Automated Shipment &amp; Eligibility Validation</strong><br>Continuously evaluates shipped orders against configured business rules, verifying ship dates, Sales Order statuses, and customer exclusions before initiating conversion.</p>
+<p><strong>Full, Partial, and Order Change Processing</strong><br>Automatically determines processing paths: converting fully shipped orders, invoicing partial shipments while keeping remaining line items open, and safely evaluating Order Changes against historical records to prevent double-billing.</p>
+<p><strong>Tax, Freight, and Additional Fee Calculations</strong><br>Consistently applies order-level and line-level charges—including freight, packaging, tax, and promotional discounts—even during multi-stage partial shipments.</p>
+<p><strong>Duplicate Protection &amp; Exception Management</strong><br>Maintains immutable transaction history to guarantee zero duplicate invoice creation. Transactions requiring review are flagged with actionable root-cause diagnostics for rapid finance team resolution.</p>
+
+<h2>2. Traditional Manual Invoicing vs Automated Sage Workflow</h2>
+<table border="1" cellpadding="8" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+  <thead>
+    <tr style="background-color: #f1f5f9;">
+      <th style="text-align: left; padding: 10px;">Operational Dimension</th>
+      <th style="text-align: left; padding: 10px;">Manual Invoicing Process</th>
+      <th style="text-align: left; padding: 10px;">Automated Sage Workflow</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding: 10px;"><strong>Order Identification</strong></td>
+      <td style="padding: 10px;">Manual lookup of tracking numbers and shipped orders</td>
+      <td style="padding: 10px;">Automated scheduled batch evaluation of eligible orders</td>
+    </tr>
+    <tr>
+      <td style="padding: 10px;"><strong>Partial Shipments</strong></td>
+      <td style="padding: 10px;">Manual split and calculation of open vs billed items</td>
+      <td style="padding: 10px;">Automated split; shipped items billed, open items tracked</td>
+    </tr>
+    <tr>
+      <td style="padding: 10px;"><strong>Order Changes</strong></td>
+      <td style="padding: 10px;">High risk of duplicate invoices or missed revisions</td>
+      <td style="padding: 10px;">Automatic reconciliation against previous invoice records</td>
+    </tr>
+    <tr>
+      <td style="padding: 10px;"><strong>Fee Calculations</strong></td>
+      <td style="padding: 10px;">Manual calculation of freight, packaging, and tax</td>
+      <td style="padding: 10px;">Automated rule-based calculation across all line items</td>
+    </tr>
+    <tr>
+      <td style="padding: 10px;"><strong>Exception Handling</strong></td>
+      <td style="padding: 10px;">Investigating errors individually during billing</td>
+      <td style="padding: 10px;">Centralized daily summary of reconciliation gaps</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>3. The 5-Step Automated Workflow</h2>
+<ol>
+  <li><strong>Identify:</strong> A scheduled service scans ERP records for recently shipped Sales Orders.</li>
+  <li><strong>Validate:</strong> Business rules check customer exclusions, item readiness, and previous invoice status.</li>
+  <li><strong>Process:</strong> Eligible transactions are converted directly into Sales Invoices within Sage Intacct.</li>
+  <li><strong>Reconcile:</strong> Line items, payments, and remaining balances are matched against shipment records.</li>
+  <li><strong>Report:</strong> Operational summaries deliver instant visibility into successful runs and exception items.</li>
+</ol>
+
+<h2>4. Strategic Business Advantages</h2>
+<ul>
+  <li><strong>Accelerated Cash Flow:</strong> Invoices generate immediately upon shipment verification, speeding up billing cycles.</li>
+  <li><strong>Zero Duplicate Invoices:</strong> System-level guards prevent duplicate billing across complex split shipments.</li>
+  <li><strong>Exception-Based Finance Operations:</strong> Finance specialists focus on genuine discrepancies rather than repetitive data entry.</li>
+  <li><strong>ERP Longevity:</strong> Preserves Sage Intacct as the single source of truth without costly custom ERP replacements.</li>
+</ul>
+
+<h2>Conclusion</h2>
+<p>Automating high-volume invoicing around Sage Intacct eliminates routine operational bottlenecks while preserving strict financial compliance. Finance teams gain predictable billing velocity, lower operational risk, and complete audit visibility.</p>
+
+<h2>Build Better Software with MagnusMinds</h2>
+<p>At MagnusMinds IT Solution, our enterprise software engineers build custom ERP integrations, intelligent workflow automations, and scalable cloud solutions for finance and operations leaders.</p>
+<p><a href="https://www.magnusminds.net/contact-us">Connect with MagnusMinds</a> to streamline your enterprise invoicing and ERP workflows.</p>`
+        };
+      }
+
       if (domain === 'architecture') {
         return {
           visual: `Introduction
@@ -676,8 +994,6 @@ Distributed Observability & Telemetry
 Instruments all inter-service requests with OpenTelemetry distributed trace IDs (W3C Trace Context), structured logging, and health probes for instant root-cause diagnosis across distributed hops.
 
 2. Monolithic Architecture vs Distributed Microservices: Key Differences
-Comparing the architectural evolution:
-
 Architectural Dimension | Monolithic Architecture | Distributed Microservices Pattern
 Deployment Model | Single massive unit; high risk on every release | Independent CI/CD per service; zero-downtime canary rollouts
 Data Management | Shared relational database with complex joins | Database-per-service pattern ensuring complete data autonomy
@@ -686,7 +1002,6 @@ Fault Isolation | Single bug can crash the entire application process | Fault-is
 Team Autonomy | Large cross-functional dependencies and merge conflicts | Autonomous two-pizza teams owning end-to-end domain services
 
 3. End-to-End Enterprise Request & Event Flow
-A typical distributed request moves through a resilient, observable pipeline:
 1. Client Ingestion: The client application sends an authenticated request to the API Gateway.
 2. Gateway Validation: The API Gateway verifies JWT security tokens, applies rate limits, and attaches a unique distributed trace ID.
 3. Service Execution: The targeted microservice executes core domain logic against its private data store.
@@ -694,7 +1009,6 @@ A typical distributed request moves through a resilient, observable pipeline:
 5. Downstream Reaction: Independent subscriber services consume the event asynchronously to update projections and analytics.
 
 4. Strategic Advantages of ${cleanTitle}
-Deploying a well-structured microservices architecture provides decisive competitive benefits:
 Accelerated Deployment Velocity: Domain teams deploy multiple updates daily without coordinating enterprise-wide release freezes.
 Elastic Cost Optimization: Cloud compute resources scale dynamically based on individual service demand rather than over-provisioning the entire application.
 Unmatched Fault Tolerance: Circuit breakers and bulkhead patterns ensure that a failure in non-critical reporting never impacts checkout or authentication.
@@ -715,14 +1029,12 @@ Connect with MagnusMinds to architect your distributed systems for high performa
 <p>By decoupling service boundaries, establishing asynchronous event-driven messaging, and routing traffic through resilient API gateways, organizations achieve sub-second latency, elastic scalability, and fault-isolated operational reliability.</p>
 
 <h2>1. Core Architectural Pillars of ${cleanTitle}</h2>
-<p>Building production-grade distributed architectures requires deliberate foundations across service boundaries, data consistency, and communication:</p>
 <p><strong>Bounded Contexts &amp; Domain-Driven Design (DDD)</strong><br>Decomposes large domains into focused, single-responsibility services. Each bounded context manages its own transactional state and private data store, preventing shared-database dependencies and tight coupling.</p>
 <p><strong>Asynchronous Event-Driven Messaging</strong><br>Employs durable message brokers (such as Apache Kafka, RabbitMQ, or cloud event buses) using the Outbox pattern. Event-driven choreography ensures eventual consistency and prevents cascading synchronous HTTP timeouts.</p>
 <p><strong>API Gateway &amp; Dynamic Traffic Routing</strong><br>Serves as the unified front door for external clients, orchestrating request routing, authentication tokens, rate limiting, and SSL termination while shielding internal microservice topologies.</p>
 <p><strong>Distributed Observability &amp; Telemetry</strong><br>Instruments all inter-service requests with OpenTelemetry distributed trace IDs (W3C Trace Context), structured logging, and health probes for instant root-cause diagnosis across distributed hops.</p>
 
 <h2>2. Monolithic Architecture vs Distributed Microservices: Key Differences</h2>
-<p>Comparing the architectural evolution:</p>
 <table border="1" cellpadding="8" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 15px 0;">
   <thead>
     <tr style="background-color: #f1f5f9;">
@@ -761,7 +1073,6 @@ Connect with MagnusMinds to architect your distributed systems for high performa
 </table>
 
 <h2>3. End-to-End Enterprise Request &amp; Event Flow</h2>
-<p>A typical distributed request moves through a resilient, observable pipeline:</p>
 <ol>
   <li><strong>Client Ingestion:</strong> The client application sends an authenticated request to the API Gateway.</li>
   <li><strong>Gateway Validation:</strong> The API Gateway verifies JWT security tokens, applies rate limits, and attaches a unique distributed trace ID.</li>
@@ -771,7 +1082,6 @@ Connect with MagnusMinds to architect your distributed systems for high performa
 </ol>
 
 <h2>4. Strategic Advantages of ${cleanTitle}</h2>
-<p>Deploying a well-structured microservices architecture provides decisive competitive benefits:</p>
 <ul>
   <li><strong>Accelerated Deployment Velocity:</strong> Domain teams deploy multiple updates daily without coordinating enterprise-wide release freezes.</li>
   <li><strong>Elastic Cost Optimization:</strong> Cloud compute resources scale dynamically based on individual service demand rather than over-provisioning the entire application.</li>
@@ -789,557 +1099,24 @@ Connect with MagnusMinds to architect your distributed systems for high performa
         };
       }
 
-      if (domain === 'fabric') {
-        return {
-          visual: `Introduction
-Modern enterprises face significant challenges managing fragmented analytics environments with disjointed data warehouses, independent data lakes, and complex multi-stage ETL pipelines.
-
-When implementing **${cleanTitle}**, organizations transition toward an integrated, SaaS-delivered analytics fabric that unifies data engineering, warehousing, real-time analytics, and business intelligence on top of a single copy of data stored in OneLake.
-
-By removing redundant data duplication, standardizing on the open Delta Lake parquet format, and centralizing governance, enterprises achieve sub-second reporting performance while dramatically simplifying their data architecture.
-
-1. Core Architectural Pillars of ${cleanTitle}
-A structured analytics implementation relies on cohesive foundations to ensure consistent performance, governance, and developer productivity:
-
-OneLake & Unified Storage Layer
-OneLake acts as the OneDrive for organizational data, eliminating silos by allowing Warehouse, Lakehouse, and Spark compute engines to operate directly on shared Delta parquet tables without copying datasets.
-
-Medallion Architecture (Bronze, Silver, Gold)
-Enforces disciplined data refinement from raw ingested streams (Bronze) through cleansed and validated tables (Silver), up to business-curated star schemas and dimension models (Gold).
-
-Synapse Data Engineering & Scalable Pipelines
-Combines the intuitive orchestration of Data Factory with on-demand Spark runtimes, enabling data engineers to execute automated data transformation notebooks with zero infrastructure overhead.
-
-Power BI Direct Lake Connectivity
-Unlocks real-time business intelligence by reading Delta tables in OneLake directly into Power BI without importing data into memory or incurring slow DirectQuery query translations.
-
-2. Traditional Siloed Architecture vs Microsoft Fabric: Key Differences
-Adopting Microsoft Fabric modernizes end-to-end data workflows:
-
-Capability | Traditional Disjointed Stack | Unified Microsoft Fabric Approach
-Storage Architecture | Fragmented lakes, SQL databases, and marts | Unified OneLake storage using open Delta Lake format
-Data Movement | Fragile, multi-hop ETL pipelines copying files | Zero-copy architecture with Shortcuts across clouds
-Compute Engines | Separate provisioned compute for Spark & SQL | Serverless, multi-engine compute querying shared data
-BI Latency | Nightly batch refreshes with memory limits | Direct Lake mode streaming instant insights on massive data
-Security & Governance | Patchwork security across disparate services | Centralized Microsoft Purview security and lineage
-
-3. End-to-End Enterprise Data Flow
-Consider how an enterprise analytics team executes data ingestion and reporting:
-1. Ingestion: Data Factory pipelines and shortcuts continuously ingest database CDC streams and log files into OneLake Bronze tables.
-2. Transformation: Automated Spark notebooks execute data quality checks, schema evolution, and deduplication to generate curated Silver tables.
-3. Aggregation: Data Warehouse SQL endpoints transform enriched datasets into Gold star schema dimension models.
-4. Analytics Consumption: Business decision-makers query Power BI dashboards powered by Direct Lake with sub-second responsiveness.
-5. Enterprise Governance: Security administrators enforce column-level security, row-level security, and audit logs centrally.
-
-4. Strategic Advantages of ${cleanTitle}
-Deploying a unified architecture delivers measurable enterprise benefits:
-Reduced Storage & Compute Costs: Eliminates multiple redundant copies of identical data across storage buckets and warehouses.
-Accelerated Time-to-Insight: Analytics teams deliver high-fidelity dashboards in days rather than waiting for complex data migrations.
-Seamless Multi-Cloud Connectivity: OneLake shortcuts connect external AWS S3 and Google Cloud data with zero replication.
-Unified Developer Experience: Engineers, data scientists, and business analysts collaborate inside one integrated SaaS workspace.
-Enterprise Reliability & Governance: Built-in Microsoft Purview sensitivity labels protect corporate data throughout its lifecycle.
-
-Conclusion
-Building modern analytics platforms requires moving beyond brittle point-to-point data pipelines. By centralizing data storage in OneLake, embracing Medallion architecture, and leveraging Direct Lake reporting, enterprises unlock unified, high-performance data operations.
-
-Build Better Software with MagnusMinds
-At MagnusMinds IT Solution, our data engineering and enterprise software architects help organizations design, optimize, and modernize high-throughput analytics platforms on Microsoft Fabric, Azure, and modern cloud stacks.
-
-Connect with MagnusMinds to accelerate your enterprise data transformation with confidence.`,
-
-          html: `<h2>Introduction</h2>
-<p>Modern enterprises face significant challenges managing fragmented analytics environments with disjointed data warehouses, independent data lakes, and complex multi-stage ETL pipelines.</p>
-<p>When implementing <strong>${cleanTitle}</strong>, organizations transition toward an integrated, SaaS-delivered analytics fabric that unifies data engineering, warehousing, real-time analytics, and business intelligence on top of a single copy of data stored in OneLake.</p>
-<p>By removing redundant data duplication, standardizing on the open Delta Lake parquet format, and centralizing governance, enterprises achieve sub-second reporting performance while dramatically simplifying their data architecture.</p>
-
-<h2>1. Core Architectural Pillars of ${cleanTitle}</h2>
-<p>A structured analytics implementation relies on cohesive foundations to ensure consistent performance, governance, and developer productivity:</p>
-<p><strong>OneLake &amp; Unified Storage Layer</strong><br>OneLake acts as the OneDrive for organizational data, eliminating silos by allowing Warehouse, Lakehouse, and Spark compute engines to operate directly on shared Delta parquet tables without copying datasets.</p>
-<p><strong>Medallion Architecture (Bronze, Silver, Gold)</strong><br>Enforces disciplined data refinement from raw ingested streams (Bronze) through cleansed and validated tables (Silver), up to business-curated star schemas and dimension models (Gold).</p>
-<p><strong>Synapse Data Engineering &amp; Scalable Pipelines</strong><br>Combines the intuitive orchestration of Data Factory with on-demand Spark runtimes, enabling data engineers to execute automated data transformation notebooks with zero infrastructure overhead.</p>
-<p><strong>Power BI Direct Lake Connectivity</strong><br>Unlocks real-time business intelligence by reading Delta tables in OneLake directly into Power BI without importing data into memory or incurring slow DirectQuery query translations.</p>
-
-<h2>2. Traditional Siloed Architecture vs Microsoft Fabric: Key Differences</h2>
-<table border="1" cellpadding="8" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 15px 0;">
-  <thead>
-    <tr style="background-color: #f1f5f9;">
-      <th style="text-align: left; padding: 10px;">Capability</th>
-      <th style="text-align: left; padding: 10px;">Traditional Disjointed Stack</th>
-      <th style="text-align: left; padding: 10px;">Unified Microsoft Fabric Approach</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="padding: 10px;"><strong>Storage Architecture</strong></td>
-      <td style="padding: 10px;">Fragmented lakes, SQL databases, and marts</td>
-      <td style="padding: 10px;">Unified OneLake storage using open Delta Lake format</td>
-    </tr>
-    <tr>
-      <td style="padding: 10px;"><strong>Data Movement</strong></td>
-      <td style="padding: 10px;">Fragile, multi-hop ETL pipelines copying files</td>
-      <td style="padding: 10px;">Zero-copy architecture with Shortcuts across clouds</td>
-    </tr>
-    <tr>
-      <td style="padding: 10px;"><strong>Compute Engines</strong></td>
-      <td style="padding: 10px;">Separate provisioned compute for Spark &amp; SQL</td>
-      <td style="padding: 10px;">Serverless, multi-engine compute querying shared data</td>
-    </tr>
-    <tr>
-      <td style="padding: 10px;"><strong>BI Latency</strong></td>
-      <td style="padding: 10px;">Nightly batch refreshes with memory limits</td>
-      <td style="padding: 10px;">Direct Lake mode streaming instant insights on massive data</td>
-    </tr>
-    <tr>
-      <td style="padding: 10px;"><strong>Security &amp; Governance</strong></td>
-      <td style="padding: 10px;">Patchwork security across disparate services</td>
-      <td style="padding: 10px;">Centralized Microsoft Purview security and lineage</td>
-    </tr>
-  </tbody>
-</table>
-
-<h2>3. End-to-End Enterprise Data Flow</h2>
-<ol>
-  <li><strong>Ingestion:</strong> Data Factory pipelines and shortcuts continuously ingest database CDC streams and log files into OneLake Bronze tables.</li>
-  <li><strong>Transformation:</strong> Automated Spark notebooks execute data quality checks, schema evolution, and deduplication to generate curated Silver tables.</li>
-  <li><strong>Aggregation:</strong> Data Warehouse SQL endpoints transform enriched datasets into Gold star schema dimension models.</li>
-  <li><strong>Analytics Consumption:</strong> Business decision-makers query Power BI dashboards powered by Direct Lake with sub-second responsiveness.</li>
-  <li><strong>Enterprise Governance:</strong> Security administrators enforce column-level security, row-level security, and audit logs centrally.</li>
-</ol>
-
-<h2>4. Strategic Advantages of ${cleanTitle}</h2>
-<ul>
-  <li><strong>Reduced Storage &amp; Compute Costs:</strong> Eliminates multiple redundant copies of identical data across storage buckets and warehouses.</li>
-  <li><strong>Accelerated Time-to-Insight:</strong> Analytics teams deliver high-fidelity dashboards in days rather than waiting for complex data migrations.</li>
-  <li><strong>Seamless Multi-Cloud Connectivity:</strong> OneLake shortcuts connect external AWS S3 and Google Cloud data with zero replication.</li>
-  <li><strong>Unified Developer Experience:</strong> Engineers, data scientists, and business analysts collaborate inside one integrated SaaS workspace.</li>
-  <li><strong>Enterprise Reliability &amp; Governance:</strong> Built-in Microsoft Purview sensitivity labels protect corporate data throughout its lifecycle.</li>
-</ul>
-
-<h2>Conclusion</h2>
-<p>Building modern analytics platforms requires moving beyond brittle point-to-point data pipelines. By centralizing data storage in OneLake, embracing Medallion architecture, and leveraging Direct Lake reporting, enterprises unlock unified, high-performance data operations.</p>
-
-<h2>Build Better Software with MagnusMinds</h2>
-<p>At MagnusMinds IT Solution, our data engineering and enterprise software architects help organizations design, optimize, and modernize high-throughput analytics platforms on Microsoft Fabric, Azure, and modern cloud stacks.</p>
-<p><a href="https://www.magnusminds.net/contact-us">Connect with MagnusMinds</a> to accelerate your enterprise data transformation with confidence.</p>`
-        };
-      }
-
-      if (domain === 'sql') {
-        return {
-          visual: `Introduction
-Enterprise databases are the backbone of modern corporate applications. As transaction volumes surge and concurrent user requests grow, database performance directly dictates system latency, availability, and infrastructure expense.
-
-When optimizing **${cleanTitle}**, developers and DBAs must systematically address query execution plans, indexing strategies, buffer cache utilization, and concurrency bottlenecks.
-
-Implementing disciplined database architecture ensures that transactional databases and analytical queries scale predictably without causing lock escalation or exhausting server resources.
-
-1. Core Pillars of Database Performance & Reliability
-Optimizing database workloads requires addressing foundational structural elements:
-
-Clustered & Covering Index Optimization
-Eliminates costly key lookups and full table scans by aligning physical storage order with frequent range queries and including all required columns in targeted non-clustered indexes.
-
-Execution Plan Cache & Parameter Sniffing Mitigation
-Monitors cached execution plans, isolates parameter sniffing anomalies, and standardizes query recompilation rules for predictable sub-millisecond query execution.
-
-Concurrency Control & Lock Escalation Management
-Leverages Read Committed Snapshot Isolation (RCSI) or snapshot isolation to prevent read operations from blocking write transactions during heavy traffic bursts.
-
-Buffer Pool & TempDB Throughput
-Configures multiple TempDB data files, isolates I/O contention, and optimizes memory grants to avoid spilling worktables to disk.
-
-2. Unoptimized Database vs High-Throughput Architecture
-Comparing typical database pitfalls with production-grade practices:
-
-Metric / Practice | Unoptimized Implementation | Production-Grade Standard
-Indexing Strategy | Heuristic, overlapping non-clustered indexes | Covering indexes targeted to actual query execution plans
-Concurrency Model | Default locking causing reader-writer blocks | Snapshot isolation (RCSI) preventing blocking locks
-Data Access | Massive queries fetching unneeded columns | Lean projections fetching only required columns with paging
-TempDB Configuration | Single default data file causing allocation contention | Multiple equally-sized files matching logical CPU cores
-Telemetry & Monitoring | Reactive troubleshooting during downtime incidents | Proactive Extended Events, Query Store, and index dmv checks
-
-3. Systematic Query Tuning Workflow
-1. Identify Expensive Queries: Query Store and wait statistics identify top resource consumers by CPU, duration, and logical reads.
-2. Analyze Execution Plans: Inspect graphical execution plans to identify table scans, implicit conversions, and memory spills.
-3. Refactor Indexing: Implement targeted covering indexes with included columns to eliminate key lookups.
-4. Validate Concurrency: Verify that isolation levels and transaction lengths avoid lock escalation and deadlocks.
-5. Baseline & Observe: Continuously measure p95 and p99 query duration using structured database telemetry.
-
-4. Strategic Advantages of Optimized Database Architecture
-Sub-Millisecond Response Times: Lean covering indexes slash query latency across high-volume API endpoints.
-Reduced Server Overhead: Halving CPU and disk I/O demands lowers cloud tier hosting expenses significantly.
-High Concurrency Without Deadlocks: Snapshot isolation ensures concurrent background workers never lock critical web requests.
-Predictable Scaling: Workloads scale linearly as transaction volumes multiply.
-Business Continuity: High-availability configurations ensure zero data loss during failovers.
-
-Conclusion
-High-performance database operations require deliberate architectural planning rather than ad-hoc hardware upgrades. By mastering covering indexes, concurrency models, and execution plan caching, engineering teams guarantee resilient, scalable applications.
-
-Build Better Software with MagnusMinds
-At MagnusMinds IT Solution, our database administrators and software architects specialize in SQL Server performance tuning, database migration, and cloud data architecture.
-
-Connect with MagnusMinds to optimize your database performance and unlock maximum throughput.`,
-
-          html: `<h2>Introduction</h2>
-<p>Enterprise databases are the backbone of modern corporate applications. As transaction volumes surge and concurrent user requests grow, database performance directly dictates system latency, availability, and infrastructure expense.</p>
-<p>When optimizing <strong>${cleanTitle}</strong>, developers and DBAs must systematically address query execution plans, indexing strategies, buffer cache utilization, and concurrency bottlenecks.</p>
-<p>Implementing disciplined database architecture ensures that transactional databases and analytical queries scale predictably without causing lock escalation or exhausting server resources.</p>
-
-<h2>1. Core Pillars of Database Performance &amp; Reliability</h2>
-<p><strong>Clustered &amp; Covering Index Optimization</strong><br>Eliminates costly key lookups and full table scans by aligning physical storage order with frequent range queries and including all required columns in targeted non-clustered indexes.</p>
-<p><strong>Execution Plan Cache &amp; Parameter Sniffing Mitigation</strong><br>Monitors cached execution plans, isolates parameter sniffing anomalies, and standardizes query recompilation rules for predictable sub-millisecond query execution.</p>
-<p><strong>Concurrency Control &amp; Lock Escalation Management</strong><br>Leverages Read Committed Snapshot Isolation (RCSI) or snapshot isolation to prevent read operations from blocking write transactions during heavy traffic bursts.</p>
-<p><strong>Buffer Pool &amp; TempDB Throughput</strong><br>Configures multiple TempDB data files, isolates I/O contention, and optimizes memory grants to avoid spilling worktables to disk.</p>
-
-<h2>2. Unoptimized Database vs High-Throughput Architecture</h2>
-<table border="1" cellpadding="8" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 15px 0;">
-  <thead>
-    <tr style="background-color: #f1f5f9;">
-      <th style="text-align: left; padding: 10px;">Metric / Practice</th>
-      <th style="text-align: left; padding: 10px;">Unoptimized Implementation</th>
-      <th style="text-align: left; padding: 10px;">Production-Grade Standard</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="padding: 10px;"><strong>Indexing Strategy</strong></td>
-      <td style="padding: 10px;">Heuristic, overlapping non-clustered indexes</td>
-      <td style="padding: 10px;">Covering indexes targeted to actual query execution plans</td>
-    </tr>
-    <tr>
-      <td style="padding: 10px;"><strong>Concurrency Model</strong></td>
-      <td style="padding: 10px;">Default locking causing reader-writer blocks</td>
-      <td style="padding: 10px;">Snapshot isolation (RCSI) preventing blocking locks</td>
-    </tr>
-    <tr>
-      <td style="padding: 10px;"><strong>Data Access</strong></td>
-      <td style="padding: 10px;">Massive queries fetching unneeded columns</td>
-      <td style="padding: 10px;">Lean projections fetching only required columns with paging</td>
-    </tr>
-    <tr>
-      <td style="padding: 10px;"><strong>TempDB Configuration</strong></td>
-      <td style="padding: 10px;">Single default data file causing allocation contention</td>
-      <td style="padding: 10px;">Multiple equally-sized files matching logical CPU cores</td>
-    </tr>
-    <tr>
-      <td style="padding: 10px;"><strong>Telemetry &amp; Monitoring</strong></td>
-      <td style="padding: 10px;">Reactive troubleshooting during downtime incidents</td>
-      <td style="padding: 10px;">Proactive Extended Events, Query Store, and index dmv checks</td>
-    </tr>
-  </tbody>
-</table>
-
-<h2>3. Systematic Query Tuning Workflow</h2>
-<ol>
-  <li><strong>Identify Expensive Queries:</strong> Query Store and wait statistics identify top resource consumers by CPU, duration, and logical reads.</li>
-  <li><strong>Analyze Execution Plans:</strong> Inspect graphical execution plans to identify table scans, implicit conversions, and memory spills.</li>
-  <li><strong>Refactor Indexing:</strong> Implement targeted covering indexes with included columns to eliminate key lookups.</li>
-  <li><strong>Validate Concurrency:</strong> Verify that isolation levels and transaction lengths avoid lock escalation and deadlocks.</li>
-  <li><strong>Baseline &amp; Observe:</strong> Continuously measure p95 and p99 query duration using structured database telemetry.</li>
-</ol>
-
-<h2>4. Strategic Advantages of Optimized Database Architecture</h2>
-<ul>
-  <li><strong>Sub-Millisecond Response Times:</strong> Lean covering indexes slash query latency across high-volume API endpoints.</li>
-  <li><strong>Reduced Server Overhead:</strong> Halving CPU and disk I/O demands lowers cloud tier hosting expenses significantly.</li>
-  <li><strong>High Concurrency Without Deadlocks:</strong> Snapshot isolation ensures concurrent background workers never lock critical web requests.</li>
-  <li><strong>Predictable Scaling:</strong> Workloads scale linearly as transaction volumes multiply.</li>
-  <li><strong>Business Continuity:</strong> High-availability configurations ensure zero data loss during failovers.</li>
-</ul>
-
-<h2>Conclusion</h2>
-<p>High-performance database operations require deliberate architectural planning rather than ad-hoc hardware upgrades. By mastering covering indexes, concurrency models, and execution plan caching, engineering teams guarantee resilient, scalable applications.</p>
-
-<h2>Build Better Software with MagnusMinds</h2>
-<p>At MagnusMinds IT Solution, our database administrators and software architects specialize in SQL Server performance tuning, database migration, and cloud data architecture.</p>
-<p><a href="https://www.magnusminds.net/contact-us">Connect with MagnusMinds</a> to optimize your database performance and unlock maximum throughput.</p>`
-        };
-      }
-
-      if (domain === 'powerbi') {
-        return {
-          visual: `Introduction
-Business intelligence solutions empower organizations to convert complex operational data into actionable strategic insights.
-
-When building **${cleanTitle}**, executive teams demand intuitive, interactive reporting that loads instantly while preserving strict data governance and row-level security.
-
-By designing clean dimensional star schemas, writing optimized DAX measures, and configuring modern data refresh strategies, business intelligence teams deliver enterprise analytics that scale smoothly.
-
-1. Foundations for Enterprise Power BI Reporting
-A reliable reporting platform rests on foundational modeling best practices:
-
-Star Schema Dimensional Modeling
-Structures reporting data into fact and dimension tables, avoiding wide flat tables and snowflake relationships to maximize VertiPaq engine compression.
-
-Optimized DAX Measures & Context Transition
-Leverages efficient CALCULATE, FILTER, and iterator patterns while minimizing heavy row-by-row calculations to preserve dashboard interactivity.
-
-Row-Level Security (RLS) & Workspace Governance
-Enforces strict data access boundaries based on Azure Active Directory user roles, guaranteeing that viewers access only their authorized business units.
-
-Incremental Refresh & Direct Lake Modes
-Configures automated partition refreshes to process only modified data, slashing refresh durations from hours to minutes.
-
-2. Traditional Reporting vs Modern Enterprise BI Architecture
-Aspect | Fragmented Reporting Stack | Modern Enterprise BI Standard
-Data Model | Massive, un-indexed flat tables | Clean star schema with 1-to-many relationships
-Calculations | Heavy calculated columns bloating memory | Lean DAX measures calculated dynamically on demand
-Refresh Latency | Lengthy full daily dataset reloads | Fast automated incremental refresh / Direct Lake streaming
-Data Security | Separate report copies per department | Unified report with dynamic Row-Level Security (RLS)
-User Experience | Slow visual rendering with complex filters | Optimized visual hierarchies loading within 1 second
-
-3. End-to-End Enterprise BI Implementation Lifecycle
-1. Requirements Discovery: Align KPI definitions, metrics, and business logic across operational stakeholders.
-2. Data Preparation: Cleanse and transform source data in Power Query, standardizing datetime hierarchies and keys.
-3. Data Modeling: Establish single-direction 1-to-many relationships between dimension and fact tables.
-4. Visual Engineering: Design uncluttered executive dashboards utilizing standardized color schemes and KPI cards.
-5. Deployment & Governance: Deploy through automated deployment pipelines with dedicated Dev, Test, and Prod stages.
-
-4. Measurable Advantages of Enterprise BI Architecture
-Immediate Interactivity: Sub-second visual responsiveness ensures executives explore data without lag.
-Single Source of Truth: Centralized semantic models eliminate conflicting metrics across departments.
-Robust Data Security: Enterprise RLS guarantees regulatory compliance and confidentiality.
-Scalable Cloud Infrastructure: Power BI Premium and Fabric capacity provide predictable cloud performance.
-
-Conclusion
-High-impact reporting is the result of disciplined data modeling, calculated measure efficiency, and automated lifecycle governance. Applying these practices ensures data translates into decisive competitive advantages.
-
-Build Better Software with MagnusMinds
-At MagnusMinds IT Solution, our Power BI and data engineering specialists craft enterprise dashboards, optimized DAX data models, and automated analytics pipelines for global organizations.
-
-Connect with MagnusMinds to elevate your business intelligence capabilities.`,
-
-          html: `<h2>Introduction</h2>
-<p>Business intelligence solutions empower organizations to convert complex operational data into actionable strategic insights.</p>
-<p>When building <strong>${cleanTitle}</strong>, executive teams demand intuitive, interactive reporting that loads instantly while preserving strict data governance and row-level security.</p>
-<p>By designing clean dimensional star schemas, writing optimized DAX measures, and configuring modern data refresh strategies, business intelligence teams deliver enterprise analytics that scale smoothly.</p>
-
-<h2>1. Foundations for Enterprise Power BI Reporting</h2>
-<p><strong>Star Schema Dimensional Modeling</strong><br>Structures reporting data into fact and dimension tables, avoiding wide flat tables and snowflake relationships to maximize VertiPaq engine compression.</p>
-<p><strong>Optimized DAX Measures &amp; Context Transition</strong><br>Leverages efficient CALCULATE, FILTER, and iterator patterns while minimizing heavy row-by-row calculations to preserve dashboard interactivity.</p>
-<p><strong>Row-Level Security (RLS) &amp; Workspace Governance</strong><br>Enforces strict data access boundaries based on Azure Active Directory user roles, guaranteeing that viewers access only their authorized business units.</p>
-<p><strong>Incremental Refresh &amp; Direct Lake Modes</strong><br>Configures automated partition refreshes to process only modified data, slashing refresh durations from hours to minutes.</p>
-
-<h2>2. Traditional Reporting vs Modern Enterprise BI Architecture</h2>
-<table border="1" cellpadding="8" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 15px 0;">
-  <thead>
-    <tr style="background-color: #f1f5f9;">
-      <th style="text-align: left; padding: 10px;">Aspect</th>
-      <th style="text-align: left; padding: 10px;">Fragmented Reporting Stack</th>
-      <th style="text-align: left; padding: 10px;">Modern Enterprise BI Standard</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="padding: 10px;"><strong>Data Model</strong></td>
-      <td style="padding: 10px;">Massive, un-indexed flat tables</td>
-      <td style="padding: 10px;">Clean star schema with 1-to-many relationships</td>
-    </tr>
-    <tr>
-      <td style="padding: 10px;"><strong>Calculations</strong></td>
-      <td style="padding: 10px;">Heavy calculated columns bloating memory</td>
-      <td style="padding: 10px;">Lean DAX measures calculated dynamically on demand</td>
-    </tr>
-    <tr>
-      <td style="padding: 10px;"><strong>Refresh Latency</strong></td>
-      <td style="padding: 10px;">Lengthy full daily dataset reloads</td>
-      <td style="padding: 10px;">Fast automated incremental refresh / Direct Lake streaming</td>
-    </tr>
-    <tr>
-      <td style="padding: 10px;"><strong>Data Security</strong></td>
-      <td style="padding: 10px;">Separate report copies per department</td>
-      <td style="padding: 10px;">Unified report with dynamic Row-Level Security (RLS)</td>
-    </tr>
-    <tr>
-      <td style="padding: 10px;"><strong>User Experience</strong></td>
-      <td style="padding: 10px;">Slow visual rendering with complex filters</td>
-      <td style="padding: 10px;">Optimized visual hierarchies loading within 1 second</td>
-    </tr>
-  </tbody>
-</table>
-
-<h2>3. End-to-End Enterprise BI Implementation Lifecycle</h2>
-<ol>
-  <li><strong>Requirements Discovery:</strong> Align KPI definitions, metrics, and business logic across operational stakeholders.</li>
-  <li><strong>Data Preparation:</strong> Cleanse and transform source data in Power Query, standardizing datetime hierarchies and keys.</li>
-  <li><strong>Data Modeling:</strong> Establish single-direction 1-to-many relationships between dimension and fact tables.</li>
-  <li><strong>Visual Engineering:</strong> Design uncluttered executive dashboards utilizing standardized color schemes and KPI cards.</li>
-  <li><strong>Deployment &amp; Governance:</strong> Deploy through automated deployment pipelines with dedicated Dev, Test, and Prod stages.</li>
-</ol>
-
-<h2>4. Measurable Advantages of Enterprise BI Architecture</h2>
-<ul>
-  <li><strong>Immediate Interactivity:</strong> Sub-second visual responsiveness ensures executives explore data without lag.</li>
-  <li><strong>Single Source of Truth:</strong> Centralized semantic models eliminate conflicting metrics across departments.</li>
-  <li><strong>Robust Data Security:</strong> Enterprise RLS guarantees regulatory compliance and confidentiality.</li>
-  <li><strong>Scalable Cloud Infrastructure:</strong> Power BI Premium and Fabric capacity provide predictable cloud performance.</li>
-</ul>
-
-<h2>Conclusion</h2>
-<p>High-impact reporting is the result of disciplined data modeling, calculated measure efficiency, and automated lifecycle governance. Applying these practices ensures data translates into decisive competitive advantages.</p>
-
-<h2>Build Better Software with MagnusMinds</h2>
-<p>At MagnusMinds IT Solution, our Power BI and data engineering specialists craft enterprise dashboards, optimized DAX data models, and automated analytics pipelines for global organizations.</p>
-<p><a href="https://www.magnusminds.net/contact-us">Connect with MagnusMinds</a> to elevate your business intelligence capabilities.</p>`
-        };
-      }
-
-      if (domain === 'ai') {
-        return {
-          visual: `Introduction
-Artificial Intelligence and autonomous agentic workflows are fundamentally reshaping enterprise software delivery, automating complex decision paths, and supercharging system intelligence.
-
-When engineering **${cleanTitle}**, technology teams must move beyond simple prompt wrappers toward resilient, grounded agent architectures with verifiable system boundaries.
-
-By integrating grounded retrieval (RAG), typed tool invocation protocols, deterministic guardrails, and structured telemetry, enterprises deploy autonomous capabilities that operate with high accuracy, auditability, and safety.
-
-1. Essential Foundations for Enterprise AI Systems
-A production-grade AI system requires robust engineering boundaries:
-
-Grounded Context Retrieval (RAG & Vector Storage)
-Grounds model generations in verified corporate knowledge bases and semantic vector databases, eliminating hallucinations and ensuring factual fidelity.
-
-Typed Tool & Protocol Integration
-Exposes secured enterprise APIs and system tools to models via standardized protocols with typed schemas, strict parameter validation, and atomic rollbacks.
-
-Autonomous Orchestration & Task Graph Execution
-Deconstructs complex requests into deterministic multi-stage directed acyclic graphs (DAGs), enabling specialized agents to collaborate seamlessly.
-
-Guardrails & Human-in-the-Loop Governance
-Enforces policy validations and safety boundaries, requiring explicit human authorization for high-risk operations such as production database changes or financial transactions.
-
-2. Naive AI Integration vs Enterprise Grounded Architecture
-Dimension | Naive AI Wrapper | Enterprise Grounded Architecture
-Context Ingestion | Raw, unfiltered prompts with context overflow | Chunked, vectorized knowledge with semantic retrieval
-Tool Access | Unchecked script execution | Typed tool schemas with strict parameter validation
-Failure Recovery | Brittle failure cascade on API timeout | Exponential backoff, fallback models, and self-correction
-Governance | Unmonitored black-box outputs | Audit logging, evaluation benchmarks, and human approval gates
-Observability | Zero execution visibility | Full OpenTelemetry tracing capturing tokens, latency, and tool calls
-
-3. End-to-End Autonomous Execution Lifecycle
-1. Intent Classification: The orchestrator analyzes user input and maps it to a structured plan.
-2. Context Retrieval: The system queries vector indices to retrieve relevant domain contracts and documentation.
-3. Tool Execution: The model calls typed tools in an isolated sandbox with parameter verification.
-4. Autonomous Diagnostics: Automated review checks evaluate the result against domain constraints and safety rules.
-5. Final Validation: Results are delivered to users with verifiable citations and audit traces.
-
-4. Strategic Advantages of Grounded Enterprise AI
-Accelerated Productivity: Eliminates repetitive development tasks and speeds up complex system investigations.
-Consistent Compliance: Automated guardrails ensure model outputs strictly adhere to enterprise security policies.
-Reduced Operational Friction: Autonomous triage agents identify and resolve common support tickets without human intervention.
-Scalable System Intelligence: Bounded modular agents handle specialized domain tasks without code bloat.
-
-Conclusion
-Enterprise AI success depends on disciplined software engineering rather than model hype. Prioritizing structured context, typed tool protocols, and rigorous governance allows organizations to deliver durable, high-impact AI solutions.
-
-Build Better Software with MagnusMinds
-At MagnusMinds IT Solution, our software engineers build production-grade AI applications, RAG architectures, and autonomous agent integrations for enterprise leaders.
-
-Connect with MagnusMinds to accelerate your enterprise AI initiatives.`,
-
-          html: `<h2>Introduction</h2>
-<p>Artificial Intelligence and autonomous agentic workflows are fundamentally reshaping enterprise software delivery, automating complex decision paths, and supercharging system intelligence.</p>
-<p>When engineering <strong>${cleanTitle}</strong>, technology teams must move beyond simple prompt wrappers toward resilient, grounded agent architectures with verifiable system boundaries.</p>
-<p>By integrating grounded retrieval (RAG), typed tool invocation protocols, deterministic guardrails, and structured telemetry, enterprises deploy autonomous capabilities that operate with high accuracy, auditability, and safety.</p>
-
-<h2>1. Essential Foundations for Enterprise AI Systems</h2>
-<p><strong>Grounded Context Retrieval (RAG &amp; Vector Storage)</strong><br>Grounds model generations in verified corporate knowledge bases and semantic vector databases, eliminating hallucinations and ensuring factual fidelity.</p>
-<p><strong>Typed Tool &amp; Protocol Integration</strong><br>Exposes secured enterprise APIs and system tools to models via standardized protocols with typed schemas, strict parameter validation, and atomic rollbacks.</p>
-<p><strong>Autonomous Orchestration &amp; Task Graph Execution</strong><br>Deconstructs complex requests into deterministic multi-stage directed acyclic graphs (DAGs), enabling specialized agents to collaborate seamlessly.</p>
-<p><strong>Guardrails &amp; Human-in-the-Loop Governance</strong><br>Enforces policy validations and safety boundaries, requiring explicit human authorization for high-risk operations such as production database changes or financial transactions.</p>
-
-<h2>2. Naive AI Integration vs Enterprise Grounded Architecture</h2>
-<table border="1" cellpadding="8" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 15px 0;">
-  <thead>
-    <tr style="background-color: #f1f5f9;">
-      <th style="text-align: left; padding: 10px;">Dimension</th>
-      <th style="text-align: left; padding: 10px;">Naive AI Wrapper</th>
-      <th style="text-align: left; padding: 10px;">Enterprise Grounded Architecture</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="padding: 10px;"><strong>Context Ingestion</strong></td>
-      <td style="padding: 10px;">Raw, unfiltered prompts with context overflow</td>
-      <td style="padding: 10px;">Chunked, vectorized knowledge with semantic retrieval</td>
-    </tr>
-    <tr>
-      <td style="padding: 10px;"><strong>Tool Access</strong></td>
-      <td style="padding: 10px;">Unchecked script execution</td>
-      <td style="padding: 10px;">Typed tool schemas with strict parameter validation</td>
-    </tr>
-    <tr>
-      <td style="padding: 10px;"><strong>Failure Recovery</strong></td>
-      <td style="padding: 10px;">Brittle failure cascade on API timeout</td>
-      <td style="padding: 10px;">Exponential backoff, fallback models, and self-correction</td>
-    </tr>
-    <tr>
-      <td style="padding: 10px;"><strong>Governance</strong></td>
-      <td style="padding: 10px;">Unmonitored black-box outputs</td>
-      <td style="padding: 10px;">Audit logging, evaluation benchmarks, and human approval gates</td>
-    </tr>
-    <tr>
-      <td style="padding: 10px;"><strong>Observability</strong></td>
-      <td style="padding: 10px;">Zero execution visibility</td>
-      <td style="padding: 10px;">Full OpenTelemetry tracing capturing tokens, latency, and tool calls</td>
-    </tr>
-  </tbody>
-</table>
-
-<h2>3. End-to-End Autonomous Execution Lifecycle</h2>
-<ol>
-  <li><strong>Intent Classification:</strong> The orchestrator analyzes user input and maps it to a structured plan.</li>
-  <li><strong>Context Retrieval:</strong> The system queries vector indices to retrieve relevant domain contracts and documentation.</li>
-  <li><strong>Tool Execution:</strong> The model calls typed tools in an isolated sandbox with parameter verification.</li>
-  <li><strong>Autonomous Diagnostics:</strong> Automated review checks evaluate the result against domain constraints and safety rules.</li>
-  <li><strong>Final Validation:</strong> Results are delivered to users with verifiable citations and audit traces.</li>
-</ol>
-
-<h2>4. Strategic Advantages of Grounded Enterprise AI</h2>
-<ul>
-  <li><strong>Accelerated Productivity:</strong> Eliminates repetitive development tasks and speeds up complex system investigations.</li>
-  <li><strong>Consistent Compliance:</strong> Automated guardrails ensure model outputs strictly adhere to enterprise security policies.</li>
-  <li><strong>Reduced Operational Friction:</strong> Autonomous triage agents identify and resolve common support tickets without human intervention.</li>
-  <li><strong>Scalable System Intelligence:</strong> Bounded modular agents handle specialized domain tasks without code bloat.</li>
-</ul>
-
-<h2>Conclusion</h2>
-<p>Enterprise AI success depends on disciplined software engineering rather than model hype. Prioritizing structured context, typed tool protocols, and rigorous governance allows organizations to deliver durable, high-impact AI solutions.</p>
-
-<h2>Build Better Software with MagnusMinds</h2>
-<p>At MagnusMinds IT Solution, our software engineers build production-grade AI applications, RAG architectures, and autonomous agent integrations for enterprise leaders.</p>
-<p><a href="https://www.magnusminds.net/contact-us">Connect with MagnusMinds</a> to accelerate your enterprise AI initiatives.</p>`
-        };
-      }
-
-      // Default Generic Technical Architecture
+      // Default Architecture / Tech Content
       return {
         visual: `Introduction
-Modern enterprise software delivery requires moving beyond ad-hoc development practices toward disciplined, scalable architecture and repeatable engineering standards.
+Modern enterprise software engineering requires moving beyond ad-hoc development practices toward disciplined, scalable architecture and repeatable engineering standards.
 
 When implementing **${cleanTitle}**, technical leaders must balance immediate feature velocity with long-term system maintainability, operational resilience, and architectural governance.
 
 By codifying explicit standards, isolating bounded domain components, and automating verification throughout the deployment pipeline, engineering teams construct resilient systems that adapt smoothly to business growth.
 
 1. Foundational Pillars for ${cleanTitle}
-Achieving predictable performance and operational stability demands disciplined structural foundations:
-
-Explicit Architecture & Codified Standards
-Maintains clear repository conventions, dependency boundaries, and interface contracts to eliminate ambiguity and prevent architectural drift.
-
-Modular Component Isolation
-Encapsulates domain logic in bounded modules, ensuring that changes to individual components do not trigger regression cascades across the system.
-
-Resilient Fault Handling & Isolation
-Implements circuit breakers, structured retry policies, and graceful degradation paths to withstand third-party outages and traffic surges.
-
-Comprehensive Distributed Telemetry
-Instruments critical workflows with OpenTelemetry metrics, structured logs, and automated health diagnostics for proactive issue detection.
+Explicit Architecture & Codified Standards: Maintains clear repository conventions, dependency boundaries, and interface contracts to eliminate ambiguity.
+Modular Component Isolation: Encapsulates domain logic in bounded modules, preventing regression cascades across the system.
+Resilient Fault Handling: Implements circuit breakers, structured retry policies, and graceful degradation paths.
+Comprehensive Distributed Telemetry: Instruments critical workflows with OpenTelemetry metrics and structured logs.
 
 2. Traditional Development vs Modern Engineering Architecture
 Aspect | Traditional Development | Modern Engineering Standard
 Code Organization | Tightly coupled monoliths with implicit rules | Modular bounded contexts with explicit interfaces
-Dependency Management | Uncontrolled third-party libraries | Curated dependencies with strict version pinning
 Quality Assurance | Manual post-development testing cycles | Automated pre-commit and CI verification gates
 System Observability | Reactive error logging during downtime | Continuous distributed tracing and proactive alerting
 Deployment Model | High-risk manual deployments with freezes | Automated zero-downtime CI/CD pipelines with canary rollouts
@@ -1347,15 +1124,15 @@ Deployment Model | High-risk manual deployments with freezes | Automated zero-do
 3. End-to-End Engineering Implementation Workflow
 1. Requirements Alignment: Engineers model system specifications based on codified architectural patterns.
 2. Contract Definition: Typed interfaces and schema contracts guarantee compile-time verification.
-3. Automated Implementation: Business logic is developed following established error-handling and logging conventions.
-4. Automated Diagnostics: Continuous integration pipelines execute unit tests, security scans, and performance benchmarks.
-5. Production Deployment: Verified builds are promoted through automated staging and production pipelines with health verification.
+3. Automated Implementation: Business logic is developed following established error-handling conventions.
+4. Automated Diagnostics: Continuous integration pipelines execute unit tests and security scans.
+5. Production Deployment: Verified builds are promoted through automated staging and production pipelines.
 
 4. Strategic Advantages of Modern Engineering Architecture
 High Delivery Velocity: Removes friction from the development cycle, allowing teams to ship features rapidly.
 Long-Term Maintainability: Clear service boundaries prevent technical debt from accumulating over time.
 Predictable Scalability: Modular systems scale horizontally to accommodate enterprise traffic surges.
-Enhanced Reliability: Isolated failure domains prevent partial system disruptions from becoming total outages.
+Enhanced Reliability: Isolated failure domains prevent partial disruptions from becoming total outages.
 
 Conclusion
 Building durable enterprise software requires deliberate architectural planning and rigorous engineering standards. Prioritizing modular boundaries, clear contracts, and structured observability ensures software systems remain competitive and resilient.
@@ -1366,15 +1143,14 @@ At MagnusMinds IT Solution, our senior architects and developers partner with te
 Connect with MagnusMinds to explore how modern engineering practices can elevate your software delivery.`,
 
         html: `<h2>Introduction</h2>
-<p>Modern enterprise software delivery requires moving beyond ad-hoc development practices toward disciplined, scalable architecture and repeatable engineering standards.</p>
+<p>Modern enterprise software engineering requires moving beyond ad-hoc development practices toward disciplined, scalable architecture and repeatable engineering standards.</p>
 <p>When implementing <strong>${cleanTitle}</strong>, technical leaders must balance immediate feature velocity with long-term system maintainability, operational resilience, and architectural governance.</p>
-<p>By codifying explicit standards, isolating bounded domain components, and automating verification throughout the deployment pipeline, engineering teams construct resilient systems that adapt smoothly to business growth.</p>
 
 <h2>1. Foundational Pillars for ${cleanTitle}</h2>
-<p><strong>Explicit Architecture &amp; Codified Standards</strong><br>Maintains clear repository conventions, dependency boundaries, and interface contracts to eliminate ambiguity and prevent architectural drift.</p>
-<p><strong>Modular Component Isolation</strong><br>Encapsulates domain logic in bounded modules, ensuring that changes to individual components do not trigger regression cascades across the system.</p>
-<p><strong>Resilient Fault Handling &amp; Isolation</strong><br>Implements circuit breakers, structured retry policies, and graceful degradation paths to withstand third-party outages and traffic surges.</p>
-<p><strong>Comprehensive Distributed Telemetry</strong><br>Instruments critical workflows with OpenTelemetry metrics, structured logs, and automated health diagnostics for proactive issue detection.</p>
+<p><strong>Explicit Architecture &amp; Codified Standards</strong><br>Maintains clear repository conventions, dependency boundaries, and interface contracts to eliminate ambiguity.</p>
+<p><strong>Modular Component Isolation</strong><br>Encapsulates domain logic in bounded modules, preventing regression cascades across the system.</p>
+<p><strong>Resilient Fault Handling</strong><br>Implements circuit breakers, structured retry policies, and graceful degradation paths.</p>
+<p><strong>Comprehensive Distributed Telemetry</strong><br>Instruments critical workflows with OpenTelemetry metrics and structured logs.</p>
 
 <h2>2. Traditional Development vs Modern Engineering Architecture</h2>
 <table border="1" cellpadding="8" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 15px 0;">
@@ -1390,11 +1166,6 @@ Connect with MagnusMinds to explore how modern engineering practices can elevate
       <td style="padding: 10px;"><strong>Code Organization</strong></td>
       <td style="padding: 10px;">Tightly coupled monoliths with implicit rules</td>
       <td style="padding: 10px;">Modular bounded contexts with explicit interfaces</td>
-    </tr>
-    <tr>
-      <td style="padding: 10px;"><strong>Dependency Management</strong></td>
-      <td style="padding: 10px;">Uncontrolled third-party libraries</td>
-      <td style="padding: 10px;">Curated dependencies with strict version pinning</td>
     </tr>
     <tr>
       <td style="padding: 10px;"><strong>Quality Assurance</strong></td>
@@ -1418,9 +1189,9 @@ Connect with MagnusMinds to explore how modern engineering practices can elevate
 <ol>
   <li><strong>Requirements Alignment:</strong> Engineers model system specifications based on codified architectural patterns.</li>
   <li><strong>Contract Definition:</strong> Typed interfaces and schema contracts guarantee compile-time verification.</li>
-  <li><strong>Automated Implementation:</strong> Business logic is developed following established error-handling and logging conventions.</li>
-  <li><strong>Automated Diagnostics:</strong> Continuous integration pipelines execute unit tests, security scans, and performance benchmarks.</li>
-  <li><strong>Production Deployment:</strong> Verified builds are promoted through automated staging and production pipelines with health verification.</li>
+  <li><strong>Automated Implementation:</strong> Business logic is developed following established error-handling conventions.</li>
+  <li><strong>Automated Diagnostics:</strong> Continuous integration pipelines execute unit tests and security scans.</li>
+  <li><strong>Production Deployment:</strong> Verified builds are promoted through automated staging and production pipelines.</li>
 </ol>
 
 <h2>4. Strategic Advantages of Modern Engineering Architecture</h2>
@@ -1428,7 +1199,7 @@ Connect with MagnusMinds to explore how modern engineering practices can elevate
   <li><strong>High Delivery Velocity:</strong> Removes friction from the development cycle, allowing teams to ship features rapidly.</li>
   <li><strong>Long-Term Maintainability:</strong> Clear service boundaries prevent technical debt from accumulating over time.</li>
   <li><strong>Predictable Scalability:</strong> Modular systems scale horizontally to accommodate enterprise traffic surges.</li>
-  <li><strong>Enhanced Reliability:</strong> Isolated failure domains prevent partial system disruptions from becoming total outages.</li>
+  <li><strong>Enhanced Reliability:</strong> Isolated failure domains prevent partial disruptions from becoming total outages.</li>
 </ul>
 
 <h2>Conclusion</h2>
@@ -1437,27 +1208,32 @@ Connect with MagnusMinds to explore how modern engineering practices can elevate
 <h2>Build Better Software with MagnusMinds</h2>
 <p>At MagnusMinds IT Solution, our senior architects and developers partner with technology leaders to design, build, and modernize scalable enterprise applications.</p>
 <p><a href="https://www.magnusminds.net/contact-us">Connect with MagnusMinds</a> to explore how modern engineering practices can elevate your software delivery.</p>`
-      };
+        };
     }
 
     function generateBlog() {
       const topicInput = document.getElementById('topicInput');
-      const rawTopic = topicInput.value.trim() || 'Microservices';
+      const rawTopic = topicInput.value.trim() || 'Sage Invoice Automation: Reducing Manual Work and Improving Finance Operations';
       const cleanTitle = rawTopic.replace(/\s*\|\s*MagnusMinds$/i, '').trim();
       const slug = generateSlug(cleanTitle);
 
       const domain = classifyTopic(cleanTitle);
       const meta = getDomainMetadata(domain, cleanTitle);
 
-      // Clean keywords strictly derived from cleanTitle and domain tags
+      currentActiveDetails = {
+        title: cleanTitle,
+        slug: slug,
+        meta: meta
+      };
+
+      // Clean keywords derived strictly from title and tags
       const keywords = [cleanTitle, ...meta.tags].filter((v, i, a) => a.indexOf(v) === i).join(', ');
       const metaDescription = `An engineering perspective on ${cleanTitle} by MagnusMinds: explore architecture, core concepts, structured patterns, and enterprise advantages.`;
 
-      // Save active state for image refresh
-      currentActiveTitle = cleanTitle;
-      currentActiveCategory = meta.category;
-      currentActiveSlug = slug;
-      currentImagePrompt = meta.imagePrompt;
+      // Construct High-End Infographic Image Prompt for AI Generators (Midjourney/DALL-E)
+      const badgeList = meta.badges.map(b => `"${b.label}"`).join(', ');
+      const flowList = meta.workflow.join(' -> ');
+      currentImagePrompt = `A high-end 16:9 widescreen corporate infographic blog banner on a clean white and soft cyan gradient background. Left side features bold typography: "${cleanTitle}" with subtitle "${meta.summary}" and four circular feature badges: ${badgeList}. Top right shows a 5-step horizontal workflow diagram connected with arrows: "${flowList}". Bottom right features a sleek 3D isometric illustration of a modern laptop with an automated invoice document, green verified checkmark, shipment packages, and friendly AI automation helper robot, clean vector styling, ultra-sharp detail, 8k resolution, professional tech marketing design, no watermark, no blurry elements.`;
 
       // Populate Form Fields
       document.getElementById('fieldTitle').value = cleanTitle;
@@ -1467,13 +1243,11 @@ Connect with MagnusMinds to explore how modern engineering practices can elevate
       document.getElementById('fieldTags').value = meta.tags.join(', ');
       document.getElementById('fieldSlug').value = slug;
 
-      // Generate High-Resolution Zero-Watermark Canvas Banner
-      const bannerDataUrl = renderCanvasBanner(cleanTitle, meta.category, currentThemeIndex);
+      // Render Zero-Watermark Infographic Banner
+      const bannerDataUrl = renderInfographicBanner(currentActiveDetails, currentThemeIndex);
       const bannerImg = document.getElementById('bannerImagePreview');
       const dlBtn = document.getElementById('downloadImageBtn');
-      const imgLoading = document.getElementById('imageLoading');
 
-      imgLoading.classList.add('hidden');
       bannerImg.src = bannerDataUrl;
       dlBtn.href = bannerDataUrl;
       dlBtn.download = `${slug}_banner.jpg`;
