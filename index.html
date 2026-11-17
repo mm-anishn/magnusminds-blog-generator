@@ -146,22 +146,24 @@
         </div>
       </div>
 
-      <!-- Field Grid: Meta Description & Image Prompt -->
+      <!-- Field Grid: Meta Description & Image Banner -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <div class="flex items-center justify-between mb-1.5">
             <label class="text-xs font-bold text-slate-700 uppercase tracking-wide">Meta Description *</label>
             <button onclick="copyField('fieldMetaDesc')" class="text-xs text-brand-500 hover:text-brand-700 font-semibold cursor-pointer">Copy Meta Description</button>
           </div>
-          <textarea id="fieldMetaDesc" rows="3" readonly class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-md text-sm text-slate-800 resize-none"></textarea>
+          <textarea id="fieldMetaDesc" rows="5" readonly class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-md text-sm text-slate-800 resize-none"></textarea>
         </div>
 
         <div>
           <div class="flex items-center justify-between mb-1.5">
-            <label class="text-xs font-bold text-slate-700 uppercase tracking-wide">Recommended Image Description *</label>
-            <button onclick="copyField('fieldImage')" class="text-xs text-brand-500 hover:text-brand-700 font-semibold cursor-pointer">Copy Image Prompt</button>
+            <label class="text-xs font-bold text-slate-700 uppercase tracking-wide">Image * (Banner Image)</label>
+            <a id="downloadImageBtn" href="#" download="blog_banner.jpg" class="text-xs text-white bg-brand-500 hover:bg-brand-600 px-2.5 py-1 rounded font-semibold cursor-pointer">⬇ Download Banner Image</a>
           </div>
-          <textarea id="fieldImage" rows="3" readonly class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-md text-sm text-slate-800 resize-none"></textarea>
+          <div class="border border-slate-200 rounded-md p-1 bg-slate-50 h-[120px] flex items-center justify-center overflow-hidden">
+            <img id="bannerImagePreview" src="" alt="Banner Preview" class="w-full h-full object-cover rounded">
+          </div>
         </div>
       </div>
 
@@ -329,12 +331,15 @@
 
       const keyword = `${cleanTitle}, ${tags.split(', ').slice(0, 3).join(', ')}, Software Engineering, MagnusMinds`;
       const metaDesc = `Discover an engineering perspective on ${cleanTitle} by MagnusMinds: explore architecture, structured patterns, workflows, and enterprise benefits.`;
-      const imagePrompt = `High-resolution tech architecture banner illustration representing ${cleanTitle} with MagnusMinds branding.`;
+      const encodedPrompt = encodeURIComponent(`enterprise technology banner illustration ${cleanTitle} navy blue cyan corporate`);
+      const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1200&height=630&nologo=true`;
 
       document.getElementById('fieldTitle').value = cleanTitle;
       document.getElementById('fieldKeyword').value = keyword;
       document.getElementById('fieldMetaDesc').value = metaDesc;
-      document.getElementById('fieldImage').value = imagePrompt;
+      document.getElementById('bannerImagePreview').src = imageUrl;
+      document.getElementById('downloadImageBtn').href = imageUrl;
+      document.getElementById('downloadImageBtn').download = `${slug}_banner.jpg`;
       document.getElementById('fieldCategory').value = category;
       document.getElementById('fieldTags').value = tags;
       document.getElementById('fieldSlug').value = slug;
