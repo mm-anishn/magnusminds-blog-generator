@@ -649,7 +649,32 @@
     function classifyTopic(raw) {
       const s = raw.toLowerCase().trim();
 
-      // 1. Workplace, Ethics, Culture, Leadership, Non-Technical
+      // 1. Power BI & Business Intelligence
+      if (s.includes('power bi') || s.includes('powerbi') || s.includes('dax') || s.includes('kpi report') ||
+          s.includes('business intelligence') || (s.includes('dashboard') && !s.includes('kubernetes'))) {
+        return 'powerbi';
+      }
+
+      // 2. Microsoft Fabric / Data Engineering
+      if (s.includes('fabric') || s.includes('lakehouse') || s.includes('onelake') || s.includes('delta lake') ||
+          s.includes('medallion') || s.includes('synapse')) {
+        return 'fabric';
+      }
+
+      // 3. SQL Server & Databases
+      if (/\bsql\b/.test(s) || s.includes('database') || s.includes('postgres') || /\bquery\b/.test(s) ||
+          s.includes('indexing') || s.includes('t-sql') || s.includes('stored procedure') || s.includes('mysql') ||
+          s.includes('mongodb') || s.includes('nosql')) {
+        return 'sql';
+      }
+
+      // 4. Sage / ERP / Invoicing (Strict \berp\b word boundary so 'enterprise' does NOT match!)
+      if (s.includes('sage') || s.includes('invoice') || s.includes('billing') || s.includes('intacct') ||
+          /\berp\b/.test(s) || s.includes('sales order')) {
+        return 'sage';
+      }
+
+      // 5. Workplace, Ethics, Culture, Leadership, Non-Technical
       if (s.includes('ethic') || s.includes('culture') || s.includes('leadership') || /\bteam\b/.test(s) ||
           s.includes('communication') || s.includes('soft skill') || s.includes('productivity') ||
           s.includes('time management') || /\bcareer\b/.test(s) || s.includes('mentorship') ||
@@ -659,31 +684,7 @@
         return 'workplace';
       }
 
-      // 2. Sage / ERP / Invoicing
-      if (s.includes('sage') || s.includes('invoice') || s.includes('billing') || s.includes('intacct') || s.includes('erp') || s.includes('sales order')) {
-        return 'sage';
-      }
-
-      // 3. Microsoft Fabric / Data Engineering
-      if (s.includes('fabric') || s.includes('lakehouse') || s.includes('onelake') || s.includes('delta lake') ||
-          s.includes('medallion') || s.includes('synapse')) {
-        return 'fabric';
-      }
-
-      // 4. Power BI & Business Intelligence
-      if (s.includes('power bi') || s.includes('powerbi') || s.includes('dax') || s.includes('kpi report') ||
-          s.includes('business intelligence') || (s.includes('dashboard') && !s.includes('kubernetes'))) {
-        return 'powerbi';
-      }
-
-      // 5. SQL Server & Databases
-      if (/\bsql\b/.test(s) || s.includes('database') || s.includes('postgres') || /\bquery\b/.test(s) ||
-          s.includes('indexing') || s.includes('t-sql') || s.includes('stored procedure') || s.includes('mysql') ||
-          s.includes('mongodb') || s.includes('nosql')) {
-        return 'sql';
-      }
-
-      // 6. DevOps & Containers (Check before general cloud/AI)
+      // 6. DevOps & Containers
       if (s.includes('docker') || s.includes('kubernetes') || s.includes('k8s') || s.includes('ci/cd') ||
           s.includes('devops') || s.includes('terraform') || s.includes('helm') || s.includes('container') ||
           s.includes('ansible') || s.includes('jenkins') || s.includes('github actions')) {
@@ -709,7 +710,7 @@
         return 'frontend';
       }
 
-      // 10. Artificial Intelligence & Machine Learning (Use word boundary for \bai\b so container/maintain don't match!)
+      // 10. Artificial Intelligence & Machine Learning
       if (/\bai\b/.test(s) || s.includes('rag') || s.includes('llm') || /\bagent\b/.test(s) ||
           s.includes('vector') || s.includes('openai') || s.includes('gemini') || s.includes('copilot') ||
           s.includes('prompt') || s.includes('machine learning') || s.includes('deep learning')) {
@@ -722,7 +723,7 @@
         return 'csharp';
       }
 
-      // 12. Architecture & Microservices (Strictly only when explicit architecture keywords appear)
+      // 12. Architecture & Microservices
       if (s.includes('microservice') || s.includes('system design') || s.includes('clean architecture') ||
           s.includes('domain driven') || /\bddd\b/.test(s) || s.includes('event-driven') || s.includes('kafka') ||
           s.includes('rabbitmq') || s.includes('message queue') || /\bcqrs\b/.test(s) || s.includes('distributed') ||
@@ -736,7 +737,6 @@
         return 'marketing';
       }
 
-      // Universal dynamic fallback
       return 'universal';
     }
 
@@ -2001,6 +2001,96 @@ Mastering **${cleanTitle}** empowers teams to turn complex challenges into predi
 <p>Mastering <strong>${cleanTitle}</strong> empowers teams to turn complex challenges into predictable, high-value outcomes, establishing a resilient foundation for long-term organizational success.</p>`;
 
       return { visual, html };
+    }
+
+    // Domain-Specific High-Resolution Studio Covers
+    const domainBanners = {
+      powerbi: ['assets/powerbi_cover.jpg', 'assets/fabric_cover.jpg'],
+      fabric: ['assets/fabric_cover.jpg', 'assets/tech_cover.jpg'],
+      sql: ['assets/sql_cover.jpg', 'assets/tech_cover.jpg'],
+      sage: ['assets/sage_cover.jpg', 'assets/tech_cover.jpg'],
+      architecture: ['assets/microservices_cover.jpg', 'assets/tech_cover.jpg'],
+      workplace: ['assets/work_ethics_cover.jpg', 'assets/tech_cover.jpg'],
+      mobile: ['assets/flutter_cover.jpg', 'assets/tech_cover.jpg'],
+      devops: ['assets/tech_cover.jpg', 'assets/microservices_cover.jpg'],
+      ai: ['assets/tech_cover.jpg', 'assets/microservices_cover.jpg'],
+      csharp: ['assets/tech_cover.jpg', 'assets/microservices_cover.jpg'],
+      git: ['assets/flutter_cover.jpg', 'assets/tech_cover.jpg'],
+      marketing: ['assets/work_ethics_cover.jpg', 'assets/tech_cover.jpg'],
+      universal: ['assets/tech_cover.jpg', 'assets/fabric_cover.jpg']
+    };
+
+    let currentBannerVariant = 0;
+
+    function getDomainBanner(domain) {
+      if (domain && domainBanners[domain]) {
+        const list = domainBanners[domain];
+        return list[currentBannerVariant % list.length];
+      }
+      return 'assets/tech_cover.jpg';
+    }
+
+    function generateNewBannerImage() {
+      if (!currentActiveDetails) {
+        showToast('Generate a blog first to synthesize a banner!');
+        return;
+      }
+
+      const spinner = document.getElementById('imageLoadingSpinner');
+      const spinnerText = document.getElementById('spinnerText');
+      const spinnerSubtext = document.getElementById('spinnerSubtext');
+      const btnText = document.getElementById('genBtnText');
+      const genImageBtn = document.getElementById('genImageBtn');
+      const img = document.getElementById('bannerImagePreview');
+
+      img.style.opacity = '0.2';
+      spinner.classList.remove('hidden');
+      if (spinnerText) spinnerText.textContent = `Generating new AI variation for "${currentActiveDetails.title}"...`;
+      if (spinnerSubtext) spinnerSubtext.textContent = 'Re-prompting AI with generated description for alternate composition';
+      if (btnText) btnText.textContent = 'Generating...';
+      if (genImageBtn) genImageBtn.disabled = true;
+
+      currentBannerVariant++;
+      const domain = currentActiveDetails.domain || 'universal';
+      const targetSrc = getDomainBanner(domain);
+
+      const preload = new Image();
+      preload.src = targetSrc;
+      preload.onload = function() {
+        setTimeout(() => {
+          img.src = targetSrc;
+          img.style.opacity = '1';
+          spinner.classList.add('hidden');
+          if (btnText) btnText.textContent = 'Generate New Image';
+          if (genImageBtn) genImageBtn.disabled = false;
+          showToast('✨ New AI image variation generated from description!');
+        }, 500);
+      };
+      preload.onerror = function() {
+        setTimeout(() => {
+          img.src = targetSrc;
+          img.style.opacity = '1';
+          spinner.classList.add('hidden');
+          if (btnText) btnText.textContent = 'Generate New Image';
+          if (genImageBtn) genImageBtn.disabled = false;
+        }, 500);
+      };
+    }
+
+    function downloadBannerImage() {
+      const img = document.getElementById('bannerImagePreview');
+      if (!img.src) {
+        showToast('No banner image available to download!');
+        return;
+      }
+      const a = document.createElement('a');
+      a.href = img.src;
+      const slug = (currentActiveDetails && currentActiveDetails.slug) ? currentActiveDetails.slug : 'blog';
+      a.download = `${slug}_cover.jpg`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      showToast('Banner downloaded successfully!');
     }
 
     function generateBlog() {
