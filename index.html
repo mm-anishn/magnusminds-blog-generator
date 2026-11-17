@@ -51,6 +51,179 @@
       opacity: 1;
       transform: translateY(0);
     }
+
+    /* MagnusMinds Blog Typography & Preview Styles (Exact match to live MagnusMinds blog) */
+    #tabPreview, .preview-typography {
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #334155;
+      font-size: 15px;
+      line-height: 1.85;
+    }
+
+    .preview-typography h1 {
+      font-size: 26px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-top: 28px;
+      margin-bottom: 14px;
+      line-height: 1.3;
+      letter-spacing: -0.02em;
+    }
+
+    .preview-typography h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-top: 36px;
+      margin-bottom: 14px;
+      line-height: 1.35;
+      letter-spacing: -0.01em;
+      border-bottom: 1px solid #f1f5f9;
+      padding-bottom: 8px;
+    }
+
+    .preview-typography h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-top: 26px;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+
+    .preview-typography p {
+      margin-top: 0;
+      margin-bottom: 18px;
+      color: #334155;
+      font-size: 15px;
+      line-height: 1.85;
+    }
+
+    .preview-typography strong {
+      font-weight: 600;
+      color: #0f172a;
+    }
+
+    /* Inline Code Pill Badge (Exact match to MagnusMinds flutter-ci-cd live blog) */
+    .preview-typography code,
+    .preview-typography .code-pill {
+      background-color: #f1f5f9;
+      color: #4f46e5;
+      padding: 3px 8px;
+      border-radius: 5px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 500;
+      border: 1px solid #e2e8f0;
+      display: inline-block;
+      line-height: 1.4;
+      margin: 0 2px;
+    }
+
+    /* Preformatted Code Blocks */
+    .preview-typography pre {
+      background-color: #0f172a;
+      color: #f8fafc;
+      padding: 18px 20px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      line-height: 1.65;
+      margin: 22px 0;
+      border: 1px solid #1e293b;
+    }
+
+    .preview-typography pre code {
+      background: transparent !important;
+      color: inherit !important;
+      border: none !important;
+      padding: 0 !important;
+      display: block;
+    }
+
+    /* MagnusMinds Comparison Table (Exact match to live MagnusMinds blog) */
+    .preview-typography table {
+      width: 100%;
+      border-collapse: separate !important;
+      border-spacing: 0 !important;
+      margin: 24px 0 28px 0 !important;
+      border: 1px solid #e2e8f0 !important;
+      border-radius: 8px !important;
+      overflow: hidden !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      background-color: #ffffff;
+    }
+
+    .preview-typography thead tr,
+    .preview-typography tr:first-child:has(th) {
+      background-color: #f5f3ff !important;
+    }
+
+    .preview-typography th {
+      background-color: #f5f3ff !important;
+      color: #4338ca !important;
+      font-weight: 600 !important;
+      text-align: left;
+      padding: 12px 18px !important;
+      font-size: 13px !important;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      border-bottom: 2px solid #e0e7ff !important;
+      border-top: none !important;
+      border-left: none !important;
+      border-right: none !important;
+    }
+
+    .preview-typography td {
+      padding: 14px 18px !important;
+      font-size: 14px;
+      color: #334155;
+      border-bottom: 1px solid #f1f5f9 !important;
+      border-top: none !important;
+      border-left: none !important;
+      border-right: none !important;
+      line-height: 1.65;
+      background-color: #ffffff;
+    }
+
+    .preview-typography tr:last-child td {
+      border-bottom: none !important;
+    }
+
+    .preview-typography tr:hover td {
+      background-color: #faf5ff;
+    }
+
+    /* Lists */
+    .preview-typography ul {
+      list-style-type: disc !important;
+      margin: 16px 0 24px 28px !important;
+      padding-left: 6px !important;
+    }
+
+    .preview-typography ol {
+      list-style-type: decimal !important;
+      margin: 16px 0 24px 28px !important;
+      padding-left: 6px !important;
+    }
+
+    .preview-typography li {
+      margin-bottom: 10px;
+      line-height: 1.75;
+      color: #334155;
+      font-size: 15px;
+    }
+
+    .preview-typography a {
+      color: #4f46e5;
+      text-decoration: underline;
+      font-weight: 500;
+    }
+
+    .preview-typography a:hover {
+      color: #3730a3;
+    }
   </style>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col font-sans">
@@ -166,10 +339,9 @@
           <div class="flex items-center justify-between mb-1.5">
             <label class="text-xs font-bold text-slate-700 uppercase tracking-wide">Image * (Infographic Banner)</label>
             <div class="flex items-center space-x-2">
-              <button onclick="refreshBannerOnly()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold px-2 py-1 rounded border border-slate-300 transition cursor-pointer flex items-center space-x-1">
+              <button onclick="refreshBannerOnly()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold px-2.5 py-1 rounded border border-slate-300 transition cursor-pointer flex items-center space-x-1">
                 <span>🔄 Refresh Image</span>
               </button>
-              <button onclick="copyAiImagePrompt()" class="text-xs text-slate-600 hover:text-slate-900 font-medium cursor-pointer">📋 Copy Prompt</button>
               <a id="downloadImageBtn" href="#" download="blog_banner.jpg" class="text-xs text-white bg-brand-500 hover:bg-brand-600 px-2.5 py-1 rounded font-semibold cursor-pointer">⬇ Download Banner</a>
             </div>
           </div>
@@ -241,8 +413,8 @@
         </div>
 
         <!-- Tab 3: Live Preview -->
-        <div id="tabPreview" class="p-6 bg-white border border-slate-200 rounded-lg prose max-w-none hidden overflow-auto max-h-[500px]">
-          <div id="previewContent"></div>
+        <div id="tabPreview" class="p-8 bg-white border border-slate-200 rounded-xl hidden overflow-auto min-h-[450px] max-h-[750px] shadow-sm">
+          <div id="previewContent" class="preview-typography"></div>
         </div>
 
       </div>
@@ -293,8 +465,128 @@
       } else if (tab === 'preview') {
         p.classList.remove('hidden');
         pBtn.className = "px-3 py-1.5 text-xs font-bold rounded-md bg-brand-500 text-white cursor-pointer";
-        document.getElementById('previewContent').innerHTML = document.getElementById('fieldDescriptionHtml').value;
+        renderPreviewDisplay();
       }
+    }
+
+    function renderPreviewDisplay() {
+      const htmlInput = document.getElementById('fieldDescriptionHtml').value || '';
+      const textInput = document.getElementById('fieldDescriptionText').value || '';
+
+      let contentToRender = htmlInput.trim();
+      if (!contentToRender || !contentToRender.includes('<h2')) {
+        contentToRender = formatMarkdownForPreview(textInput);
+      } else {
+        // Enhance backtick inline code pills
+        contentToRender = contentToRender.replace(/`([^`]+)`/g, '<code class="code-pill">$1</code>');
+      }
+
+      document.getElementById('previewContent').innerHTML = contentToRender;
+    }
+
+    function formatMarkdownForPreview(md) {
+      if (!md) return '';
+      const lines = md.split('\n');
+      const out = [];
+      let inTable = false;
+      let tableRows = [];
+      let inUl = false;
+      let inOl = false;
+
+      function closeLists() {
+        if (inUl) { out.push('</ul>'); inUl = false; }
+        if (inOl) { out.push('</ol>'); inOl = false; }
+      }
+
+      function flushTable() {
+        if (!inTable) return;
+        if (tableRows.length > 0) {
+          let tableHtml = '<table><thead><tr>';
+          tableHtml += tableRows[0].map(h => `<th>${h.trim()}</th>`).join('');
+          tableHtml += '</tr></thead><tbody>';
+          for (let r = 1; r < tableRows.length; r++) {
+            tableHtml += '<tr>' + tableRows[r].map(c => `<td>${c.trim()}</td>`).join('') + '</tr>';
+          }
+          tableHtml += '</tbody></table>';
+          out.push(tableHtml);
+        }
+        inTable = false;
+        tableRows = [];
+      }
+
+      for (let i = 0; i < lines.length; i++) {
+        let line = lines[i].trim();
+        if (!line) {
+          closeLists();
+          flushTable();
+          continue;
+        }
+
+        // Table row
+        if (line.includes('|')) {
+          closeLists();
+          const cells = line.split('|').map(c => c.trim()).filter((c, idx, arr) => !(idx === 0 && c === '') && !(idx === arr.length - 1 && c === ''));
+          if (cells.every(c => /^:?-+:?$/.test(c))) {
+            continue; // Markdown divider
+          }
+          if (!inTable) inTable = true;
+          tableRows.push(cells);
+          continue;
+        } else {
+          flushTable();
+        }
+
+        // Major Headings
+        if (line.startsWith('### ')) {
+          closeLists();
+          out.push(`<h3>${line.substring(4)}</h3>`);
+          continue;
+        }
+        if (line.startsWith('## ')) {
+          closeLists();
+          out.push(`<h2>${line.substring(3)}</h2>`);
+          continue;
+        }
+        if (/^\d+\.\s+[A-Z]/.test(line)) {
+          closeLists();
+          out.push(`<h2>${line}</h2>`);
+          continue;
+        }
+        if (line.toLowerCase() === 'introduction' || line.toLowerCase() === 'conclusion' || line.toLowerCase().startsWith('build better software')) {
+          closeLists();
+          out.push(`<h2>${line}</h2>`);
+          continue;
+        }
+
+        // List items
+        const olMatch = line.match(/^(\d+)\.\s+(.*)/);
+        if (olMatch) {
+          if (!inOl) { closeLists(); inOl = true; out.push('<ol>'); }
+          let item = olMatch[2].replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>').replace(/`([^`]+)`/g, '<code class="code-pill">$1</code>');
+          out.push(`<li>${item}</li>`);
+          continue;
+        }
+
+        if (line.startsWith('- ') || line.startsWith('* ')) {
+          if (!inUl) { closeLists(); inUl = true; out.push('<ul>'); }
+          let item = line.substring(2).replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>').replace(/`([^`]+)`/g, '<code class="code-pill">$1</code>');
+          out.push(`<li>${item}</li>`);
+          continue;
+        }
+
+        closeLists();
+
+        // Normal paragraph
+        let formatted = line
+          .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+          .replace(/`([^`]+)`/g, '<code class="code-pill">$1</code>');
+
+        out.push(`<p>${formatted}</p>`);
+      }
+
+      closeLists();
+      flushTable();
+      return out.join('\n');
     }
 
     function showToast(msg) {
@@ -1099,6 +1391,139 @@ Connect with MagnusMinds to architect your distributed systems for high performa
         };
       }
 
+      if (domain === 'fabric') {
+        return {
+          visual: `Introduction
+Modern enterprises face significant challenges managing fragmented analytics environments with disjointed data warehouses, independent data lakes, and complex multi-stage ETL pipelines.
+
+When implementing **${cleanTitle}**, organizations transition toward an integrated, SaaS-delivered analytics fabric that unifies data engineering, warehousing, real-time analytics, and business intelligence on top of a single copy of data stored in OneLake.
+
+By removing redundant data duplication, standardizing on the open Delta Lake parquet format, and centralizing governance, enterprises achieve sub-second reporting performance while dramatically simplifying their data architecture.
+
+1. Core Architectural Pillars of ${cleanTitle}
+A structured analytics implementation relies on cohesive foundations to ensure consistent performance, governance, and developer productivity:
+
+OneLake & Unified Storage Layer
+OneLake acts as the OneDrive for organizational data, eliminating silos by allowing Warehouse, Lakehouse, and Spark compute engines to operate directly on shared Delta parquet tables without copying datasets.
+
+Medallion Architecture (Bronze, Silver, Gold)
+Enforces disciplined data refinement from raw ingested streams (Bronze) through cleansed and validated tables (Silver), up to business-curated star schemas and dimension models (Gold).
+
+Synapse Data Engineering & Scalable Pipelines
+Combines the intuitive orchestration of Data Factory with on-demand Spark runtimes, enabling data engineers to execute automated data transformation notebooks with zero infrastructure overhead.
+
+Power BI Direct Lake Connectivity
+Unlocks real-time business intelligence by reading Delta tables in OneLake directly into Power BI without importing data into memory or incurring slow DirectQuery query translations.
+
+2. Traditional Siloed Architecture vs Microsoft Fabric: Key Differences
+Capability | Traditional Disjointed Stack | Unified Microsoft Fabric Approach
+Storage Architecture | Fragmented lakes, SQL databases, and marts | Unified OneLake storage using open Delta Lake format
+Data Movement | Fragile, multi-hop ETL pipelines copying files | Zero-copy architecture with Shortcuts across clouds
+Compute Engines | Separate provisioned compute for Spark & SQL | Serverless, multi-engine compute querying shared data
+BI Latency | Nightly batch refreshes with memory limits | Direct Lake mode streaming instant insights on massive data
+Security & Governance | Patchwork security across disparate services | Centralized Microsoft Purview security and lineage
+
+3. End-to-End Enterprise Data Flow
+The workflow follows a streamlined, predictable path:
+1. Ingestion: Data Factory pipelines and shortcuts continuously ingest database CDC streams and log files into OneLake Bronze tables.
+2. Transformation: Automated Spark notebooks execute data quality checks, schema evolution, and deduplication to generate curated Silver tables.
+3. Aggregation: Data Warehouse SQL endpoints transform enriched datasets into Gold star schema dimension models.
+4. Analytics Consumption: Business decision-makers query Power BI dashboards powered by Direct Lake with sub-second responsiveness.
+5. Enterprise Governance: Security administrators enforce column-level security, row-level security, and audit logs centrally.
+
+4. Strategic Advantages of ${cleanTitle}
+Deploying a unified architecture delivers measurable enterprise benefits:
+- Reduced Storage & Compute Costs: Eliminates multiple redundant copies of identical data across storage buckets and warehouses.
+- Accelerated Time-to-Insight: Analytics teams deliver high-fidelity dashboards in days rather than waiting for complex data migrations.
+- Seamless Multi-Cloud Connectivity: OneLake shortcuts connect external AWS S3 and Google Cloud data with zero replication.
+- Unified Developer Experience: Engineers, data scientists, and business analysts collaborate inside one integrated SaaS workspace.
+- Enterprise Reliability & Governance: Built-in Microsoft Purview sensitivity labels protect corporate data throughout its lifecycle.
+
+Conclusion
+Building modern analytics platforms requires moving beyond brittle point-to-point data pipelines. By centralizing data storage in OneLake, embracing Medallion architecture, and leveraging Direct Lake reporting, enterprises unlock unified, high-performance data operations.
+
+Build Better Software with MagnusMinds
+At MagnusMinds IT Solution, our data engineering and enterprise software architects help organizations design, optimize, and modernize high-throughput analytics platforms on Microsoft Fabric, Azure, and modern cloud stacks.
+
+Connect with MagnusMinds to accelerate your enterprise data transformation with confidence.`,
+
+          html: `<h2>Introduction</h2>
+<p>Modern enterprises face significant challenges managing fragmented analytics environments with disjointed data warehouses, independent data lakes, and complex multi-stage ETL pipelines.</p>
+<p>When implementing <strong>${cleanTitle}</strong>, organizations transition toward an integrated, SaaS-delivered analytics fabric that unifies data engineering, warehousing, real-time analytics, and business intelligence on top of a single copy of data stored in <code>OneLake</code>.</p>
+<p>By removing redundant data duplication, standardizing on the open <code>Delta Lake</code> parquet format, and centralizing governance, enterprises achieve sub-second reporting performance while dramatically simplifying their data architecture.</p>
+
+<h2>1. Core Architectural Pillars of ${cleanTitle}</h2>
+<p>A structured analytics implementation relies on cohesive foundations to ensure consistent performance, governance, and developer productivity:</p>
+<p><strong>OneLake &amp; Unified Storage Layer</strong><br><code>OneLake</code> acts as the OneDrive for organizational data, eliminating silos by allowing Warehouse, Lakehouse, and Spark compute engines to operate directly on shared <code>Delta Lake</code> parquet tables without copying datasets.</p>
+<p><strong>Medallion Architecture (Bronze, Silver, Gold)</strong><br>Enforces disciplined data refinement from raw ingested streams (<code>Bronze</code>) through cleansed and validated tables (<code>Silver</code>), up to business-curated star schemas and dimension models (<code>Gold</code>).</p>
+<p><strong>Synapse Data Engineering &amp; Scalable Pipelines</strong><br>Combines the intuitive orchestration of <code>Data Factory</code> with on-demand <code>Spark</code> runtimes, enabling data engineers to execute automated data transformation notebooks with zero infrastructure overhead.</p>
+<p><strong>Power BI Direct Lake Connectivity</strong><br>Unlocks real-time business intelligence by reading Delta tables in OneLake directly into <code>Power BI</code> via <code>Direct Lake</code> mode without importing data into memory or incurring slow DirectQuery query translations.</p>
+
+<h2>2. Traditional Siloed Architecture vs Microsoft Fabric: Key Differences</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Capability</th>
+      <th>Traditional Disjointed Stack</th>
+      <th>Unified Microsoft Fabric Approach</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Storage Architecture</strong></td>
+      <td>Fragmented lakes, SQL databases, and marts</td>
+      <td>Unified <code>OneLake</code> storage using open <code>Delta Lake</code> format</td>
+    </tr>
+    <tr>
+      <td><strong>Data Movement</strong></td>
+      <td>Fragile, multi-hop ETL pipelines copying files</td>
+      <td>Zero-copy architecture with <code>Shortcuts</code> across clouds</td>
+    </tr>
+    <tr>
+      <td><strong>Compute Engines</strong></td>
+      <td>Separate provisioned compute for Spark &amp; SQL</td>
+      <td>Serverless, multi-engine compute querying shared data</td>
+    </tr>
+    <tr>
+      <td><strong>BI Latency</strong></td>
+      <td>Nightly batch refreshes with memory limits</td>
+      <td><code>Direct Lake</code> mode streaming instant insights on massive data</td>
+    </tr>
+    <tr>
+      <td><strong>Security &amp; Governance</strong></td>
+      <td>Patchwork security across disparate services</td>
+      <td>Centralized <code>Microsoft Purview</code> security and lineage</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>3. End-to-End Enterprise Data Flow</h2>
+<ol>
+  <li><strong>Ingestion:</strong> <code>Data Factory</code> pipelines and shortcuts continuously ingest database CDC streams and log files into OneLake <code>Bronze</code> tables.</li>
+  <li><strong>Transformation:</strong> Automated <code>Spark</code> notebooks execute data quality checks, schema evolution, and deduplication to generate curated <code>Silver</code> tables.</li>
+  <li><strong>Aggregation:</strong> Data Warehouse SQL endpoints transform enriched datasets into <code>Gold</code> star schema dimension models.</li>
+  <li><strong>Analytics Consumption:</strong> Business decision-makers query <code>Power BI</code> dashboards powered by <code>Direct Lake</code> with sub-second responsiveness.</li>
+  <li><strong>Enterprise Governance:</strong> Security administrators enforce column-level security, row-level security, and audit logs centrally.</li>
+</ol>
+
+<h2>4. Strategic Advantages of ${cleanTitle}</h2>
+<ul>
+  <li><strong>Reduced Storage &amp; Compute Costs:</strong> Eliminates multiple redundant copies of identical data across storage buckets and warehouses.</li>
+  <li><strong>Accelerated Time-to-Insight:</strong> Analytics teams deliver high-fidelity dashboards in days rather than waiting for complex data migrations.</li>
+  <li><strong>Seamless Multi-Cloud Connectivity:</strong> <code>OneLake</code> shortcuts connect external AWS S3 and Google Cloud data with zero replication.</li>
+  <li><strong>Unified Developer Experience:</strong> Engineers, data scientists, and business analysts collaborate inside one integrated SaaS workspace.</li>
+  <li><strong>Enterprise Reliability &amp; Governance:</strong> Built-in <code>Microsoft Purview</code> sensitivity labels protect corporate data throughout its lifecycle.</li>
+</ul>
+
+<h2>Conclusion</h2>
+<p>Building modern analytics platforms requires moving beyond brittle point-to-point data pipelines. By centralizing data storage in <code>OneLake</code>, embracing <code>Medallion Architecture</code>, and leveraging <code>Direct Lake</code> reporting, enterprises unlock unified, high-performance data operations.</p>
+
+<h2>Build Better Software with MagnusMinds</h2>
+<p>At MagnusMinds IT Solution, our data engineering and enterprise software architects help organizations design, optimize, and modernize high-throughput analytics platforms on Microsoft Fabric, Azure, and modern cloud stacks.</p>
+<p><a href="https://www.magnusminds.net/contact-us">Connect with MagnusMinds</a> to accelerate your enterprise data transformation with confidence.</p>`
+        };
+      }
+
       // Default Architecture / Tech Content
       return {
         visual: `Introduction
@@ -1256,7 +1681,7 @@ Connect with MagnusMinds to explore how modern engineering practices can elevate
       const content = generateDomainContent(domain, cleanTitle);
       document.getElementById('fieldDescriptionText').value = content.visual;
       document.getElementById('fieldDescriptionHtml').value = content.html;
-      document.getElementById('previewContent').innerHTML = content.html;
+      renderPreviewDisplay();
 
       // Reveal results card and smooth scroll
       const resultsCard = document.getElementById('resultsCard');
