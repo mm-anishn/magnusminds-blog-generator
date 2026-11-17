@@ -166,7 +166,10 @@
           <div class="flex items-center justify-between mb-1.5">
             <label class="text-xs font-bold text-slate-700 uppercase tracking-wide">Image * (Banner Image)</label>
             <div class="flex items-center space-x-2">
-              <button onclick="copyAiImagePrompt()" class="text-xs text-slate-600 hover:text-slate-900 font-medium cursor-pointer">📋 Copy AI Prompt</button>
+              <button onclick="refreshBannerOnly()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold px-2 py-1 rounded border border-slate-300 transition cursor-pointer flex items-center space-x-1">
+                <span>🔄 Refresh Image</span>
+              </button>
+              <button onclick="copyAiImagePrompt()" class="text-xs text-slate-600 hover:text-slate-900 font-medium cursor-pointer">📋 Copy Prompt</button>
               <a id="downloadImageBtn" href="#" download="blog_banner.jpg" class="text-xs text-white bg-brand-500 hover:bg-brand-600 px-2.5 py-1 rounded font-semibold cursor-pointer">⬇ Download Banner</a>
             </div>
           </div>
@@ -261,6 +264,180 @@
 
   <script>
     let currentImagePrompt = '';
+    let currentThemeIndex = 0;
+    let currentActiveTitle = '';
+    let currentActiveCategory = '';
+    let currentActiveSlug = '';
+
+    function refreshBannerOnly() {
+      if (!currentActiveTitle) {
+        showToast('Generate a blog first to refresh its image!');
+        return;
+      }
+      currentThemeIndex++;
+      const dataUrl = renderCanvasBanner(currentActiveTitle, currentActiveCategory, currentThemeIndex);
+      document.getElementById('bannerImagePreview').src = dataUrl;
+      const dlBtn = document.getElementById('downloadImageBtn');
+      dlBtn.href = dataUrl;
+      dlBtn.download = `${currentActiveSlug}_banner.jpg`;
+      showToast('New image variation generated!');
+    }
+
+    function renderCanvasBanner(title, category, themeIndex) {
+      const canvas = document.createElement('canvas');
+      canvas.width = 1200;
+      canvas.height = 630;
+      const ctx = canvas.getContext('2d');
+
+      const themes = [
+        { bgStart: '#030712', bgMid: '#0f172a', bgEnd: '#0284c7', accent: '#38bdf8', pillBg: '#0369a1' },
+        { bgStart: '#020617', bgMid: '#1e293b', bgEnd: '#2563eb', accent: '#60a5fa', pillBg: '#1d4ed8' },
+        { bgStart: '#090d16', bgMid: '#0e2439', bgEnd: '#0d9488', accent: '#2dd4bf', pillBg: '#0f766e' },
+        { bgStart: '#0f172a', bgMid: '#1e1b4b', bgEnd: '#6366f1', accent: '#a5b4fc', pillBg: '#4338ca' }
+      ];
+
+      const t = themes[themeIndex % themes.length];
+
+      // Background gradient
+      const grad = ctx.createLinearGradient(0, 0, 1200, 630);
+      grad.addColorStop(0, t.bgStart);
+      grad.addColorStop(0.55, t.bgMid);
+      grad.addColorStop(1, t.bgEnd);
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 1200, 630);
+
+      // Subtle tech grid pattern
+      ctx.strokeStyle = '#334155';
+      ctx.lineWidth = 0.8;
+      ctx.globalAlpha = 0.22;
+      for (let x = 0; x < 1200; x += 40) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, 630);
+        ctx.stroke();
+      }
+      for (let y = 0; y < 630; y += 40) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(1200, y);
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1.0;
+
+      // Right-side geometric network
+      ctx.save();
+      ctx.strokeStyle = t.accent;
+      ctx.lineWidth = 2;
+      ctx.globalAlpha = 0.25;
+      ctx.beginPath();
+      ctx.arc(960, 315, 230, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.setLineDash([12, 8]);
+      ctx.strokeStyle = t.accent;
+      ctx.lineWidth = 1.5;
+      ctx.globalAlpha = 0.4;
+      ctx.beginPath();
+      ctx.arc(960, 315, 160, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.globalAlpha = 0.55;
+      ctx.beginPath();
+      ctx.arc(960, 315, 80, 0, Math.PI * 2);
+      ctx.stroke();
+
+      const nodes = [
+        { x: 960, y: 155 }, { x: 1120, y: 315 }, { x: 960, y: 475 }, { x: 800, y: 315 },
+        { x: 1073, y: 202 }, { x: 1073, y: 428 }, { x: 847, y: 428 }, { x: 847, y: 202 }
+      ];
+      ctx.fillStyle = t.accent;
+      nodes.forEach(n => {
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, 5, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      ctx.restore();
+
+      // MagnusMinds Brand Badge (Top Left)
+      ctx.save();
+      ctx.fillStyle = '#1e293b';
+      ctx.strokeStyle = t.accent;
+      ctx.lineWidth = 1.5;
+      roundRect(ctx, 90, 80, 260, 40, 20, true, true);
+      ctx.fillStyle = t.accent;
+      ctx.font = 'bold 14px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('MAGNUSMINDS TECH BLOG', 220, 105);
+      ctx.restore();
+
+      // Category Pill
+      ctx.save();
+      ctx.fillStyle = t.pillBg;
+      roundRect(ctx, 90, 140, 200, 32, 6, true, false);
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '600 13px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(category.toUpperCase(), 190, 161);
+      ctx.restore();
+
+      // Title with wrapping
+      ctx.save();
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '800 46px Inter, sans-serif';
+      ctx.textAlign = 'left';
+      
+      const words = title.split(' ');
+      let line = '';
+      let y = 265;
+      for (let n = 0; n < words.length; n++) {
+        const testLine = line + words[n] + ' ';
+        const metrics = ctx.measureText(testLine);
+        if (metrics.width > 700 && n > 0) {
+          ctx.fillText(line.trim(), 90, y);
+          line = words[n] + ' ';
+          y += 56;
+        } else {
+          line = testLine;
+        }
+      }
+      ctx.fillText(line.trim(), 90, y);
+
+      // Subtitle
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '400 22px Inter, sans-serif';
+      ctx.fillText('Enterprise Architecture & Engineering Guide', 90, y + 48);
+      ctx.restore();
+
+      // Bottom accent bar & footer branding
+      const barGrad = ctx.createLinearGradient(90, 0, 1110, 0);
+      barGrad.addColorStop(0, t.accent);
+      barGrad.addColorStop(1, '#0052a3');
+      ctx.fillStyle = barGrad;
+      roundRect(ctx, 90, 535, 1020, 4, 2, true, false);
+
+      ctx.fillStyle = '#64748b';
+      ctx.font = '500 14px Inter, sans-serif';
+      ctx.fillText('MagnusMinds IT Solution • www.magnusminds.net', 90, 575);
+
+      return canvas.toDataURL('image/jpeg', 0.95);
+    }
+
+    function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.lineTo(x + width - radius, y);
+      ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+      ctx.lineTo(x + width, y + height - radius);
+      ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+      ctx.lineTo(x + radius, y + height);
+      ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+      ctx.lineTo(x, y + radius);
+      ctx.quadraticCurveTo(x, y + radius, x, y);
+      ctx.closePath();
+      if (fill) ctx.fill();
+      if (stroke) ctx.stroke();
+    }
 
     function setTopic(val) {
       document.getElementById('topicInput').value = val;
@@ -1276,17 +1453,11 @@ Connect with MagnusMinds to explore how modern engineering practices can elevate
       const keywords = [cleanTitle, ...meta.tags].filter((v, i, a) => a.indexOf(v) === i).join(', ');
       const metaDescription = `An engineering perspective on ${cleanTitle} by MagnusMinds: explore architecture, core concepts, structured patterns, and enterprise advantages.`;
 
-      // Save prompt for user copy
+      // Save active state for image refresh
+      currentActiveTitle = cleanTitle;
+      currentActiveCategory = meta.category;
+      currentActiveSlug = slug;
       currentImagePrompt = meta.imagePrompt;
-
-      // Build High-Res Flux Banner URL
-      let seed = 0;
-      for (let i = 0; i < cleanTitle.length; i++) {
-        seed = (seed * 31 + cleanTitle.charCodeAt(i)) % 999999;
-      }
-      seed = Math.abs(seed) + 1000;
-      const encodedPrompt = encodeURIComponent(meta.imagePrompt);
-      const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1200&height=630&nologo=true&model=flux&seed=${seed}`;
 
       // Populate Form Fields
       document.getElementById('fieldTitle').value = cleanTitle;
@@ -1296,20 +1467,15 @@ Connect with MagnusMinds to explore how modern engineering practices can elevate
       document.getElementById('fieldTags').value = meta.tags.join(', ');
       document.getElementById('fieldSlug').value = slug;
 
-      // Update Banner Image
+      // Generate High-Resolution Zero-Watermark Canvas Banner
+      const bannerDataUrl = renderCanvasBanner(cleanTitle, meta.category, currentThemeIndex);
       const bannerImg = document.getElementById('bannerImagePreview');
       const dlBtn = document.getElementById('downloadImageBtn');
       const imgLoading = document.getElementById('imageLoading');
 
-      imgLoading.classList.remove('hidden');
-      bannerImg.onload = function() {
-        imgLoading.classList.add('hidden');
-      };
-      bannerImg.onerror = function() {
-        imgLoading.classList.add('hidden');
-      };
-      bannerImg.src = imageUrl;
-      dlBtn.href = imageUrl;
+      imgLoading.classList.add('hidden');
+      bannerImg.src = bannerDataUrl;
+      dlBtn.href = bannerDataUrl;
       dlBtn.download = `${slug}_banner.jpg`;
 
       // Generate Domain-Specific Description
