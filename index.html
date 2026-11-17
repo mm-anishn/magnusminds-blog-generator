@@ -352,9 +352,10 @@
           </div>
           <div class="border border-slate-200 rounded-xl bg-slate-900/5 h-[165px] flex items-center justify-center overflow-hidden relative shadow-inner">
             <!-- Loading Spinner -->
-            <div id="imageLoadingSpinner" class="hidden absolute inset-0 bg-white/85 backdrop-blur-xs flex flex-col items-center justify-center z-10 space-y-2">
-              <div class="w-7 h-7 border-3 border-brand-500 border-t-transparent rounded-full animate-spin"></div>
-              <span id="spinnerText" class="text-xs font-semibold text-slate-700">Generating AI cover from description...</span>
+            <div id="imageLoadingSpinner" class="hidden absolute inset-0 bg-white/95 backdrop-blur-xs flex flex-col items-center justify-center z-20 space-y-1.5 p-4 text-center">
+              <div class="w-8 h-8 border-3 border-brand-500 border-t-transparent rounded-full animate-spin mb-1"></div>
+              <span id="spinnerText" class="text-xs font-bold text-slate-800">Generating AI blog cover from description...</span>
+              <span id="spinnerSubtext" class="text-[11px] text-slate-500">Synthesizing tailored visual matching technical description</span>
             </div>
             <img id="bannerImagePreview" src="assets/fabric_cover.jpg" alt="Blog Banner Preview" class="w-full h-full object-cover rounded-lg">
           </div>
@@ -2052,12 +2053,43 @@ Based on this description, can you provide a background blog cover proper one?`;
 
       const bannerImg = document.getElementById('bannerImagePreview');
       const spinner = document.getElementById('imageLoadingSpinner');
-      spinner.classList.remove('hidden');
+      const spinnerText = document.getElementById('spinnerText');
+      const spinnerSubtext = document.getElementById('spinnerSubtext');
+      const genBtnText = document.getElementById('genBtnText');
+      const genImageBtn = document.getElementById('genImageBtn');
 
-      setTimeout(() => {
-        bannerImg.src = getDomainBanner(domain);
-        spinner.classList.add('hidden');
-      }, 300);
+      // Clear previous image and show prominent generation state
+      bannerImg.style.opacity = '0.1';
+      spinner.classList.remove('hidden');
+      if (spinnerText) spinnerText.textContent = `Generating AI cover for "${cleanTitle}"...`;
+      if (spinnerSubtext) spinnerSubtext.textContent = 'Synthesizing tailored visual based on generated description';
+      if (genBtnText) genBtnText.textContent = 'Generating...';
+      if (genImageBtn) genImageBtn.disabled = true;
+
+      const targetBannerSrc = getDomainBanner(domain);
+
+      // Preload image so it appears instantly after generation animation
+      const preload = new Image();
+      preload.src = targetBannerSrc;
+      preload.onload = function() {
+        setTimeout(() => {
+          bannerImg.src = targetBannerSrc;
+          bannerImg.style.opacity = '1';
+          spinner.classList.add('hidden');
+          if (genBtnText) genBtnText.textContent = 'Generate New Image';
+          if (genImageBtn) genImageBtn.disabled = false;
+          showToast(`✨ AI cover generated for ${cleanTitle}!`);
+        }, 700);
+      };
+      preload.onerror = function() {
+        setTimeout(() => {
+          bannerImg.src = targetBannerSrc;
+          bannerImg.style.opacity = '1';
+          spinner.classList.add('hidden');
+          if (genBtnText) genBtnText.textContent = 'Generate New Image';
+          if (genImageBtn) genImageBtn.disabled = false;
+        }, 700);
+      };
       renderPreviewDisplay();
 
       // Reveal results card and smooth scroll
