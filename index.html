@@ -6,7 +6,7 @@
   <title>MagnusMinds Blog Generator | CMS Ready</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -14,11 +14,12 @@
         extend: {
           fontFamily: {
             sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
           },
           colors: {
             brand: {
-              50: '#f0f7ff',
-              100: '#e0effe',
+              50: '#f0f9ff',
+              100: '#e0f2fe',
               500: '#0066cc',
               600: '#0052a3',
               700: '#003d7a',
@@ -29,21 +30,22 @@
     }
   </script>
   <style>
-    body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
     .toast {
       position: fixed;
       bottom: 24px;
       right: 24px;
       background: #0f172a;
       color: #fff;
-      padding: 12px 20px;
+      padding: 10px 18px;
       border-radius: 8px;
-      font-size: 14px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      font-size: 13px;
+      font-weight: 500;
       opacity: 0;
-      transform: translateY(20px);
-      transition: all 0.3s ease;
-      z-index: 9999;
+      transform: translateY(10px);
+      transition: all 0.2s ease;
+      pointer-events: none;
+      z-index: 100;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
     }
     .toast.show {
       opacity: 1;
@@ -51,13 +53,13 @@
     }
   </style>
 </head>
-<body class="text-slate-800 antialiased min-h-screen flex flex-col">
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col font-sans">
 
   <!-- Header -->
   <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
-    <div class="max-w-6xl mx-auto px-4 py-3.5 flex items-center justify-between">
+    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
       <div class="flex items-center space-x-3">
-        <div class="w-9 h-9 bg-brand-500 rounded-lg flex items-center justify-center text-white font-extrabold text-lg shadow-sm">
+        <div class="w-9 h-9 rounded-lg bg-brand-500 flex items-center justify-center text-white font-black text-lg shadow-sm">
           M
         </div>
         <div>
@@ -65,30 +67,32 @@
           <p class="text-xs text-slate-500">1-to-1 Mapping to Admin CMS "Create Blog" Form</p>
         </div>
       </div>
-      <div class="flex items-center space-x-2">
+      <div class="flex items-center space-x-3">
         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
-          ● Ready to Publish
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span>
+          Ready to Publish
         </span>
       </div>
     </div>
   </header>
 
   <!-- Main Container -->
-  <main class="max-w-6xl mx-auto px-4 py-8 flex-1 w-full space-y-8">
+  <main class="flex-1 max-w-6xl w-full mx-auto px-4 py-8 space-y-6">
 
     <!-- Topic Input Card -->
     <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
       <h2 class="text-lg font-bold text-slate-900 mb-1">Enter Blog Topic</h2>
-      <p class="text-sm text-slate-500 mb-4">The generator will automatically build all required CMS fields (Title, Keywords, Meta Description, Categories, Tags, URL Slug, and Description).</p>
+      <p class="text-sm text-slate-500 mb-4">The generator will automatically build all required CMS fields (Title, Keywords, Image, Meta Description, Categories, Tags, URL Slug, and CKEditor Description).</p>
       
       <div class="flex flex-col sm:flex-row gap-3">
         <div class="flex-1 relative">
           <input 
             type="text" 
             id="topicInput" 
-            value="AI Ready World"
-            placeholder="e.g. AI Ready World, Microsoft SQL Server Performance, RAG with .NET 9" 
+            value="Microsoft Fabric"
+            placeholder="e.g. Microsoft Fabric, Microsoft SQL Server, RAG with .NET 9, Power BI Enterprise" 
             class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition text-sm"
+            onkeydown="if(event.key === 'Enter') generateBlog();"
           >
         </div>
         <button 
@@ -104,15 +108,16 @@
       <!-- Quick Topic Pills -->
       <div class="mt-3.5 flex flex-wrap items-center gap-2 text-xs">
         <span class="text-slate-400 font-medium">Quick examples:</span>
-        <button onclick="setTopic('AI Ready World')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md transition cursor-pointer">AI Ready World</button>
-        <button onclick="setTopic('Microsoft SQL Server Performance Optimization and High-Throughput Indexing')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md transition cursor-pointer">Microsoft SQL Server</button>
-        <button onclick="setTopic('Building a RAG-Powered Knowledge Assistant with ASP.NET Core and PostgreSQL')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md transition cursor-pointer">RAG with .NET 9</button>
-        <button onclick="setTopic('Making Every New Software Project AI-Ready: Essential Repository Files')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md transition cursor-pointer">AI-Ready Repository</button>
+        <button onclick="setTopic('Microsoft Fabric')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md transition cursor-pointer font-medium">Microsoft Fabric</button>
+        <button onclick="setTopic('AI Ready World')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md transition cursor-pointer font-medium">AI Ready World</button>
+        <button onclick="setTopic('Microsoft SQL Server Performance Optimization and High-Throughput Indexing')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md transition cursor-pointer font-medium">Microsoft SQL Server</button>
+        <button onclick="setTopic('Power BI Enterprise KPI Reporting & DAX Optimization')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md transition cursor-pointer font-medium">Power BI</button>
+        <button onclick="setTopic('Building a RAG-Powered Knowledge Assistant with ASP.NET Core and PostgreSQL')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md transition cursor-pointer font-medium">RAG with .NET 9</button>
       </div>
     </div>
 
-    <!-- CMS Output Section -->
-    <div id="resultsCard" class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-6">
+    <!-- CMS Output Section (Hidden by default, shown upon clicking Generate) -->
+    <div id="resultsCard" class="hidden bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-6">
       
       <div class="flex items-center justify-between pb-4 border-b border-slate-200">
         <div>
@@ -161,9 +166,13 @@
             <label class="text-xs font-bold text-slate-700 uppercase tracking-wide">Image * (Banner Image)</label>
             <a id="downloadImageBtn" href="#" download="blog_banner.jpg" class="text-xs text-white bg-brand-500 hover:bg-brand-600 px-2.5 py-1 rounded font-semibold cursor-pointer">⬇ Download Banner Image</a>
           </div>
-          <div class="border border-slate-200 rounded-md p-1 bg-slate-50 h-[120px] flex items-center justify-center overflow-hidden">
+          <div class="border border-slate-200 rounded-md p-1 bg-slate-900 h-[120px] flex items-center justify-center overflow-hidden relative">
             <img id="bannerImagePreview" src="" alt="Banner Preview" class="w-full h-full object-cover rounded">
+            <div id="imageLoading" class="absolute inset-0 bg-slate-900/80 flex items-center justify-center text-xs text-slate-300 font-medium hidden">
+              Generating High-Res Banner...
+            </div>
           </div>
+          <p class="text-[11px] text-slate-400 mt-1">Download this image and upload directly via "Choose file" in the CMS.</p>
         </div>
       </div>
 
@@ -215,7 +224,7 @@
             <span>Direct paste into CKEditor normal typing window</span>
             <button onclick="copyField('fieldDescriptionText')" class="text-brand-500 hover:text-brand-700 font-bold cursor-pointer">📋 Copy Visual Text</button>
           </div>
-          <textarea id="fieldDescriptionText" rows="14" readonly class="w-full p-4 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-800 font-mono leading-relaxed resize-y"></textarea>
+          <textarea id="fieldDescriptionText" rows="15" readonly class="w-full p-4 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-800 font-mono leading-relaxed resize-y"></textarea>
         </div>
 
         <!-- Tab 2: Source HTML -->
@@ -224,7 +233,7 @@
             <span>Click <strong>'Source'</strong> button in CKEditor toolbar, paste this HTML, and click <strong>'Source'</strong> again for perfect tables & styling.</span>
             <button onclick="copyField('fieldDescriptionHtml')" class="text-brand-500 hover:text-brand-700 font-bold cursor-pointer">📋 Copy Source HTML</button>
           </div>
-          <textarea id="fieldDescriptionHtml" rows="14" readonly class="w-full p-4 bg-slate-900 text-emerald-400 border border-slate-800 rounded-lg text-xs font-mono leading-relaxed resize-y"></textarea>
+          <textarea id="fieldDescriptionHtml" rows="15" readonly class="w-full p-4 bg-slate-900 text-emerald-400 border border-slate-800 rounded-lg text-xs font-mono leading-relaxed resize-y"></textarea>
         </div>
 
         <!-- Tab 3: Live Preview -->
@@ -314,202 +323,701 @@
       return str.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-');
     }
 
-    function generateBlog() {
-      const topic = document.getElementById('topicInput').value.trim() || 'Engineering for an AI-Ready World';
-      const cleanTitle = topic;
-      const slug = generateSlug(cleanTitle);
+    function classifyDomain(topic) {
+      const lower = topic.toLowerCase();
+      if (lower.includes('fabric') || lower.includes('onelake') || lower.includes('lakehouse') || lower.includes('delta lake') || lower.includes('medallion')) {
+        return 'fabric';
+      }
+      if (lower.includes('power bi') || lower.includes('powerbi') || lower.includes('dax') || (lower.includes('bi') && lower.includes('report'))) {
+        return 'powerbi';
+      }
+      if (lower.includes('sql') || lower.includes('database') || lower.includes('postgres') || lower.includes('t-sql') || lower.includes('nosql') || lower.includes('index')) {
+        return 'sql';
+      }
+      if (lower.includes('rag') || lower.includes('ai') || lower.includes('llm') || lower.includes('agent') || lower.includes('vector') || lower.includes('gpt') || lower.includes('gemini')) {
+        return 'ai';
+      }
+      if (lower.includes('azure') || lower.includes('cloud') || lower.includes('serverless') || lower.includes('app service')) {
+        return 'azure';
+      }
+      if (lower.includes('dotnet') || lower.includes('.net') || lower.includes('c#') || lower.includes('csharp') || lower.includes('asp.net') || lower.includes('ef core')) {
+        return 'dotnet';
+      }
+      if (lower.includes('react') || lower.includes('frontend') || lower.includes('typescript') || lower.includes('javascript') || lower.includes('next.js') || lower.includes('tailwind')) {
+        return 'frontend';
+      }
+      if (lower.includes('devops') || lower.includes('docker') || lower.includes('kubernetes') || lower.includes('ci/cd') || lower.includes('pipeline')) {
+        return 'devops';
+      }
+      if (lower.includes('security') || lower.includes('oauth') || lower.includes('zero trust') || lower.includes('cyber')) {
+        return 'security';
+      }
+      return 'architecture';
+    }
 
-      const isSql = topic.toLowerCase().includes('sql') || topic.toLowerCase().includes('database') || topic.toLowerCase().includes('postgres');
-      const isAi = topic.toLowerCase().includes('ai') || topic.toLowerCase().includes('agent') || topic.toLowerCase().includes('rag');
+    function getDomainMetadata(domain, cleanTitle) {
+      switch(domain) {
+        case 'fabric':
+          return {
+            category: 'Microsoft-Fabric',
+            tags: ['Microsoft-Fabric', 'Lakehouse', 'Data-Engineering', 'Data-Management', 'Power-BI', 'Cloud-Data-Architecture'],
+            imagePrompt: 'Modern enterprise unified cloud data lakehouse architecture, glowing digital data streams converging into crystalline data lake nodes, holographic business analytics display, sleek futuristic corporate server room, deep midnight navy and vibrant azure cyan lighting, photorealistic 3d isometric render, 8k resolution, cinematic lighting, ultra-detailed, clean minimalist composition, no text, no words, no letters, no logos, no watermark'
+          };
+        case 'powerbi':
+          return {
+            category: 'PowerBI',
+            tags: ['Power-BI', 'DAX', 'Business-Intelligence', 'Data-Visualization', 'Analytics', 'Reporting'],
+            imagePrompt: 'Executive enterprise business intelligence analytics dashboard, elegant 3D holographic data charts and interactive telemetry nodes, sleek floating translucent metrics, midnight navy blue and gold-amber glowing highlights, premium corporate technology illustration, 8k render, clean composition, no text, no words, no letters, no watermark'
+          };
+        case 'sql':
+          return {
+            category: 'SQL-Server',
+            tags: ['SQL-Server', 'Database', 'Query-Optimization', 'Indexing', 'Performance-Tuning', 'High-Availability'],
+            imagePrompt: 'Modern high performance enterprise relational database architecture, gleaming cylindrical data storage clusters, radiant optical fiber data streams, dark corporate navy and electric blue illumination, sophisticated 3D isometric tech rendering, clean minimalist aesthetic, 8k resolution, no text, no words, no letters, no watermark'
+          };
+        case 'ai':
+          return {
+            category: 'Artificial-Intelligence',
+            tags: ['AI', 'Generative-AI', 'Autonomous-Agents', 'Architecture', 'Software-Engineering', 'RAG'],
+            imagePrompt: 'Futuristic minimalist 3D concept of enterprise autonomous AI agents and neural intelligence network, sleek floating translucent geometric nodes, delicate glowing data threads, deep dark obsidian and cobalt background, cinematic rim lighting, octane render, 8k, sharp focus, award-winning digital technology artwork, no text, no words, no letters, no watermark'
+          };
+        case 'azure':
+          return {
+            category: 'Azure',
+            tags: ['Azure', 'Cloud-Architecture', 'Enterprise-Cloud', 'Serverless', 'DevOps', 'Scalability'],
+            imagePrompt: 'Global enterprise cloud infrastructure blueprint, floating serverless microservices nodes, interconnected optical network lattice, deep dark slate and cyan illumination, modern 3d technology blueprint, crisp studio render, 8k, no text, no words, no letters, no watermark'
+          };
+        case 'dotnet':
+          return {
+            category: 'csharp',
+            tags: ['C#', '.NET', 'ASP.NET-Core', 'Architecture', 'Web-API', 'Clean-Architecture'],
+            imagePrompt: 'High performance enterprise software engineering blueprint, modular microservices architecture, precision digital technology nodes, deep dark navy and royal blue glowing circuits, futuristic 3D isometric render, 8k, no text, no words, no letters, no watermark'
+          };
+        case 'frontend':
+          return {
+            category: 'Frontend-Technology',
+            tags: ['Frontend', 'React', 'TypeScript', 'JavaScript', 'UI-UX', 'Web-Development'],
+            imagePrompt: 'Ultra modern responsive frontend web application interface design, clean isometric layered UI components, floating glass panels, vibrant cobalt and violet accents, dark corporate background, modern 3d illustration, 8k, no text, no words, no letters, no watermark'
+          };
+        case 'devops':
+          return {
+            category: 'Infrastructure',
+            tags: ['DevOps', 'CI/CD', 'Docker', 'Kubernetes', 'Infrastructure', 'Automation'],
+            imagePrompt: 'Enterprise DevOps continuous integration pipeline, automated deployment gears, glowing containerized pods, dark industrial high-tech atmosphere, cyan and emerald status indicators, 3d isometric render, 8k, no text, no words, no letters, no watermark'
+          };
+        case 'security':
+          return {
+            category: 'Cybersecurity',
+            tags: ['Cybersecurity', 'Security', 'Zero-Trust', 'Authentication', 'OAuth', 'Data-Protection'],
+            imagePrompt: 'Enterprise zero trust cybersecurity architecture, glowing cryptographic shield, fortified biometric vault nodes, dark obsidian navy background, deep emerald and cyan security beams, 3d isometric digital render, 8k, no text, no words, no letters, no watermark'
+          };
+        default:
+          return {
+            category: 'Architecture',
+            tags: ['Architecture', 'Enterprise-Architecture', 'Microservices', 'System-Design', 'Scalability', 'Design-Patterns'],
+            imagePrompt: 'Clean modern enterprise software architecture blueprint, modular geometric building blocks, precision technical design, dark corporate navy blue background, glowing sapphire interconnects, high-end 3D isometric render, 8k, no text, no words, no letters, no watermark'
+          };
+      }
+    }
 
-      const category = isSql ? 'SQL-Server' : (isAi ? 'Artificial-Intelligence' : 'Microsoft-');
-      const tags = isSql 
-        ? 'SQL-Server, Database, Performance, .NET, Enterprise, Architecture'
-        : (isAi 
-            ? 'AI, AI-Development, Autonomous-Agents, Architecture, Software-Engineering'
-            : '.NET, ASP.NET-Core, Architecture, Cloud, Microservices');
+    function generateDomainContent(domain, cleanTitle) {
+      if (domain === 'fabric') {
+        return {
+          visual: `Introduction
+Modern enterprises face significant challenges managing fragmented analytics environments with disjointed data warehouses, independent data lakes, and complex multi-stage ETL pipelines.
 
-      const keyword = `${cleanTitle}, ${tags.split(', ').slice(0, 3).join(', ')}, Software Engineering, MagnusMinds`;
-      const metaDesc = `Discover an engineering perspective on ${cleanTitle} by MagnusMinds: explore architecture, structured patterns, workflows, and enterprise benefits.`;
-      const encodedPrompt = encodeURIComponent(`enterprise technology banner illustration ${cleanTitle} navy blue cyan corporate`);
-      const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1200&height=630&nologo=true`;
+When implementing **${cleanTitle}**, organizations transition toward an integrated, SaaS-delivered analytics fabric that unifies data engineering, warehousing, real-time analytics, and business intelligence on top of a single copy of data stored in OneLake.
 
-      document.getElementById('fieldTitle').value = cleanTitle;
-      document.getElementById('fieldKeyword').value = keyword;
-      document.getElementById('fieldMetaDesc').value = metaDesc;
-      document.getElementById('bannerImagePreview').src = imageUrl;
-      document.getElementById('downloadImageBtn').href = imageUrl;
-      document.getElementById('downloadImageBtn').download = `${slug}_banner.jpg`;
-      document.getElementById('fieldCategory').value = category;
-      document.getElementById('fieldTags').value = tags;
-      document.getElementById('fieldSlug').value = slug;
+By removing redundant data duplication, standardizing on the open Delta Lake parquet format, and centralizing governance, enterprises achieve sub-second reporting performance while dramatically simplifying their data architecture.
 
-      // Generate Description Text & HTML
-      const isCode = topic.toLowerCase().includes('query') || topic.toLowerCase().includes('snippet') || topic.toLowerCase().includes('implementation');
+1. Core Architectural Pillars of ${cleanTitle}
+A structured analytics implementation relies on cohesive foundations to ensure consistent performance, governance, and developer productivity:
 
-      let visualText = '';
-      let sourceHtml = '';
+OneLake & Unified Storage Layer
+OneLake acts as the OneDrive for organizational data, eliminating silos by allowing Warehouse, Lakehouse, and Spark compute engines to operate directly on shared Delta parquet tables without copying datasets.
 
-      if (!isCode) {
-        visualText = `Introduction
-We are rapidly entering an era where modern software engineering practices, automated tooling, and intelligent assistants actively participate in core software delivery and system design.
+Medallion Architecture (Bronze, Silver, Gold)
+Enforces disciplined data refinement from raw ingested streams (Bronze) through cleansed and validated tables (Silver), up to business-curated star schemas and dimension models (Gold).
 
-However, when addressing **${cleanTitle}**, the effectiveness of any solution depends heavily on architectural clarity and deliberate system design. When teams tackle complex systems without standardized conventions or well-defined boundaries, applications suffer from inconsistent implementations, duplicated code, performance bottlenecks, and architectural violations.
+Synapse Data Engineering & Scalable Pipelines
+Combines the intuitive orchestration of Data Factory with on-demand Spark runtimes, enabling data engineers to execute automated data transformation notebooks with zero infrastructure overhead.
 
-This disconnect often results in hallucinated architectural patterns, maintenance overhead, delayed release cycles, and fragile failure cascades across distributed services.
+Power BI Direct Lake Connectivity
+Unlocks real-time business intelligence by reading Delta tables in OneLake directly into Power BI without importing data into memory or incurring slow DirectQuery query translations.
 
-The solution is to establish predictable, reusable architectural patterns directly within your codebase and workflows. This approach provides immediate consistency, high throughput, and seamless long-term maintainability across both enterprise backends and modern client applications.
+2. Traditional Siloed Architecture vs Microsoft Fabric: Key Differences
+Adopting Microsoft Fabric modernizes end-to-end data workflows:
 
-1. Essential Pillars for ${cleanTitle}
-A well-structured system helps developers, architects, and automated tools understand how the application operates and how new capabilities should be implemented.
+Capability | Traditional Disjointed Stack | Unified Microsoft Fabric Approach
+Storage Architecture | Fragmented lakes, SQL databases, and marts | Unified OneLake storage using open Delta Lake format
+Data Movement | Fragile, multi-hop ETL pipelines copying files | Zero-copy architecture with Shortcuts across clouds
+Compute Engines | Separate provisioned compute for Spark & SQL | Serverless, multi-engine compute querying shared data
+BI Latency | Nightly batch refreshes with memory limits | Direct Lake mode streaming instant insights on massive data
+Security & Governance | Patchwork security across disparate services | Centralized Microsoft Purview security and lineage
 
-The following components provide a practical starting foundation:
+3. End-to-End Enterprise Data Flow
+Consider how an enterprise analytics team executes data ingestion and reporting:
 
-Codified Context & Explicit Standards
-Defines repository-level guidelines, naming conventions, and dependency injection rules. This eliminates ambiguity, prevents non-standard libraries, and guarantees compile-time safety across internal pipelines.
+The workflow follows a streamlined, predictable path:
+1. Ingestion: Data Factory pipelines and shortcuts continuously ingest database CDC streams and log files into OneLake Bronze tables.
+2. Transformation: Automated Spark notebooks execute data quality checks, schema evolution, and deduplication to generate curated Silver tables.
+3. Aggregation: Data Warehouse SQL endpoints transform enriched datasets into Gold star schema dimension models.
+4. Analytics Consumption: Business decision-makers query Power BI dashboards powered by Direct Lake with sub-second responsiveness.
+5. Enterprise Governance: Security administrators enforce column-level security, row-level security, and audit logs centrally.
 
-Standardized Tooling & Protocol Integration
-Encapsulates transactional rules, manages concurrency tokens, and orchestrates asynchronous workflows. Exposing typed, secured tools through standardized protocols ensures seamless interoperability with zero lock-in.
+4. Strategic Advantages of ${cleanTitle}
+Deploying a unified architecture delivers measurable enterprise benefits:
 
-Grounded Retrieval & Domain Boundaries
-Implements efficient data access patterns, covering index optimization, connection pooling, and resilient retry policies. Grounding operations in verified domain knowledge prevents hallucinations and shields underlying databases.
-
-Human-in-the-Loop Governance & Observability
-Instruments key workflows with OpenTelemetry, structured logging, and health checks. Critical system mutations—such as database migrations or production releases—always enforce explicit developer approval.
-
-2. Traditional vs Modern Approach: Key Differences
-Adopting structured engineering patterns transforms everyday software operations:
-
-Component | Traditional Approach | Modern Structured Approach
-Knowledge Storage | Scattered across wikis, emails, and chats | Codified directly in repository files and contracts
-Tool Integration | Manual human execution through CLIs | Standardized protocols (Model Context Protocol / MCP)
-Architecture Rules | Implicitly understood by senior engineers | Explicit boundaries enforced through automated checks
-Quality & Reviews | Manual, time-consuming peer reviews | Automated pre-review checking standards, security & performance
-Task Execution | Human-only multi-step implementations | Human-directed autonomous workflows with approval gates
-
-3. How Everything Works Together
-Consider an enterprise engineering team implementing a critical feature within this architecture:
-
-The workflow follows a structured, predictable path:
-1. Requirements Alignment: The developer prompts the system to outline the implementation based on documented architectural patterns in ARCHITECTURE.md.
-2. Context Retrieval: The orchestrator discovers existing domain services and contracts rather than reinventing new utilities.
-3. Automated Implementation: The core feature logic is generated following established error-handling, cancellation, and logging conventions.
-4. Autonomous Diagnostics: Automated review checks examine the proposed changes for potential performance regressions, security boundaries, and test coverage.
-5. Developer Sign-Off: A senior engineer validates the changes and approves the pull request before deployment.
-
-This collaboration reduces repetitive boilerplate work while maintaining high standards of code quality and security.
-
-4. Why Implement This Architecture?
-A properly structured architecture delivers several immediate enterprise advantages:
-
-Accelerated Delivery Velocity: Eliminates hours spent writing repetitive boilerplate code and diagnostic scripts.
-Consistent Code Quality: Ensures contributions from developers and automated tools adhere to established standards.
-Faster Team Onboarding: Enables new engineers to understand component relationships and start shipping code with confidence.
-Reduced Technical Debt: Encapsulates domain logic in modular boundaries, preventing spaghetti dependencies.
-Lower Operational Risk: Comprehensive telemetry and fault isolation ensure rapid diagnosis of production issues.
+Reduced Storage & Compute Costs: Eliminates multiple redundant copies of identical data across storage buckets and warehouses.
+Accelerated Time-to-Insight: Analytics teams deliver high-fidelity dashboards in days rather than waiting for complex data migrations.
+Seamless Multi-Cloud Connectivity: OneLake shortcuts connect external AWS S3 and Google Cloud data with zero replication.
+Unified Developer Experience: Engineers, data scientists, and business analysts collaborate inside one integrated SaaS workspace.
+Enterprise Reliability & Governance: Built-in Microsoft Purview sensitivity labels protect corporate data throughout its lifecycle.
 
 Conclusion
-Building modern, production-grade applications is not merely about choosing the newest technology stack. It is about establishing disciplined architecture, clear domain boundaries, and repeatable engineering standards.
-
-By prioritizing robust contracts, modular service boundaries, and structured observability, software teams can deliver scalable, resilient solutions that adapt smoothly to evolving business requirements.
+Building modern analytics platforms requires moving beyond brittle point-to-point data pipelines. By centralizing data storage in OneLake, embracing Medallion architecture, and leveraging Direct Lake reporting, enterprises unlock unified, high-performance data operations.
 
 Build Better Software with MagnusMinds
-At MagnusMinds IT Solution, we combine modern software engineering practices with AI-assisted development workflows to help businesses build scalable and reliable software solutions.
+At MagnusMinds IT Solution, our data engineering and enterprise software architects help organizations design, optimize, and modernize high-throughput analytics platforms on Microsoft Fabric, Azure, and modern cloud stacks.
 
-Connect with MagnusMinds to explore how structured engineering practices and AI-powered development can improve your software delivery process.`;
+Connect with MagnusMinds to accelerate your enterprise data transformation with confidence.`,
 
-        sourceHtml = `<h2>Introduction</h2>
-<p>We are rapidly entering an era where modern software engineering practices, automated tooling, and intelligent assistants actively participate in core software delivery and system design.</p>
-<p>However, when addressing <strong>${cleanTitle}</strong>, the effectiveness of any solution depends heavily on architectural clarity and deliberate system design. When teams tackle complex systems without standardized conventions or well-defined boundaries, applications suffer from inconsistent implementations, duplicated code, performance bottlenecks, and architectural violations.</p>
-<p>This disconnect often results in hallucinated architectural patterns, maintenance overhead, delayed release cycles, and fragile failure cascades across distributed services.</p>
-<p>The solution is to establish predictable, reusable architectural patterns directly within your codebase and workflows. This approach provides immediate consistency, high throughput, and seamless long-term maintainability across both enterprise backends and modern client applications.</p>
+          html: `<h2>Introduction</h2>
+<p>Modern enterprises face significant challenges managing fragmented analytics environments with disjointed data warehouses, independent data lakes, and complex multi-stage ETL pipelines.</p>
+<p>When implementing <strong>${cleanTitle}</strong>, organizations transition toward an integrated, SaaS-delivered analytics fabric that unifies data engineering, warehousing, real-time analytics, and business intelligence on top of a single copy of data stored in OneLake.</p>
+<p>By removing redundant data duplication, standardizing on the open Delta Lake parquet format, and centralizing governance, enterprises achieve sub-second reporting performance while dramatically simplifying their data architecture.</p>
 
-<h2>1. Essential Pillars for ${cleanTitle}</h2>
-<p>A well-structured system helps developers, architects, and automated tools understand how the application operates and how new capabilities should be implemented.</p>
-<p>The following components provide a practical starting foundation:</p>
-<p><strong>Codified Context &amp; Explicit Standards</strong><br>Defines repository-level guidelines, naming conventions, and dependency injection rules. This eliminates ambiguity, prevents non-standard libraries, and guarantees compile-time safety across internal pipelines.</p>
-<p><strong>Standardized Tooling &amp; Protocol Integration</strong><br>Encapsulates transactional rules, manages concurrency tokens, and orchestrates asynchronous workflows. Exposing typed, secured tools through standardized protocols ensures seamless interoperability with zero lock-in.</p>
-<p><strong>Grounded Retrieval &amp; Domain Boundaries</strong><br>Implements efficient data access patterns, covering index optimization, connection pooling, and resilient retry policies. Grounding operations in verified domain knowledge prevents hallucinations and shields underlying databases.</p>
-<p><strong>Human-in-the-Loop Governance &amp; Observability</strong><br>Instruments key workflows with OpenTelemetry, structured logging, and health checks. Critical system mutations—such as database migrations or production releases—always enforce explicit developer approval.</p>
+<h2>1. Core Architectural Pillars of ${cleanTitle}</h2>
+<p>A structured analytics implementation relies on cohesive foundations to ensure consistent performance, governance, and developer productivity:</p>
+<p><strong>OneLake &amp; Unified Storage Layer</strong><br>OneLake acts as the OneDrive for organizational data, eliminating silos by allowing Warehouse, Lakehouse, and Spark compute engines to operate directly on shared Delta parquet tables without copying datasets.</p>
+<p><strong>Medallion Architecture (Bronze, Silver, Gold)</strong><br>Enforces disciplined data refinement from raw ingested streams (Bronze) through cleansed and validated tables (Silver), up to business-curated star schemas and dimension models (Gold).</p>
+<p><strong>Synapse Data Engineering &amp; Scalable Pipelines</strong><br>Combines the intuitive orchestration of Data Factory with on-demand Spark runtimes, enabling data engineers to execute automated data transformation notebooks with zero infrastructure overhead.</p>
+<p><strong>Power BI Direct Lake Connectivity</strong><br>Unlocks real-time business intelligence by reading Delta tables in OneLake directly into Power BI without importing data into memory or incurring slow DirectQuery query translations.</p>
 
-<h2>2. Traditional vs Modern Approach: Key Differences</h2>
-<p>Adopting structured engineering patterns transforms everyday software operations:</p>
+<h2>2. Traditional Siloed Architecture vs Microsoft Fabric: Key Differences</h2>
+<p>Adopting Microsoft Fabric modernizes end-to-end data workflows:</p>
+<table border="1" cellpadding="8" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+  <thead>
+    <tr style="background-color: #f1f5f9;">
+      <th style="text-align: left; padding: 10px;">Capability</th>
+      <th style="text-align: left; padding: 10px;">Traditional Disjointed Stack</th>
+      <th style="text-align: left; padding: 10px;">Unified Microsoft Fabric Approach</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding: 10px;"><strong>Storage Architecture</strong></td>
+      <td style="padding: 10px;">Fragmented lakes, SQL databases, and marts</td>
+      <td style="padding: 10px;">Unified OneLake storage using open Delta Lake format</td>
+    </tr>
+    <tr>
+      <td style="padding: 10px;"><strong>Data Movement</strong></td>
+      <td style="padding: 10px;">Fragile, multi-hop ETL pipelines copying files</td>
+      <td style="padding: 10px;">Zero-copy architecture with Shortcuts across clouds</td>
+    </tr>
+    <tr>
+      <td style="padding: 10px;"><strong>Compute Engines</strong></td>
+      <td style="padding: 10px;">Separate provisioned compute for Spark &amp; SQL</td>
+      <td style="padding: 10px;">Serverless, multi-engine compute querying shared data</td>
+    </tr>
+    <tr>
+      <td style="padding: 10px;"><strong>BI Latency</strong></td>
+      <td style="padding: 10px;">Nightly batch refreshes with memory limits</td>
+      <td style="padding: 10px;">Direct Lake mode streaming instant insights on massive data</td>
+    </tr>
+    <tr>
+      <td style="padding: 10px;"><strong>Security &amp; Governance</strong></td>
+      <td style="padding: 10px;">Patchwork security across disparate services</td>
+      <td style="padding: 10px;">Centralized Microsoft Purview security and lineage</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>3. End-to-End Enterprise Data Flow</h2>
+<p>Consider how an enterprise analytics team executes data ingestion and reporting:</p>
+<ol>
+  <li><strong>Ingestion:</strong> Data Factory pipelines and shortcuts continuously ingest database CDC streams and log files into OneLake Bronze tables.</li>
+  <li><strong>Transformation:</strong> Automated Spark notebooks execute data quality checks, schema evolution, and deduplication to generate curated Silver tables.</li>
+  <li><strong>Aggregation:</strong> Data Warehouse SQL endpoints transform enriched datasets into Gold star schema dimension models.</li>
+  <li><strong>Analytics Consumption:</strong> Business decision-makers query Power BI dashboards powered by Direct Lake with sub-second responsiveness.</li>
+  <li><strong>Enterprise Governance:</strong> Security administrators enforce column-level security, row-level security, and audit logs centrally.</li>
+</ol>
+
+<h2>4. Strategic Advantages of ${cleanTitle}</h2>
+<p>Deploying a unified architecture delivers measurable enterprise benefits:</p>
+<ul>
+  <li><strong>Reduced Storage &amp; Compute Costs:</strong> Eliminates multiple redundant copies of identical data across storage buckets and warehouses.</li>
+  <li><strong>Accelerated Time-to-Insight:</strong> Analytics teams deliver high-fidelity dashboards in days rather than waiting for complex data migrations.</li>
+  <li><strong>Seamless Multi-Cloud Connectivity:</strong> OneLake shortcuts connect external AWS S3 and Google Cloud data with zero replication.</li>
+  <li><strong>Unified Developer Experience:</strong> Engineers, data scientists, and business analysts collaborate inside one integrated SaaS workspace.</li>
+  <li><strong>Enterprise Reliability &amp; Governance:</strong> Built-in Microsoft Purview sensitivity labels protect corporate data throughout its lifecycle.</li>
+</ul>
+
+<h2>Conclusion</h2>
+<p>Building modern analytics platforms requires moving beyond brittle point-to-point data pipelines. By centralizing data storage in OneLake, embracing Medallion architecture, and leveraging Direct Lake reporting, enterprises unlock unified, high-performance data operations.</p>
+
+<h2>Build Better Software with MagnusMinds</h2>
+<p>At MagnusMinds IT Solution, our data engineering and enterprise software architects help organizations design, optimize, and modernize high-throughput analytics platforms on Microsoft Fabric, Azure, and modern cloud stacks.</p>
+<p><a href="https://www.magnusminds.net/contact-us">Connect with MagnusMinds</a> to accelerate your enterprise data transformation with confidence.</p>`
+        };
+      }
+
+      if (domain === 'sql') {
+        return {
+          visual: `Introduction
+Enterprise databases are the backbone of modern corporate applications. As transaction volumes surge and concurrent user requests grow, database performance directly dictates system latency, availability, and infrastructure expense.
+
+When optimizing **${cleanTitle}**, developers and DBAs must systematically address query execution plans, indexing strategies, buffer cache utilization, and concurrency bottlenecks.
+
+Implementing disciplined database architecture ensures that transactional databases and analytical queries scale predictably without causing lock escalation or exhausting server resources.
+
+1. Core Pillars of Database Performance & Reliability
+Optimizing database workloads requires addressing foundational structural elements:
+
+Clustered & Covering Index Optimization
+Eliminates costly key lookups and full table scans by aligning physical storage order with frequent range queries and including all required columns in targeted non-clustered indexes.
+
+Execution Plan Cache & Parameter Sniffing Mitigation
+Monitors cached execution plans, isolates parameter sniffing anomalies, and standardizes query recompilation rules for predictable sub-millisecond query execution.
+
+Concurrency Control & Lock Escalation Management
+Leverages Read Committed Snapshot Isolation (RCSI) or snapshot isolation to prevent read operations from blocking write transactions during heavy traffic bursts.
+
+Buffer Pool & TempDB Throughput
+Configures multiple TempDB data files, isolates I/O contention, and optimizes memory grants to avoid spilling worktables to disk.
+
+2. Unoptimized Database vs High-Throughput Architecture
+Comparing typical database pitfalls with production-grade practices:
+
+Metric / Practice | Unoptimized Implementation | Production-Grade Standard
+Indexing Strategy | Heuristic, overlapping non-clustered indexes | Covering indexes targeted to actual query execution plans
+Concurrency Model | Default locking causing reader-writer blocks | Snapshot isolation (RCSI) preventing blocking locks
+Data Access | Massive queries fetching unneeded columns | Lean projections fetching only required columns with paging
+TempDB Configuration | Single default data file causing allocation contention | Multiple equally-sized files matching logical CPU cores
+Telemetry & Monitoring | Reactive troubleshooting during downtime incidents | Proactive Extended Events, Query Store, and index dmv checks
+
+3. Systematic Query Tuning Workflow
+Engineers should apply a disciplined workflow when isolating performance bottlenecks:
+1. Identify Expensive Queries: Query Store and wait statistics identify top resource consumers by CPU, duration, and logical reads.
+2. Analyze Execution Plans: Inspect graphical execution plans to identify table scans, implicit conversions, and memory spills.
+3. Refactor Indexing: Implement targeted covering indexes with included columns to eliminate key lookups.
+4. Validate Concurrency: Verify that isolation levels and transaction lengths avoid lock escalation and deadlocks.
+5. Baseline & Observe: Continuously measure p95 and p99 query duration using structured database telemetry.
+
+4. Strategic Advantages of Optimized Database Architecture
+High-throughput database architecture unlocks concrete operational benefits:
+Sub-Millisecond Response Times: Lean covering indexes slash query latency across high-volume API endpoints.
+Reduced Server Overhead: Halving CPU and disk I/O demands lowers cloud tier hosting expenses significantly.
+High Concurrency Without Deadlocks: Snapshot isolation ensures concurrent background workers never lock critical web requests.
+Predictable Scaling: Workloads scale linearly as transaction volumes multiply.
+Business Continuity: High-availability configurations ensure zero data loss during failovers.
+
+Conclusion
+High-performance database operations require deliberate architectural planning rather than ad-hoc hardware upgrades. By mastering covering indexes, concurrency models, and execution plan caching, engineering teams guarantee resilient, scalable applications.
+
+Build Better Software with MagnusMinds
+At MagnusMinds IT Solution, our database administrators and software architects specialize in SQL Server performance tuning, database migration, and cloud data architecture.
+
+Connect with MagnusMinds to optimize your database performance and unlock maximum throughput.`,
+
+          html: `<h2>Introduction</h2>
+<p>Enterprise databases are the backbone of modern corporate applications. As transaction volumes surge and concurrent user requests grow, database performance directly dictates system latency, availability, and infrastructure expense.</p>
+<p>When optimizing <strong>${cleanTitle}</strong>, developers and DBAs must systematically address query execution plans, indexing strategies, buffer cache utilization, and concurrency bottlenecks.</p>
+<p>Implementing disciplined database architecture ensures that transactional databases and analytical queries scale predictably without causing lock escalation or exhausting server resources.</p>
+
+<h2>1. Core Pillars of Database Performance &amp; Reliability</h2>
+<p>Optimizing database workloads requires addressing foundational structural elements:</p>
+<p><strong>Clustered &amp; Covering Index Optimization</strong><br>Eliminates costly key lookups and full table scans by aligning physical storage order with frequent range queries and including all required columns in targeted non-clustered indexes.</p>
+<p><strong>Execution Plan Cache &amp; Parameter Sniffing Mitigation</strong><br>Monitors cached execution plans, isolates parameter sniffing anomalies, and standardizes query recompilation rules for predictable sub-millisecond query execution.</p>
+<p><strong>Concurrency Control &amp; Lock Escalation Management</strong><br>Leverages Read Committed Snapshot Isolation (RCSI) or snapshot isolation to prevent read operations from blocking write transactions during heavy traffic bursts.</p>
+<p><strong>Buffer Pool &amp; TempDB Throughput</strong><br>Configures multiple TempDB data files, isolates I/O contention, and optimizes memory grants to avoid spilling worktables to disk.</p>
+
+<h2>2. Unoptimized Database vs High-Throughput Architecture</h2>
+<p>Comparing typical database pitfalls with production-grade practices:</p>
+<table border="1" cellpadding="8" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+  <thead>
+    <tr style="background-color: #f1f5f9;">
+      <th style="text-align: left; padding: 10px;">Metric / Practice</th>
+      <th style="text-align: left; padding: 10px;">Unoptimized Implementation</th>
+      <th style="text-align: left; padding: 10px;">Production-Grade Standard</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding: 10px;"><strong>Indexing Strategy</strong></td>
+      <td style="padding: 10px;">Heuristic, overlapping non-clustered indexes</td>
+      <td style="padding: 10px;">Covering indexes targeted to actual query execution plans</td>
+    </tr>
+    <tr>
+      <td style="padding: 10px;"><strong>Concurrency Model</strong></td>
+      <td style="padding: 10px;">Default locking causing reader-writer blocks</td>
+      <td style="padding: 10px;">Snapshot isolation (RCSI) preventing blocking locks</td>
+    </tr>
+    <tr>
+      <td style="padding: 10px;"><strong>Data Access</strong></td>
+      <td style="padding: 10px;">Massive queries fetching unneeded columns</td>
+      <td style="padding: 10px;">Lean projections fetching only required columns with paging</td>
+    </tr>
+    <tr>
+      <td style="padding: 10px;"><strong>TempDB Configuration</strong></td>
+      <td style="padding: 10px;">Single default data file causing allocation contention</td>
+      <td style="padding: 10px;">Multiple equally-sized files matching logical CPU cores</td>
+    </tr>
+    <tr>
+      <td style="padding: 10px;"><strong>Telemetry &amp; Monitoring</strong></td>
+      <td style="padding: 10px;">Reactive troubleshooting during downtime incidents</td>
+      <td style="padding: 10px;">Proactive Extended Events, Query Store, and index dmv checks</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>3. Systematic Query Tuning Workflow</h2>
+<ol>
+  <li><strong>Identify Expensive Queries:</strong> Query Store and wait statistics identify top resource consumers by CPU, duration, and logical reads.</li>
+  <li><strong>Analyze Execution Plans:</strong> Inspect graphical execution plans to identify table scans, implicit conversions, and memory spills.</li>
+  <li><strong>Refactor Indexing:</strong> Implement targeted covering indexes with included columns to eliminate key lookups.</li>
+  <li><strong>Validate Concurrency:</strong> Verify that isolation levels and transaction lengths avoid lock escalation and deadlocks.</li>
+  <li><strong>Baseline &amp; Observe:</strong> Continuously measure p95 and p99 query duration using structured database telemetry.</li>
+</ol>
+
+<h2>4. Strategic Advantages of Optimized Database Architecture</h2>
+<ul>
+  <li><strong>Sub-Millisecond Response Times:</strong> Lean covering indexes slash query latency across high-volume API endpoints.</li>
+  <li><strong>Reduced Server Overhead:</strong> Halving CPU and disk I/O demands lowers cloud tier hosting expenses significantly.</li>
+  <li><strong>High Concurrency Without Deadlocks:</strong> Snapshot isolation ensures concurrent background workers never lock critical web requests.</li>
+  <li><strong>Predictable Scaling:</strong> Workloads scale linearly as transaction volumes multiply.</li>
+  <li><strong>Business Continuity:</strong> High-availability configurations ensure zero data loss during failovers.</li>
+</ul>
+
+<h2>Conclusion</h2>
+<p>High-performance database operations require deliberate architectural planning rather than ad-hoc hardware upgrades. By mastering covering indexes, concurrency models, and execution plan caching, engineering teams guarantee resilient, scalable applications.</p>
+
+<h2>Build Better Software with MagnusMinds</h2>
+<p>At MagnusMinds IT Solution, our database administrators and software architects specialize in SQL Server performance tuning, database migration, and cloud data architecture.</p>
+<p><a href="https://www.magnusminds.net/contact-us">Connect with MagnusMinds</a> to optimize your database performance and unlock maximum throughput.</p>`
+        };
+      }
+
+      if (domain === 'powerbi') {
+        return {
+          visual: `Introduction
+Business intelligence solutions empower organizations to convert complex operational data into actionable strategic insights.
+
+When building **${cleanTitle}**, executive teams demand intuitive, interactive reporting that loads instantly while preserving strict data governance and row-level security.
+
+By designing clean dimensional star schemas, writing optimized DAX measures, and configuring modern data refresh strategies, business intelligence teams deliver enterprise analytics that scale smoothly.
+
+1. Foundations for Enterprise Power BI Reporting
+A reliable reporting platform rests on foundational modeling best practices:
+
+Star Schema Dimensional Modeling
+Structures reporting data into fact and dimension tables, avoiding wide flat tables and snowflake relationships to maximize VertiPaq engine compression.
+
+Optimized DAX Measures & Context Transition
+Leverages efficient CALCULATE, FILTER, and iterator patterns while minimizing heavy row-by-row calculations to preserve dashboard interactivity.
+
+Row-Level Security (RLS) & Workspace Governance
+Enforces strict data access boundaries based on Azure Active Directory user roles, guaranteeing that viewers access only their authorized business units.
+
+Incremental Refresh & Direct Lake Modes
+Configures automated partition refreshes to process only modified data, slashing refresh durations from hours to minutes.
+
+2. Traditional Reporting vs Modern Enterprise BI Architecture
+Adopting modern BI practices radically enhances speed and governance:
+
+Aspect | Fragmented Reporting Stack | Modern Enterprise BI Standard
+Data Model | Massive, un-indexed flat tables | Clean star schema with 1-to-many relationships
+Calculations | Heavy calculated columns bloating memory | Lean DAX measures calculated dynamically on demand
+Refresh Latency | Lengthy full daily dataset reloads | Fast automated incremental refresh / Direct Lake streaming
+Data Security | Separate report copies per department | Unified report with dynamic Row-Level Security (RLS)
+User Experience | Slow visual rendering with complex filters | Optimized visual hierarchies loading within 1 second
+
+3. End-to-End Enterprise BI Implementation Lifecycle
+1. Requirements Discovery: Align KPI definitions, metrics, and business logic across operational stakeholders.
+2. Data Preparation: Cleanse and transform source data in Power Query, standardizing datetime hierarchies and keys.
+3. Data Modeling: Establish single-direction 1-to-many relationships between dimension and fact tables.
+4. Visual Engineering: Design uncluttered executive dashboards utilizing standardized color schemes and KPI cards.
+5. Deployment & Governance: Deploy through automated deployment pipelines with dedicated Dev, Test, and Prod stages.
+
+4. Measurable Advantages of Enterprise BI Architecture
+Immediate Interactivity: Sub-second visual responsiveness ensures executives explore data without lag.
+Single Source of Truth: Centralized semantic models eliminate conflicting metrics across departments.
+Robust Data Security: Enterprise RLS guarantees regulatory compliance and confidentiality.
+Scalable Cloud Infrastructure: Power BI Premium and Fabric capacity provide predictable cloud performance.
+
+Conclusion
+High-impact reporting is the result of disciplined data modeling, calculated measure efficiency, and automated lifecycle governance. Applying these practices ensures data translates into decisive competitive advantages.
+
+Build Better Software with MagnusMinds
+At MagnusMinds IT Solution, our Power BI and data engineering specialists craft enterprise dashboards, optimized DAX data models, and automated analytics pipelines for global organizations.
+
+Connect with MagnusMinds to elevate your business intelligence capabilities.`,
+
+          html: `<h2>Introduction</h2>
+<p>Business intelligence solutions empower organizations to convert complex operational data into actionable strategic insights.</p>
+<p>When building <strong>${cleanTitle}</strong>, executive teams demand intuitive, interactive reporting that loads instantly while preserving strict data governance and row-level security.</p>
+<p>By designing clean dimensional star schemas, writing optimized DAX measures, and configuring modern data refresh strategies, business intelligence teams deliver enterprise analytics that scale smoothly.</p>
+
+<h2>1. Foundations for Enterprise Power BI Reporting</h2>
+<p>A reliable reporting platform rests on foundational modeling best practices:</p>
+<p><strong>Star Schema Dimensional Modeling</strong><br>Structures reporting data into fact and dimension tables, avoiding wide flat tables and snowflake relationships to maximize VertiPaq engine compression.</p>
+<p><strong>Optimized DAX Measures &amp; Context Transition</strong><br>Leverages efficient CALCULATE, FILTER, and iterator patterns while minimizing heavy row-by-row calculations to preserve dashboard interactivity.</p>
+<p><strong>Row-Level Security (RLS) &amp; Workspace Governance</strong><br>Enforces strict data access boundaries based on Azure Active Directory user roles, guaranteeing that viewers access only their authorized business units.</p>
+<p><strong>Incremental Refresh &amp; Direct Lake Modes</strong><br>Configures automated partition refreshes to process only modified data, slashing refresh durations from hours to minutes.</p>
+
+<h2>2. Traditional Reporting vs Modern Enterprise BI Architecture</h2>
+<p>Adopting modern BI practices radically enhances speed and governance:</p>
+<table border="1" cellpadding="8" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+  <thead>
+    <tr style="background-color: #f1f5f9;">
+      <th style="text-align: left; padding: 10px;">Aspect</th>
+      <th style="text-align: left; padding: 10px;">Fragmented Reporting Stack</th>
+      <th style="text-align: left; padding: 10px;">Modern Enterprise BI Standard</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding: 10px;"><strong>Data Model</strong></td>
+      <td style="padding: 10px;">Massive, un-indexed flat tables</td>
+      <td style="padding: 10px;">Clean star schema with 1-to-many relationships</td>
+    </tr>
+    <tr>
+      <td style="padding: 10px;"><strong>Calculations</strong></td>
+      <td style="padding: 10px;">Heavy calculated columns bloating memory</td>
+      <td style="padding: 10px;">Lean DAX measures calculated dynamically on demand</td>
+    </tr>
+    <tr>
+      <td style="padding: 10px;"><strong>Refresh Latency</strong></td>
+      <td style="padding: 10px;">Lengthy full daily dataset reloads</td>
+      <td style="padding: 10px;">Fast automated incremental refresh / Direct Lake streaming</td>
+    </tr>
+    <tr>
+      <td style="padding: 10px;"><strong>Data Security</strong></td>
+      <td style="padding: 10px;">Separate report copies per department</td>
+      <td style="padding: 10px;">Unified report with dynamic Row-Level Security (RLS)</td>
+    </tr>
+    <tr>
+      <td style="padding: 10px;"><strong>User Experience</strong></td>
+      <td style="padding: 10px;">Slow visual rendering with complex filters</td>
+      <td style="padding: 10px;">Optimized visual hierarchies loading within 1 second</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>3. End-to-End Enterprise BI Implementation Lifecycle</h2>
+<ol>
+  <li><strong>Requirements Discovery:</strong> Align KPI definitions, metrics, and business logic across operational stakeholders.</li>
+  <li><strong>Data Preparation:</strong> Cleanse and transform source data in Power Query, standardizing datetime hierarchies and keys.</li>
+  <li><strong>Data Modeling:</strong> Establish single-direction 1-to-many relationships between dimension and fact tables.</li>
+  <li><strong>Visual Engineering:</strong> Design uncluttered executive dashboards utilizing standardized color schemes and KPI cards.</li>
+  <li><strong>Deployment &amp; Governance:</strong> Deploy through automated deployment pipelines with dedicated Dev, Test, and Prod stages.</li>
+</ol>
+
+<h2>4. Measurable Advantages of Enterprise BI Architecture</h2>
+<ul>
+  <li><strong>Immediate Interactivity:</strong> Sub-second visual responsiveness ensures executives explore data without lag.</li>
+  <li><strong>Single Source of Truth:</strong> Centralized semantic models eliminate conflicting metrics across departments.</li>
+  <li><strong>Robust Data Security:</strong> Enterprise RLS guarantees regulatory compliance and confidentiality.</li>
+  <li><strong>Scalable Cloud Infrastructure:</strong> Power BI Premium and Fabric capacity provide predictable cloud performance.</li>
+</ul>
+
+<h2>Conclusion</h2>
+<p>High-impact reporting is the result of disciplined data modeling, calculated measure efficiency, and automated lifecycle governance. Applying these practices ensures data translates into decisive competitive advantages.</p>
+
+<h2>Build Better Software with MagnusMinds</h2>
+<p>At MagnusMinds IT Solution, our Power BI and data engineering specialists craft enterprise dashboards, optimized DAX data models, and automated analytics pipelines for global organizations.</p>
+<p><a href="https://www.magnusminds.net/contact-us">Connect with MagnusMinds</a> to elevate your business intelligence capabilities.</p>`
+        };
+      }
+
+      // Default Architecture / AI / Cloud
+      return {
+        visual: `Introduction
+Modern software engineering is advancing rapidly, shifting toward modular architectures, automated tooling, and intelligent system workflows.
+
+When architecting **${cleanTitle}**, engineering leaders must prioritize architectural clarity, explicit service boundaries, and robust operational resilience.
+
+Establishing repeatable patterns and standardized protocols directly in your codebase ensures long-term maintainability, high throughput, and reliable execution across distributed enterprise systems.
+
+1. Essential Foundations for ${cleanTitle}
+A resilient engineering architecture incorporates deliberate structural pillars:
+
+Explicit Standards & Codified Architecture
+Maintains clear repository conventions, dependency boundaries, and strict contracts to ensure consistency and prevent architectural drift.
+
+Standardized Protocol Integration
+Exposes typed, secured tools and APIs using industry-standard protocols, guaranteeing interoperability across independent microservices.
+
+Domain Isolation & Fault Tolerance
+Isolates critical business operations with resilient retry policies, circuit breakers, and explicit failure domain boundaries.
+
+Comprehensive Observability & Telemetry
+Instruments key workflows with OpenTelemetry traces, structured logs, and real-time health diagnostics for instant root-cause analysis.
+
+2. Traditional vs Modern Architectural Patterns
+Adopting modern engineering practices transforms everyday software operations:
+
+Component | Traditional Approach | Modern Structured Architecture
+System Context | Scattered across wikis, emails, and chats | Codified directly in repository contracts and specs
+Tooling & APIs | Ad-hoc, tightly coupled scripts | Standardized protocols with typed schema contracts
+Service Boundaries | Implicit rules frequently violated | Explicit boundaries enforced through automated checks
+Quality & Reviews | Manual, time-consuming peer reviews | Automated validation of standards, security, and performance
+Execution Pipeline | Brittle single-point-of-failure workflows | Fault-tolerant workflows with human approval gates
+
+3. End-to-End Enterprise Workflow
+1. Requirements Alignment: Engineers model system changes based on codified architectural standards.
+2. Contract Verification: Typed interfaces and dependency injection rules guarantee compile-time safety.
+3. Automated Execution: Core business workflows execute asynchronously with distributed tracing.
+4. Diagnostics & Auditing: Telemetry platforms capture metrics, execution timings, and failure signatures.
+5. Continuous Delivery: Automated pipelines deploy changes safely across preview and production environments.
+
+4. Strategic Advantages of ${cleanTitle}
+High Delivery Velocity: Eliminates repetitive boilerplate and prevents regression loops.
+Reliable System Maintainability: Clean modular boundaries allow isolated updates without cascading outages.
+Faster Onboarding: New developers and automated assistants navigate codified patterns with confidence.
+Reduced Technical Debt: Encapsulates domain logic cleanly within bounded contexts.
+Lower Operational Risk: Real-time telemetry detects performance anomalies before they impact customers.
+
+Conclusion
+Building durable software solutions requires disciplined architecture and repeatable engineering standards. Prioritizing robust contracts, modular boundaries, and structured observability positions systems to scale reliably as requirements evolve.
+
+Build Better Software with MagnusMinds
+At MagnusMinds IT Solution, our senior engineers help technology leaders design, build, and deploy resilient enterprise applications and intelligent digital solutions.
+
+Connect with MagnusMinds to explore how modern engineering practices can accelerate your software initiatives.`,
+
+        html: `<h2>Introduction</h2>
+<p>Modern software engineering is advancing rapidly, shifting toward modular architectures, automated tooling, and intelligent system workflows.</p>
+<p>When architecting <strong>${cleanTitle}</strong>, engineering leaders must prioritize architectural clarity, explicit service boundaries, and robust operational resilience.</p>
+<p>Establishing repeatable patterns and standardized protocols directly in your codebase ensures long-term maintainability, high throughput, and reliable execution across distributed enterprise systems.</p>
+
+<h2>1. Essential Foundations for ${cleanTitle}</h2>
+<p>A resilient engineering architecture incorporates deliberate structural pillars:</p>
+<p><strong>Explicit Standards &amp; Codified Architecture</strong><br>Maintains clear repository conventions, dependency boundaries, and strict contracts to ensure consistency and prevent architectural drift.</p>
+<p><strong>Standardized Protocol Integration</strong><br>Exposes typed, secured tools and APIs using industry-standard protocols, guaranteeing interoperability across independent microservices.</p>
+<p><strong>Domain Isolation &amp; Fault Tolerance</strong><br>Isolates critical business operations with resilient retry policies, circuit breakers, and explicit failure domain boundaries.</p>
+<p><strong>Comprehensive Observability &amp; Telemetry</strong><br>Instruments key workflows with OpenTelemetry traces, structured logs, and real-time health diagnostics for instant root-cause analysis.</p>
+
+<h2>2. Traditional vs Modern Architectural Patterns</h2>
+<p>Adopting modern engineering practices transforms everyday software operations:</p>
 <table border="1" cellpadding="8" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 15px 0;">
   <thead>
     <tr style="background-color: #f1f5f9;">
       <th style="text-align: left; padding: 10px;">Component</th>
       <th style="text-align: left; padding: 10px;">Traditional Approach</th>
-      <th style="text-align: left; padding: 10px;">Modern Structured Approach</th>
+      <th style="text-align: left; padding: 10px;">Modern Structured Architecture</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td style="padding: 10px;"><strong>Knowledge Storage</strong></td>
+      <td style="padding: 10px;"><strong>System Context</strong></td>
       <td style="padding: 10px;">Scattered across wikis, emails, and chats</td>
-      <td style="padding: 10px;">Codified directly in repository files and contracts</td>
+      <td style="padding: 10px;">Codified directly in repository contracts and specs</td>
     </tr>
     <tr>
-      <td style="padding: 10px;"><strong>Tool Integration</strong></td>
-      <td style="padding: 10px;">Manual human execution through CLIs</td>
-      <td style="padding: 10px;">Standardized protocols (Model Context Protocol / MCP)</td>
+      <td style="padding: 10px;"><strong>Tooling &amp; APIs</strong></td>
+      <td style="padding: 10px;">Ad-hoc, tightly coupled scripts</td>
+      <td style="padding: 10px;">Standardized protocols with typed schema contracts</td>
     </tr>
     <tr>
-      <td style="padding: 10px;"><strong>Architecture Rules</strong></td>
-      <td style="padding: 10px;">Implicitly understood by senior engineers</td>
+      <td style="padding: 10px;"><strong>Service Boundaries</strong></td>
+      <td style="padding: 10px;">Implicit rules frequently violated</td>
       <td style="padding: 10px;">Explicit boundaries enforced through automated checks</td>
     </tr>
     <tr>
       <td style="padding: 10px;"><strong>Quality &amp; Reviews</strong></td>
       <td style="padding: 10px;">Manual, time-consuming peer reviews</td>
-      <td style="padding: 10px;">Automated pre-review checking standards, security &amp; performance</td>
+      <td style="padding: 10px;">Automated validation of standards, security, and performance</td>
     </tr>
     <tr>
-      <td style="padding: 10px;"><strong>Task Execution</strong></td>
-      <td style="padding: 10px;">Human-only multi-step implementations</td>
-      <td style="padding: 10px;">Human-directed autonomous workflows with approval gates</td>
+      <td style="padding: 10px;"><strong>Execution Pipeline</strong></td>
+      <td style="padding: 10px;">Brittle single-point-of-failure workflows</td>
+      <td style="padding: 10px;">Fault-tolerant workflows with human approval gates</td>
     </tr>
   </tbody>
 </table>
 
-<h2>3. How Everything Works Together</h2>
-<p>Consider an enterprise engineering team implementing a critical feature within this architecture:</p>
+<h2>3. End-to-End Enterprise Workflow</h2>
 <ol>
-  <li><strong>Requirements Alignment:</strong> The developer prompts the system to outline the implementation based on documented architectural patterns in ARCHITECTURE.md.</li>
-  <li><strong>Context Retrieval:</strong> The orchestrator discovers existing domain services and contracts rather than reinventing new utilities.</li>
-  <li><strong>Automated Implementation:</strong> The core feature logic is generated following established error-handling, cancellation, and logging conventions.</li>
-  <li><strong>Autonomous Diagnostics:</strong> Automated review checks examine the proposed changes for potential performance regressions, security boundaries, and test coverage.</li>
-  <li><strong>Developer Sign-Off:</strong> A senior engineer validates the changes and approves the pull request before deployment.</li>
+  <li><strong>Requirements Alignment:</strong> Engineers model system changes based on codified architectural standards.</li>
+  <li><strong>Contract Verification:</strong> Typed interfaces and dependency injection rules guarantee compile-time safety.</li>
+  <li><strong>Automated Execution:</strong> Core business workflows execute asynchronously with distributed tracing.</li>
+  <li><strong>Diagnostics &amp; Auditing:</strong> Telemetry platforms capture metrics, execution timings, and failure signatures.</li>
+  <li><strong>Continuous Delivery:</strong> Automated pipelines deploy changes safely across preview and production environments.</li>
 </ol>
-<p>This collaboration reduces repetitive boilerplate work while maintaining high standards of code quality and security.</p>
 
-<h2>4. Why Implement This Architecture?</h2>
-<p>A properly structured architecture delivers several immediate enterprise advantages:</p>
+<h2>4. Strategic Advantages of ${cleanTitle}</h2>
 <ul>
-  <li><strong>Accelerated Delivery Velocity:</strong> Eliminates hours spent writing repetitive boilerplate code and diagnostic scripts.</li>
-  <li><strong>Consistent Code Quality:</strong> Ensures contributions from developers and automated tools adhere to established standards.</li>
-  <li><strong>Faster Team Onboarding:</strong> Enables new engineers to understand component relationships and start shipping code with confidence.</li>
-  <li><strong>Reduced Technical Debt:</strong> Encapsulates domain logic in modular boundaries, preventing spaghetti dependencies.</li>
-  <li><strong>Lower Operational Risk:</strong> Comprehensive telemetry and fault isolation ensure rapid diagnosis of production issues.</li>
+  <li><strong>High Delivery Velocity:</strong> Eliminates repetitive boilerplate and prevents regression loops.</li>
+  <li><strong>Reliable System Maintainability:</strong> Clean modular boundaries allow isolated updates without cascading outages.</li>
+  <li><strong>Faster Onboarding:</strong> New developers and automated assistants navigate codified patterns with confidence.</li>
+  <li><strong>Reduced Technical Debt:</strong> Encapsulates domain logic cleanly within bounded contexts.</li>
+  <li><strong>Lower Operational Risk:</strong> Real-time telemetry detects performance anomalies before they impact customers.</li>
 </ul>
 
 <h2>Conclusion</h2>
-<p>Building modern, production-grade applications is not merely about choosing the newest technology stack. It is about establishing disciplined architecture, clear domain boundaries, and repeatable engineering standards.</p>
-<p>By prioritizing robust contracts, modular service boundaries, and structured observability, software teams can deliver scalable, resilient solutions that adapt smoothly to evolving business requirements.</p>
+<p>Building durable software solutions requires disciplined architecture and repeatable engineering standards. Prioritizing robust contracts, modular boundaries, and structured observability positions systems to scale reliably as requirements evolve.</p>
 
 <h2>Build Better Software with MagnusMinds</h2>
-<p>At MagnusMinds IT Solution, we combine modern software engineering practices with AI-assisted development workflows to help businesses build scalable and reliable software solutions.</p>
-<p><a href="https://www.magnusminds.net/contact-us">Connect with MagnusMinds</a> to explore how structured engineering practices and AI-powered development can improve your software delivery process.</p>`;
-      }
-
-      document.getElementById('fieldDescriptionText').value = visualText;
-      document.getElementById('fieldDescriptionHtml').value = sourceHtml;
-      document.getElementById('previewContent').innerHTML = sourceHtml;
+<p>At MagnusMinds IT Solution, our senior engineers help technology leaders design, build, and deploy resilient enterprise applications and intelligent digital solutions.</p>
+<p><a href="https://www.magnusminds.net/contact-us">Connect with MagnusMinds</a> to explore how modern engineering practices can accelerate your software initiatives.</p>`
+      };
     }
 
-    // Initialize on load
-    window.onload = function() {
-      generateBlog();
-    };
+    function generateBlog() {
+      const topicInput = document.getElementById('topicInput');
+      const rawTopic = topicInput.value.trim() || 'Microsoft Fabric';
+      const cleanTitle = rawTopic.replace(/\s*\|\s*MagnusMinds$/i, '').trim();
+      const slug = generateSlug(cleanTitle);
+
+      const domain = classifyDomain(cleanTitle);
+      const meta = getDomainMetadata(domain, cleanTitle);
+
+      // Clean keywords strictly derived from cleanTitle and domain tags
+      const keywords = [cleanTitle, ...meta.tags].filter((v, i, a) => a.indexOf(v) === i).join(', ');
+      const metaDescription = `An engineering perspective on ${cleanTitle} by MagnusMinds: explore architecture, core concepts, structured patterns, and enterprise advantages.`;
+
+      // Build High-Res Flux Banner URL with Seed
+      let seed = 0;
+      for (let i = 0; i < cleanTitle.length; i++) {
+        seed = (seed * 31 + cleanTitle.charCodeAt(i)) % 999999;
+      }
+      seed = Math.abs(seed) + 1000;
+      const encodedPrompt = encodeURIComponent(meta.imagePrompt);
+      const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1200&height=630&nologo=true&model=flux&seed=${seed}`;
+
+      // Populate Form Fields
+      document.getElementById('fieldTitle').value = cleanTitle;
+      document.getElementById('fieldKeyword').value = keywords;
+      document.getElementById('fieldMetaDesc').value = metaDescription;
+      document.getElementById('fieldCategory').value = meta.category;
+      document.getElementById('fieldTags').value = meta.tags.join(', ');
+      document.getElementById('fieldSlug').value = slug;
+
+      // Update Banner Image
+      const bannerImg = document.getElementById('bannerImagePreview');
+      const dlBtn = document.getElementById('downloadImageBtn');
+      const imgLoading = document.getElementById('imageLoading');
+
+      imgLoading.classList.remove('hidden');
+      bannerImg.onload = function() {
+        imgLoading.classList.add('hidden');
+      };
+      bannerImg.src = imageUrl;
+      dlBtn.href = imageUrl;
+      dlBtn.download = `${slug}_banner.jpg`;
+
+      // Generate Domain-Specific Description
+      const content = generateDomainContent(domain, cleanTitle);
+      document.getElementById('fieldDescriptionText').value = content.visual;
+      document.getElementById('fieldDescriptionHtml').value = content.html;
+      document.getElementById('previewContent').innerHTML = content.html;
+
+      // Unhide results card and smooth scroll
+      const resultsCard = document.getElementById('resultsCard');
+      resultsCard.classList.remove('hidden');
+      resultsCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   </script>
 </body>
 </html>
