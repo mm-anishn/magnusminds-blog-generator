@@ -1,0 +1,6 @@
+{
+  "version": 2,
+  "name": "magnusminds-blog-generator",
+  "cleanUrls": true,
+  "trailingSlash": false
+}

@@ -1,0 +1,11 @@
+{
+  "name": "magnusminds-blog-generator",
+  "version": "1.0.0",
+  "description": "MagnusMinds Blog Generator for Enterprise Software & AI Articles",
+  "scripts": {
+    "start": "npx serve ."
+  },
+  "keywords": ["magnusminds", "blog-generator", "mcp", "cms", "ai"],
+  "author": "MagnusMinds IT Solution",
+  "license": "MIT"
+}
