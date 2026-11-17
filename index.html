@@ -803,30 +803,121 @@
       showToast('New infographic banner variation generated!');
     }
 
-    // High-End Infographic Banner Canvas Generator (Matching User's Reference Layout)
+    // High-End Infographic Banner Canvas Generator (Multi-Theme, Topic-Specific 3D Visuals)
     function renderInfographicBanner(d, themeIdx) {
       const canvas = document.createElement('canvas');
       canvas.width = 1200;
       canvas.height = 630;
       const ctx = canvas.getContext('2d');
 
-      const isExecutiveBright = (themeIdx % 2 === 0);
+      // 6 Distinct Themes (Never just white and dark)
+      const themes = [
+        {
+          id: 'clean-emerald',
+          isBright: true,
+          bgStart: '#ffffff',
+          bgEnd: '#f0fdf4',
+          accent: '#059669',
+          accentLight: '#10b981',
+          textHead: '#0f172a',
+          textSub: '#475569',
+          cardBg: '#ffffff',
+          cardBorder: '#e2e8f0',
+          badgeBg: '#f0fdf4',
+          waveColor1: '#065f46',
+          waveColor2: '#0284c7'
+        },
+        {
+          id: 'cyber-obsidian',
+          isBright: false,
+          bgStart: '#030712',
+          bgEnd: '#0f172a',
+          accent: '#38bdf8',
+          accentLight: '#0284c7',
+          textHead: '#ffffff',
+          textSub: '#94a3b8',
+          cardBg: '#1e293b',
+          cardBorder: '#334155',
+          badgeBg: '#0f172a',
+          waveColor1: '#1e293b',
+          waveColor2: '#0369a1'
+        },
+        {
+          id: 'azure-sapphire',
+          isBright: false,
+          bgStart: '#0a192f',
+          bgEnd: '#1e3a8a',
+          accent: '#60a5fa',
+          accentLight: '#3b82f6',
+          textHead: '#f8fafc',
+          textSub: '#cbd5e1',
+          cardBg: '#172554',
+          cardBorder: '#1e40af',
+          badgeBg: '#1e3a8a',
+          waveColor1: '#1d4ed8',
+          waveColor2: '#38bdf8'
+        },
+        {
+          id: 'amethyst-indigo',
+          isBright: false,
+          bgStart: '#0f0f1a',
+          bgEnd: '#2e1065',
+          accent: '#a855f7',
+          accentLight: '#818cf8',
+          textHead: '#faf5ff',
+          textSub: '#cbd5e1',
+          cardBg: '#3b0764',
+          cardBorder: '#581c87',
+          badgeBg: '#2e1065',
+          waveColor1: '#6b21a8',
+          waveColor2: '#ec4899'
+        },
+        {
+          id: 'arctic-tech',
+          isBright: true,
+          bgStart: '#f8fafc',
+          bgEnd: '#e0f2fe',
+          accent: '#0284c7',
+          accentLight: '#0ea5e9',
+          textHead: '#0f172a',
+          textSub: '#334155',
+          cardBg: '#ffffff',
+          cardBorder: '#cbd5e1',
+          badgeBg: '#e0f2fe',
+          waveColor1: '#0369a1',
+          waveColor2: '#0d9488'
+        },
+        {
+          id: 'titanium-gold',
+          isBright: false,
+          bgStart: '#18181b',
+          bgEnd: '#27272a',
+          accent: '#f59e0b',
+          accentLight: '#fbbf24',
+          textHead: '#fffbeb',
+          textSub: '#d4d4d8',
+          cardBg: '#27272a',
+          cardBorder: '#3f3f46',
+          badgeBg: '#3f3f46',
+          waveColor1: '#b45309',
+          waveColor2: '#d97706'
+        }
+      ];
 
-      // 1. Background
-      if (isExecutiveBright) {
-        // Bright White / Clean Executive Theme
-        ctx.fillStyle = '#ffffff';
+      const t = themes[themeIdx % themes.length];
+
+      // 1. Background Rendering
+      if (t.isBright) {
+        ctx.fillStyle = t.bgStart;
         ctx.fillRect(0, 0, 1200, 630);
 
-        // Top right decorative soft pastel gradient wave
         const topGrad = ctx.createRadialGradient(1050, 100, 50, 1050, 100, 450);
-        topGrad.addColorStop(0, '#e0f2fe');
-        topGrad.addColorStop(0.6, '#ecfdf5');
+        topGrad.addColorStop(0, t.bgEnd);
+        topGrad.addColorStop(0.7, '#ffffff');
         topGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
         ctx.fillStyle = topGrad;
         ctx.fillRect(600, 0, 600, 400);
 
-        // Top right subtle dot matrix
         ctx.fillStyle = '#cbd5e1';
         for (let r = 0; r < 4; r++) {
           for (let c = 0; c < 8; c++) {
@@ -838,7 +929,7 @@
 
         // Bottom curved wave
         ctx.save();
-        ctx.fillStyle = '#065f46';
+        ctx.fillStyle = t.waveColor1;
         ctx.beginPath();
         ctx.moveTo(0, 630);
         ctx.lineTo(0, 600);
@@ -847,7 +938,7 @@
         ctx.closePath();
         ctx.fill();
 
-        ctx.fillStyle = '#0284c7';
+        ctx.fillStyle = t.waveColor2;
         ctx.globalAlpha = 0.5;
         ctx.beginPath();
         ctx.moveTo(0, 630);
@@ -858,18 +949,17 @@
         ctx.fill();
         ctx.restore();
       } else {
-        // Dark Obsidian / Cyan Executive Theme
         const darkGrad = ctx.createLinearGradient(0, 0, 1200, 630);
-        darkGrad.addColorStop(0, '#020617');
-        darkGrad.addColorStop(0.6, '#0f172a');
-        darkGrad.addColorStop(1, '#0369a1');
+        darkGrad.addColorStop(0, t.bgStart);
+        darkGrad.addColorStop(0.6, t.bgEnd);
+        darkGrad.addColorStop(1, t.waveColor2);
         ctx.fillStyle = darkGrad;
         ctx.fillRect(0, 0, 1200, 630);
 
         // Tech grid
-        ctx.strokeStyle = '#334155';
+        ctx.strokeStyle = t.cardBorder;
         ctx.lineWidth = 0.8;
-        ctx.globalAlpha = 0.2;
+        ctx.globalAlpha = 0.22;
         for (let x = 0; x < 1200; x += 40) {
           ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, 630); ctx.stroke();
         }
@@ -881,20 +971,18 @@
 
       // 2. Top-Left Brand Logo / Badge
       ctx.save();
-      const brandColor = isExecutiveBright ? '#059669' : '#38bdf8';
-      ctx.fillStyle = brandColor;
+      ctx.fillStyle = t.accent;
       ctx.font = 'bold 28px Inter, sans-serif';
       ctx.fillText(d.meta.brand, 70, 75);
 
-      // Green / Cyan Accent Underline
-      ctx.fillStyle = isExecutiveBright ? '#10b981' : '#0284c7';
+      ctx.fillStyle = t.accentLight;
       roundRect(ctx, 70, 92, 70, 4, 2, true, false);
       ctx.restore();
 
       // 3. Main Headline (Left Column)
       ctx.save();
-      ctx.fillStyle = isExecutiveBright ? '#0f172a' : '#ffffff';
-      ctx.font = 'bold 38px Inter, sans-serif';
+      ctx.fillStyle = t.textHead;
+      ctx.font = 'bold 36px Inter, sans-serif';
       
       const words = d.title.split(' ');
       let line = '';
@@ -902,25 +990,25 @@
       for (let i = 0; i < words.length; i++) {
         const testLine = line + words[i] + ' ';
         const metrics = ctx.measureText(testLine);
-        if (metrics.width > 600 && i > 0) {
+        if (metrics.width > 590 && i > 0) {
           ctx.fillText(line.trim(), 70, y);
           line = words[i] + ' ';
-          y += 48;
+          y += 46;
         } else {
           line = testLine;
         }
       }
       ctx.fillText(line.trim(), 70, y);
 
-      // Subtitle / 2-Line Value Proposition
-      ctx.fillStyle = isExecutiveBright ? '#475569' : '#94a3b8';
+      // Subtitle / Value Proposition
+      ctx.fillStyle = t.textSub;
       ctx.font = '500 16px Inter, sans-serif';
       const summaryWords = d.meta.summary.split(' ');
       let sLine = '';
       let sy = y + 42;
       for (let j = 0; j < summaryWords.length; j++) {
         const testS = sLine + summaryWords[j] + ' ';
-        if (ctx.measureText(testS).width > 580 && j > 0) {
+        if (ctx.measureText(testS).width > 570 && j > 0) {
           ctx.fillText(sLine.trim(), 70, sy);
           sLine = summaryWords[j] + ' ';
           sy += 24;
@@ -938,8 +1026,7 @@
         const bx = 70 + b * 135;
         ctx.save();
 
-        // Circle Badge
-        ctx.fillStyle = isExecutiveBright ? '#f0fdf4' : '#1e293b';
+        ctx.fillStyle = t.isBright ? '#ffffff' : t.badgeBg;
         ctx.strokeStyle = badges[b].color;
         ctx.lineWidth = 2;
         ctx.beginPath();
@@ -947,23 +1034,18 @@
         ctx.fill();
         ctx.stroke();
 
-        // Icon inside circle
         ctx.fillStyle = badges[b].color;
-        ctx.font = 'bold 18px Inter, sans-serif';
-        ctx.textAlign = 'center';
-        const symbol = b === 0 ? '⏱' : (b === 1 ? '🛡' : (b === 2 ? '📊' : '🤝'));
-        ctx.fillText(symbol, bx + 26, badgeY + 33);
+        ctx.beginPath();
+        ctx.arc(bx + 26, badgeY + 26, 9, 0, Math.PI * 2);
+        ctx.fill();
 
-        // Labels below circle
-        ctx.textAlign = 'left';
-        ctx.fillStyle = isExecutiveBright ? '#1e293b' : '#ffffff';
-        ctx.font = 'bold 11px Inter, sans-serif';
-        ctx.fillText(badges[b].label, bx - 10, badgeY + 70);
+        ctx.fillStyle = t.textHead;
+        ctx.font = 'bold 12px Inter, sans-serif';
+        ctx.fillText(badges[b].label, bx - 2, badgeY + 68);
 
-        ctx.fillStyle = isExecutiveBright ? '#64748b' : '#94a3b8';
-        ctx.font = '500 10px Inter, sans-serif';
-        ctx.fillText(badges[b].sub, bx - 10, badgeY + 84);
-
+        ctx.fillStyle = t.textSub;
+        ctx.font = '10px Inter, sans-serif';
+        ctx.fillText(badges[b].sub, bx - 2, badgeY + 84);
         ctx.restore();
       }
 
@@ -974,13 +1056,11 @@
       const pipeW = 430;
       const pipeH = 110;
 
-      // Pipeline Box
-      ctx.fillStyle = isExecutiveBright ? '#ffffff' : '#1e293b';
-      ctx.strokeStyle = isExecutiveBright ? '#e2e8f0' : '#334155';
+      ctx.fillStyle = t.isBright ? '#ffffff' : t.cardBg;
+      ctx.strokeStyle = t.cardBorder;
       ctx.lineWidth = 1.5;
       roundRect(ctx, pipeX, pipeY, pipeW, pipeH, 14, true, true);
 
-      // Workflow nodes
       const steps = d.meta.workflow;
       const nodeColors = ['#0284c7', '#10b981', '#8b5cf6', '#14b8a6', '#0ea5e9'];
       const nodeIcons = ['🔍', '✓', '⚙', '🏁', '📈'];
@@ -989,24 +1069,20 @@
         const nx = pipeX + 40 + s * 78;
         const ny = pipeY + 45;
 
-        // Node Circle
         ctx.fillStyle = nodeColors[s];
         ctx.beginPath();
         ctx.arc(nx, ny, 18, 0, Math.PI * 2);
         ctx.fill();
 
-        // Icon inside node
         ctx.fillStyle = '#ffffff';
         ctx.font = '12px Inter, sans-serif';
         ctx.textAlign = 'center';
         ctx.fillText(nodeIcons[s], nx, ny + 4);
 
-        // Step Label below
-        ctx.fillStyle = isExecutiveBright ? '#334155' : '#cbd5e1';
+        ctx.fillStyle = t.isBright ? '#334155' : '#cbd5e1';
         ctx.font = 'bold 10px Inter, sans-serif';
         ctx.fillText(steps[s], nx, ny + 32);
 
-        // Arrow to next step
         if (s < steps.length - 1) {
           ctx.fillStyle = '#94a3b8';
           ctx.font = '12px Inter, sans-serif';
@@ -1015,45 +1091,241 @@
       }
       ctx.restore();
 
-      // 6. Bottom Right 3D Visual Centerpiece (Laptop, Document & Automation Elements)
+      // 6. Bottom Right Topic-Specific 3D Visual Centerpiece
       ctx.save();
-      const lx = 740;
-      const ly = 240;
+      const vx = 740;
+      const vy = 240;
 
-      // Laptop Base Shadow
+      if (d.meta.visualType === 'data') {
+        drawFabricLakehouseVisual(ctx, vx, vy, t);
+      } else if (d.meta.visualType === 'network') {
+        drawMicroservicesVisual(ctx, vx, vy, t);
+      } else if (d.meta.visualType === 'database') {
+        drawDatabaseVisual(ctx, vx, vy, t);
+      } else if (d.meta.visualType === 'chart') {
+        drawPowerBiVisual(ctx, vx, vy, t);
+      } else if (d.meta.visualType === 'ai') {
+        drawAiAgentVisual(ctx, vx, vy, t);
+      } else {
+        drawSageInvoiceVisual(ctx, vx, vy, t);
+      }
+      ctx.restore();
+
+      return canvas.toDataURL('image/jpeg', 0.95);
+    }
+
+    // 1. Microsoft Fabric & Lakehouse 3D Isometric Visual
+    function drawFabricLakehouseVisual(ctx, lx, ly, t) {
+      ctx.fillStyle = 'rgba(0,0,0,0.15)';
+      ctx.beginPath();
+      ctx.ellipse(lx + 180, ly + 250, 180, 26, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // OneLake Foundation Base Plate
+      ctx.fillStyle = t.isBright ? '#f1f5f9' : '#1e293b';
+      ctx.strokeStyle = '#0284c7';
+      ctx.lineWidth = 2;
+      roundRect(ctx, lx + 20, ly + 180, 320, 50, 12, true, true);
+      ctx.fillStyle = '#0284c7';
+      ctx.font = 'bold 12px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('ONELAKE UNIFIED STORAGE FOUNDATION', lx + 180, ly + 210);
+
+      // Medallion 3D Storage Disks (Bronze, Silver, Gold)
+      const tiers = [
+        { label: 'BRONZE', sub: 'Raw Streams', color: '#b45309', fill: '#f59e0b', x: lx + 40, y: ly + 80 },
+        { label: 'SILVER', sub: 'Cleaned Delta', color: '#64748b', fill: '#94a3b8', x: lx + 140, y: ly + 40 },
+        { label: 'GOLD', sub: 'Star Schema', color: '#d97706', fill: '#fbbf24', x: lx + 240, y: ly + 10 }
+      ];
+
+      tiers.forEach(tier => {
+        ctx.save();
+        ctx.fillStyle = tier.color;
+        ctx.beginPath();
+        ctx.ellipse(tier.x + 40, tier.y + 40, 42, 22, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = tier.fill;
+        ctx.beginPath();
+        ctx.ellipse(tier.x + 40, tier.y + 32, 42, 22, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#0f172a';
+        ctx.font = 'bold 11px Inter, sans-serif';
+        ctx.fillText(tier.label, tier.x + 40, tier.y + 34);
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '9px Inter, sans-serif';
+        ctx.fillText(tier.sub, tier.x + 40, tier.y + 47);
+        ctx.restore();
+      });
+
+      // Direct Lake Analytics Hologram Monitor
+      ctx.fillStyle = t.isBright ? '#ffffff' : '#0f172a';
+      ctx.strokeStyle = '#10b981';
+      ctx.lineWidth = 2;
+      roundRect(ctx, lx + 220, ly + 90, 140, 85, 8, true, true);
+      ctx.fillStyle = '#10b981';
+      ctx.font = 'bold 10px Inter, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('DIRECT LAKE BI', lx + 230, ly + 110);
+      ctx.fillStyle = t.isBright ? '#334155' : '#cbd5e1';
+      ctx.font = '9px Inter, sans-serif';
+      ctx.fillText('Latency: < 1s', lx + 230, ly + 128);
+      ctx.fillText('Sync: Zero-Copy', lx + 230, ly + 144);
+      ctx.fillStyle = '#10b981';
+      ctx.fillRect(lx + 230, ly + 154, 100, 6);
+    }
+
+    // 2. Microservices Distributed 3D Mesh Visual
+    function drawMicroservicesVisual(ctx, lx, ly, t) {
+      ctx.fillStyle = 'rgba(0,0,0,0.15)';
+      ctx.beginPath();
+      ctx.ellipse(lx + 180, ly + 250, 180, 26, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.strokeStyle = '#f59e0b';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.arc(lx + 180, ly + 130, 80, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.fillStyle = t.isBright ? '#ffffff' : '#1e293b';
+      ctx.strokeStyle = '#f59e0b';
+      ctx.lineWidth = 2;
+      roundRect(ctx, lx + 125, ly + 105, 110, 50, 8, true, true);
+      ctx.fillStyle = '#f59e0b';
+      ctx.font = 'bold 11px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('KAFKA / BROKER', lx + 180, ly + 127);
+      ctx.fillStyle = t.isBright ? '#64748b' : '#94a3b8';
+      ctx.font = '9px Inter, sans-serif';
+      ctx.fillText('Outbox Event Bus', lx + 180, ly + 142);
+
+      const services = [
+        { name: 'API Gateway', x: lx + 180, y: ly + 15, color: '#0284c7' },
+        { name: 'Order Service', x: lx + 70, y: ly + 130, color: '#10b981' },
+        { name: 'Payment Svc', x: lx + 290, y: ly + 130, color: '#6366f1' },
+        { name: 'Inventory Svc', x: lx + 180, y: ly + 235, color: '#ec4899' }
+      ];
+
+      services.forEach(s => {
+        ctx.fillStyle = t.isBright ? '#ffffff' : '#0f172a';
+        ctx.strokeStyle = s.color;
+        ctx.lineWidth = 2;
+        roundRect(ctx, s.x - 55, s.y - 20, 110, 42, 6, true, true);
+        ctx.fillStyle = s.color;
+        ctx.font = 'bold 10px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(s.name, s.x, s.y + 4);
+      });
+    }
+
+    // 3. Database Server & Query Engine Visual
+    function drawDatabaseVisual(ctx, lx, ly, t) {
+      ctx.fillStyle = 'rgba(0,0,0,0.15)';
+      ctx.beginPath();
+      ctx.ellipse(lx + 180, ly + 250, 160, 24, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      for (let s = 0; s < 3; s++) {
+        const sy = ly + 40 + s * 60;
+        ctx.fillStyle = t.isBright ? '#ffffff' : '#1e293b';
+        ctx.strokeStyle = '#0284c7';
+        ctx.lineWidth = 2;
+        roundRect(ctx, lx + 60, sy, 220, 48, 8, true, true);
+
+        ctx.fillStyle = '#0284c7';
+        for (let d = 0; d < 4; d++) {
+          roundRect(ctx, lx + 80 + d * 36, sy + 14, 26, 20, 3, true, false);
+        }
+
+        ctx.fillStyle = '#10b981';
+        ctx.beginPath();
+        ctx.arc(lx + 250, sy + 24, 5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.fillStyle = t.isBright ? '#ffffff' : '#0f172a';
+      ctx.strokeStyle = '#10b981';
+      ctx.lineWidth = 2;
+      roundRect(ctx, lx + 210, ly + 150, 140, 80, 8, true, true);
+      ctx.fillStyle = '#10b981';
+      ctx.font = 'bold 11px Inter, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('QUERY OPTIMIZER', lx + 220, ly + 175);
+      ctx.fillStyle = t.isBright ? '#334155' : '#cbd5e1';
+      ctx.font = '9px Inter, sans-serif';
+      ctx.fillText('Index: Covering Seek', lx + 220, ly + 195);
+      ctx.fillText('Latency: 0.4ms', lx + 220, ly + 210);
+    }
+
+    // 4. Power BI & Executive Analytics Visual
+    function drawPowerBiVisual(ctx, lx, ly, t) {
+      ctx.fillStyle = 'rgba(0,0,0,0.15)';
+      ctx.beginPath();
+      ctx.ellipse(lx + 180, ly + 250, 170, 24, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = t.isBright ? '#ffffff' : '#0f172a';
+      ctx.strokeStyle = '#f59e0b';
+      ctx.lineWidth = 2;
+      roundRect(ctx, lx + 40, ly + 40, 280, 180, 10, true, true);
+
+      ctx.fillStyle = '#f59e0b';
+      roundRect(ctx, lx + 40, ly + 40, 280, 32, 8, true, false);
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 11px Inter, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('EXECUTIVE DAX ANALYTICS COMMAND', lx + 55, ly + 61);
+
+      ctx.fillStyle = t.isBright ? '#f8fafc' : '#1e293b';
+      roundRect(ctx, lx + 55, ly + 85, 75, 45, 6, true, false);
+      roundRect(ctx, lx + 142, ly + 85, 75, 45, 6, true, false);
+      roundRect(ctx, lx + 230, ly + 85, 75, 45, 6, true, false);
+
+      ctx.fillStyle = '#0284c7'; ctx.font = 'bold 13px Inter, sans-serif';
+      ctx.fillText('99.9%', lx + 65, ly + 107);
+      ctx.fillStyle = '#10b981';
+      ctx.fillText('< 1s', lx + 155, ly + 107);
+      ctx.fillStyle = '#8b5cf6';
+      ctx.fillText('DAX Star', lx + 235, ly + 107);
+
+      const bars = [25, 45, 35, 65, 80, 95];
+      ctx.fillStyle = '#f59e0b';
+      for (let b = 0; b < bars.length; b++) {
+        ctx.fillRect(lx + 60 + b * 40, ly + 200 - bars[b] * 0.5, 24, bars[b] * 0.5);
+      }
+    }
+
+    // 5. Sage Intacct & ERP Invoice Visual
+    function drawSageInvoiceVisual(ctx, lx, ly, t) {
       ctx.fillStyle = 'rgba(0,0,0,0.12)';
       ctx.beginPath();
       ctx.ellipse(lx + 160, ly + 250, 160, 24, 0, 0, Math.PI * 2);
       ctx.fill();
 
-      // Laptop Screen Shell
       ctx.fillStyle = '#0f172a';
       roundRect(ctx, lx + 30, ly + 40, 240, 160, 10, true, false);
 
-      // Laptop Display Inner Screen
       const screenGrad = ctx.createLinearGradient(lx + 40, ly + 50, lx + 260, ly + 190);
       screenGrad.addColorStop(0, '#f8fafc');
       screenGrad.addColorStop(1, '#e2e8f0');
       ctx.fillStyle = screenGrad;
       roundRect(ctx, lx + 38, ly + 48, 224, 144, 6, true, false);
 
-      // Invoice Document on Screen
       ctx.fillStyle = '#ffffff';
       roundRect(ctx, lx + 60, ly + 60, 180, 120, 6, true, false);
 
-      // Document Header
       ctx.fillStyle = '#0f172a';
       ctx.font = 'bold 13px Inter, sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText(d.meta.visualType === 'invoice' ? 'INVOICE' : 'SYSTEM READY', lx + 150, ly + 80);
+      ctx.fillText('SALES INVOICE', lx + 150, ly + 80);
 
-      // Document Fake Text Lines
       ctx.fillStyle = '#cbd5e1';
       for (let l = 0; l < 4; l++) {
         roundRect(ctx, lx + 75, ly + 95 + l * 12, 130 - l * 15, 5, 2, true, false);
       }
 
-      // Verified Green Badge on Document
       ctx.fillStyle = '#10b981';
       ctx.beginPath();
       ctx.arc(lx + 190, ly + 145, 18, 0, Math.PI * 2);
@@ -1062,7 +1334,6 @@
       ctx.font = 'bold 16px Inter, sans-serif';
       ctx.fillText('✓', lx + 190, ly + 151);
 
-      // Laptop Keyboard Base
       ctx.fillStyle = '#334155';
       ctx.beginPath();
       ctx.moveTo(lx, ly + 200);
@@ -1072,49 +1343,69 @@
       ctx.closePath();
       ctx.fill();
 
-      // Trackpad
-      ctx.fillStyle = '#475569';
-      roundRect(ctx, lx + 115, ly + 206, 70, 18, 3, true, false);
-
-      // Carton / Shipment Packages beside Laptop
       ctx.fillStyle = '#d97706';
       roundRect(ctx, lx - 70, ly + 140, 65, 65, 4, true, false);
       ctx.fillStyle = '#b45309';
       roundRect(ctx, lx - 45, ly + 110, 50, 50, 4, true, false);
       ctx.fillStyle = '#fde68a';
-      ctx.fillRect(lx - 45, ly + 170, 65, 6); // Tape
+      ctx.fillRect(lx - 45, ly + 170, 65, 6);
 
-      // Robot Automation Helper Mascot
       const rx = lx + 320;
       const ry = ly + 120;
-      // Head
       ctx.fillStyle = '#ffffff';
       ctx.strokeStyle = '#38bdf8';
       ctx.lineWidth = 3;
       roundRect(ctx, rx, ry, 64, 52, 16, true, true);
-      // Face screen
       ctx.fillStyle = '#0f172a';
       roundRect(ctx, rx + 8, ry + 8, 48, 36, 10, true, false);
-      // Eyes
       ctx.fillStyle = '#38bdf8';
       ctx.beginPath(); ctx.arc(rx + 22, ry + 25, 5, 0, Math.PI * 2); ctx.fill();
       ctx.beginPath(); ctx.arc(rx + 42, ry + 25, 5, 0, Math.PI * 2); ctx.fill();
-      // Body
       ctx.fillStyle = '#ffffff';
       roundRect(ctx, rx + 8, ry + 56, 48, 50, 14, true, true);
-      // Heart / Status light
       ctx.fillStyle = '#10b981';
-      ctx.beginPath(); ctx.arc(rx + 32, ry + 80, 8, 0, Math.PI * 2); ctx.fill();
-      // Thumbs up arm
-      ctx.fillStyle = '#ffffff';
-      roundRect(ctx, rx + 56, ry + 62, 22, 12, 6, true, true);
-      ctx.fillStyle = '#10b981';
-      ctx.font = 'bold 16px Inter, sans-serif';
-      ctx.fillText('👍', rx + 78, ry + 73);
+      ctx.font = 'bold 14px Inter, sans-serif';
+      ctx.fillText('👍', rx + 65, ry + 75);
+    }
 
-      ctx.restore();
+    // 6. AI & Autonomous Agent Visual
+    function drawAiAgentVisual(ctx, lx, ly, t) {
+      ctx.fillStyle = 'rgba(0,0,0,0.15)';
+      ctx.beginPath();
+      ctx.ellipse(lx + 180, ly + 250, 170, 24, 0, 0, Math.PI * 2);
+      ctx.fill();
 
-      return canvas.toDataURL('image/jpeg', 0.95);
+      ctx.fillStyle = t.isBright ? '#ffffff' : '#1e1b4b';
+      ctx.strokeStyle = '#818cf8';
+      ctx.lineWidth = 2;
+      roundRect(ctx, lx + 50, ly + 50, 260, 170, 12, true, true);
+
+      ctx.fillStyle = '#818cf8';
+      ctx.font = 'bold 12px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('NEURAL VECTOR EMBEDDING SPACE', lx + 180, ly + 80);
+
+      const aiNodes = [
+        { x: lx + 90, y: ly + 120 }, { x: lx + 140, y: ly + 160 },
+        { x: lx + 180, y: ly + 110 }, { x: lx + 220, y: ly + 170 },
+        { x: lx + 270, y: ly + 130 }
+      ];
+
+      ctx.strokeStyle = '#a855f7';
+      ctx.lineWidth = 1.5;
+      for (let i = 0; i < aiNodes.length - 1; i++) {
+        ctx.beginPath();
+        ctx.moveTo(aiNodes[i].x, aiNodes[i].y);
+        ctx.lineTo(aiNodes[i + 1].x, aiNodes[i + 1].y);
+        ctx.stroke();
+      }
+
+      aiNodes.forEach(n => {
+        ctx.fillStyle = '#a855f7';
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, 8, 0, Math.PI * 2);
+        ctx.fill();
+      });
     }
 
     function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
@@ -1655,10 +1946,19 @@ Connect with MagnusMinds to explore how modern engineering practices can elevate
       const keywords = [cleanTitle, ...meta.tags].filter((v, i, a) => a.indexOf(v) === i).join(', ');
       const metaDescription = `An engineering perspective on ${cleanTitle} by MagnusMinds: explore architecture, core concepts, structured patterns, and enterprise advantages.`;
 
-      // Construct High-End Infographic Image Prompt for AI Generators (Midjourney/DALL-E)
-      const badgeList = meta.badges.map(b => `"${b.label}"`).join(', ');
-      const flowList = meta.workflow.join(' -> ');
-      currentImagePrompt = `A high-end 16:9 widescreen corporate infographic blog banner on a clean white and soft cyan gradient background. Left side features bold typography: "${cleanTitle}" with subtitle "${meta.summary}" and four circular feature badges: ${badgeList}. Top right shows a 5-step horizontal workflow diagram connected with arrows: "${flowList}". Bottom right features a sleek 3D isometric illustration of a modern laptop with an automated invoice document, green verified checkmark, shipment packages, and friendly AI automation helper robot, clean vector styling, ultra-sharp detail, 8k resolution, professional tech marketing design, no watermark, no blurry elements.`;
+      // Generate Domain-Specific Description
+      const content = generateDomainContent(domain, cleanTitle);
+      document.getElementById('fieldDescriptionText').value = content.visual;
+      document.getElementById('fieldDescriptionHtml').value = content.html;
+
+      // Construct High-End Infographic Image Prompt for AI Generators based on generated description
+      currentImagePrompt = `# Topic: ${cleanTitle}
+
+# Generated Description:
+${meta.summary}
+
+Based on this generated description, can you provide a background blog cover proper one?
+Requirements: High-resolution 16:9 widescreen corporate technical infographic banner, clean modern 3D isometric software architecture illustration for ${cleanTitle}, elegant typography, vibrant gradient lighting, highly detailed 8k resolution, professional tech marketing design, zero watermark.`;
 
       // Populate Form Fields
       document.getElementById('fieldTitle').value = cleanTitle;
@@ -1677,10 +1977,6 @@ Connect with MagnusMinds to explore how modern engineering practices can elevate
       dlBtn.href = bannerDataUrl;
       dlBtn.download = `${slug}_banner.jpg`;
 
-      // Generate Domain-Specific Description
-      const content = generateDomainContent(domain, cleanTitle);
-      document.getElementById('fieldDescriptionText').value = content.visual;
-      document.getElementById('fieldDescriptionHtml').value = content.html;
       renderPreviewDisplay();
 
       // Reveal results card and smooth scroll
