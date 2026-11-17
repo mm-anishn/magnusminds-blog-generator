@@ -229,42 +229,46 @@
 <body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col font-sans">
 
   <!-- Header -->
-  <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
-    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+  <header class="bg-white/95 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-50 shadow-xs">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
       <div class="flex items-center space-x-3">
-        <div class="w-9 h-9 rounded-lg bg-brand-500 flex items-center justify-center text-white font-black text-lg shadow-sm">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-600 to-brand-500 flex items-center justify-center text-white font-extrabold text-lg shadow-md shadow-brand-500/20">
           M
         </div>
         <div>
-          <h1 class="text-base font-bold text-slate-900 leading-tight">MagnusMinds Blog Engine</h1>
-          <p class="text-xs text-slate-500">Enterprise Technical Content &amp; Media Generator</p>
+          <h1 class="text-base font-bold text-slate-900 leading-tight tracking-tight">MagnusMinds Blog Generator</h1>
         </div>
       </div>
       <div class="flex items-center space-x-3">
-        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span>
-          Ready to Publish
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/60 shadow-xs">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 mr-2 animate-pulse"></span>
+          Instant CMS Ready
         </span>
       </div>
     </div>
   </header>
 
   <!-- Main Container -->
-  <main class="flex-1 max-w-6xl w-full mx-auto px-4 py-8 space-y-6">
+  <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-8 space-y-6">
 
     <!-- Topic Input Card -->
-    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-      <h2 class="text-lg font-bold text-slate-900 mb-1">Enter Blog Topic</h2>
-      <p class="text-sm text-slate-500 mb-4">Type any technical topic to generate verified CMS fields, customized technical description, and an infographic banner graphic.</p>
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200/90 p-6 sm:p-7 transition">
+      <div class="mb-4">
+        <h2 class="text-xl font-extrabold text-slate-900 tracking-tight">Generate Publication-Ready Technical Blogs</h2>
+        <p class="text-sm text-slate-500 mt-1">Enter a single topic title to automatically generate verified 1-to-1 CMS fields, an executive 1200×630 infographic banner, and publication-ready CKEditor content.</p>
+      </div>
       
       <div class="flex flex-col sm:flex-row gap-3">
         <div class="flex-1 relative">
+          <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          </div>
           <input 
             type="text" 
             id="topicInput" 
             value=""
             placeholder="Type any topic (e.g. Sage Invoice Automation, Microservices, Microsoft Fabric)..." 
-            class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition text-sm"
+            class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 focus:ring-4 focus:ring-brand-500/15 focus:border-brand-500 outline-none transition text-sm font-medium placeholder-slate-400 shadow-xs"
             onkeydown="if(event.key === 'Enter') generateBlog();"
             autofocus
           >
@@ -272,7 +276,7 @@
         <button 
           id="generateBtn" 
           onclick="generateBlog()"
-          class="bg-brand-500 hover:bg-brand-600 text-white font-semibold px-6 py-2.5 rounded-lg text-sm shadow-sm transition flex items-center justify-center space-x-2 cursor-pointer"
+          class="bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 active:scale-[0.99] text-white font-bold px-7 py-3 rounded-xl text-sm shadow-md shadow-brand-500/20 transition flex items-center justify-center space-x-2 cursor-pointer shrink-0"
         >
           <span>Generate Blog</span>
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
@@ -280,17 +284,17 @@
       </div>
 
       <!-- Quick Topic Pills -->
-      <div class="mt-3.5 flex flex-wrap items-center gap-2 text-xs">
-        <span class="text-slate-400 font-medium">Quick examples:</span>
-        <button onclick="setTopic('Sage Invoice Automation: Reducing Manual Work and Improving Finance Operations')" class="px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 rounded-md transition cursor-pointer font-semibold border border-emerald-200">Sage Invoice Automation</button>
-        <button onclick="setTopic('Microservices Architecture')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md transition cursor-pointer font-medium">Microservices</button>
-        <button onclick="setTopic('Microsoft Fabric Lakehouse Guide')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md transition cursor-pointer font-medium">Microsoft Fabric</button>
-        <button onclick="setTopic('SQL Server Performance Optimization')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md transition cursor-pointer font-medium">SQL Server</button>
-        <button onclick="setTopic('Power BI Enterprise Analytics & DAX')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md transition cursor-pointer font-medium">Power BI</button>
+      <div class="mt-4 flex flex-wrap items-center gap-2 text-xs">
+        <span class="text-slate-400 font-semibold uppercase tracking-wider text-[11px]">Quick Samples:</span>
+        <button onclick="setTopic('Sage Invoice Automation: Reducing Manual Work and Improving Finance Operations')" class="px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 rounded-lg transition cursor-pointer font-semibold border border-emerald-200/70 shadow-xs">Sage Invoice Automation</button>
+        <button onclick="setTopic('Microservices Architecture')" class="px-3 py-1.5 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-lg transition cursor-pointer font-medium border border-slate-200">Microservices</button>
+        <button onclick="setTopic('Microsoft Fabric Lakehouse Guide')" class="px-3 py-1.5 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-lg transition cursor-pointer font-medium border border-slate-200">Microsoft Fabric</button>
+        <button onclick="setTopic('SQL Server Performance Optimization')" class="px-3 py-1.5 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-lg transition cursor-pointer font-medium border border-slate-200">SQL Server</button>
+        <button onclick="setTopic('Power BI Enterprise Analytics & DAX')" class="px-3 py-1.5 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-lg transition cursor-pointer font-medium border border-slate-200">Power BI</button>
       </div>
     </div>
 
-    <!-- CMS Output Section (Hidden by default, shown ONLY after clicking Generate) -->
+        <!-- CMS Output Section (Hidden by default, shown ONLY after clicking Generate) -->
     <div id="resultsCard" class="hidden bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-6">
       
       <div class="flex items-center justify-between pb-4 border-b border-slate-200">
