@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MagnusMinds Blog Generator | CMS Ready</title>
+  <title>MagnusMinds Blog Engine | Enterprise Technical Publisher</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -63,8 +63,8 @@
           M
         </div>
         <div>
-          <h1 class="text-base font-bold text-slate-900 leading-tight">MagnusMinds Blog Generator</h1>
-          <p class="text-xs text-slate-500">1-to-1 Mapping to Admin CMS "Create Blog" Form</p>
+          <h1 class="text-base font-bold text-slate-900 leading-tight">MagnusMinds Blog Engine</h1>
+          <p class="text-xs text-slate-500">Enterprise Technical Content &amp; Media Generator</p>
         </div>
       </div>
       <div class="flex items-center space-x-3">
@@ -82,17 +82,18 @@
     <!-- Topic Input Card -->
     <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
       <h2 class="text-lg font-bold text-slate-900 mb-1">Enter Blog Topic</h2>
-      <p class="text-sm text-slate-500 mb-4">The generator will automatically build all required CMS fields (Title, Keywords, Image, Meta Description, Categories, Tags, URL Slug, and CKEditor Description).</p>
+      <p class="text-sm text-slate-500 mb-4">Type any technical topic to generate verified CMS fields, customized technical description, and an AI banner graphic.</p>
       
       <div class="flex flex-col sm:flex-row gap-3">
         <div class="flex-1 relative">
           <input 
             type="text" 
             id="topicInput" 
-            value="Microsoft Fabric"
-            placeholder="e.g. Microsoft Fabric, Microsoft SQL Server, RAG with .NET 9, Power BI Enterprise" 
+            value=""
+            placeholder="Type any topic (e.g. Microservices, Microsoft Fabric, SQL Server Performance, Power BI)..." 
             class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition text-sm"
             onkeydown="if(event.key === 'Enter') generateBlog();"
+            autofocus
           >
         </div>
         <button 
@@ -108,15 +109,15 @@
       <!-- Quick Topic Pills -->
       <div class="mt-3.5 flex flex-wrap items-center gap-2 text-xs">
         <span class="text-slate-400 font-medium">Quick examples:</span>
+        <button onclick="setTopic('Microservices')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md transition cursor-pointer font-medium">Microservices</button>
         <button onclick="setTopic('Microsoft Fabric')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md transition cursor-pointer font-medium">Microsoft Fabric</button>
-        <button onclick="setTopic('AI Ready World')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md transition cursor-pointer font-medium">AI Ready World</button>
-        <button onclick="setTopic('Microsoft SQL Server Performance Optimization and High-Throughput Indexing')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md transition cursor-pointer font-medium">Microsoft SQL Server</button>
-        <button onclick="setTopic('Power BI Enterprise KPI Reporting & DAX Optimization')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md transition cursor-pointer font-medium">Power BI</button>
-        <button onclick="setTopic('Building a RAG-Powered Knowledge Assistant with ASP.NET Core and PostgreSQL')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md transition cursor-pointer font-medium">RAG with .NET 9</button>
+        <button onclick="setTopic('SQL Server Performance Optimization')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md transition cursor-pointer font-medium">SQL Server</button>
+        <button onclick="setTopic('Power BI Enterprise Analytics & DAX')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md transition cursor-pointer font-medium">Power BI</button>
+        <button onclick="setTopic('Building Enterprise AI Agents with RAG')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md transition cursor-pointer font-medium">AI Agents &amp; RAG</button>
       </div>
     </div>
 
-    <!-- CMS Output Section (Hidden by default, shown upon clicking Generate) -->
+    <!-- CMS Output Section (Hidden by default, shown ONLY after clicking Generate) -->
     <div id="resultsCard" class="hidden bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-6">
       
       <div class="flex items-center justify-between pb-4 border-b border-slate-200">
@@ -164,7 +165,10 @@
         <div>
           <div class="flex items-center justify-between mb-1.5">
             <label class="text-xs font-bold text-slate-700 uppercase tracking-wide">Image * (Banner Image)</label>
-            <a id="downloadImageBtn" href="#" download="blog_banner.jpg" class="text-xs text-white bg-brand-500 hover:bg-brand-600 px-2.5 py-1 rounded font-semibold cursor-pointer">⬇ Download Banner Image</a>
+            <div class="flex items-center space-x-2">
+              <button onclick="copyAiImagePrompt()" class="text-xs text-slate-600 hover:text-slate-900 font-medium cursor-pointer">📋 Copy AI Prompt</button>
+              <a id="downloadImageBtn" href="#" download="blog_banner.jpg" class="text-xs text-white bg-brand-500 hover:bg-brand-600 px-2.5 py-1 rounded font-semibold cursor-pointer">⬇ Download Banner</a>
+            </div>
           </div>
           <div class="border border-slate-200 rounded-md p-1 bg-slate-900 h-[120px] flex items-center justify-center overflow-hidden relative">
             <img id="bannerImagePreview" src="" alt="Banner Preview" class="w-full h-full object-cover rounded">
@@ -172,7 +176,7 @@
               Generating High-Res Banner...
             </div>
           </div>
-          <p class="text-[11px] text-slate-400 mt-1">Download this image and upload directly via "Choose file" in the CMS.</p>
+          <p class="text-[11px] text-slate-400 mt-1">Download this banner and upload directly via "Choose file" in the CMS.</p>
         </div>
       </div>
 
@@ -256,6 +260,8 @@
   </footer>
 
   <script>
+    let currentImagePrompt = '';
+
     function setTopic(val) {
       document.getElementById('topicInput').value = val;
       generateBlog();
@@ -304,6 +310,13 @@
       });
     }
 
+    function copyAiImagePrompt() {
+      if (!currentImagePrompt) return;
+      navigator.clipboard.writeText(currentImagePrompt).then(() => {
+        showToast('AI Image Prompt copied!');
+      });
+    }
+
     function copyAllFields() {
       const title = document.getElementById('fieldTitle').value;
       const kw = document.getElementById('fieldKeyword').value;
@@ -323,40 +336,86 @@
       return str.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-');
     }
 
-    function classifyDomain(topic) {
-      const lower = topic.toLowerCase();
-      if (lower.includes('fabric') || lower.includes('onelake') || lower.includes('lakehouse') || lower.includes('delta lake') || lower.includes('medallion')) {
+    // Precise Topic Domain Classifier
+    function classifyTopic(raw) {
+      const s = raw.toLowerCase();
+
+      // 1. Architecture & Microservices (Highest priority for system design)
+      if (s.includes('microservice') || s.includes('system design') || s.includes('clean architecture') ||
+          s.includes('domain driven') || s.includes('ddd') || s.includes('event-driven') || s.includes('kafka') ||
+          s.includes('rabbitmq') || s.includes('message queue') || s.includes('cqrs') || s.includes('distributed') ||
+          s.includes('api gateway') || s.includes('service mesh') || s.includes('monolith') || s.includes('architect')) {
+        return 'architecture';
+      }
+
+      // 2. Microsoft Fabric
+      if (s.includes('fabric') || s.includes('lakehouse') || s.includes('onelake') || s.includes('delta lake') ||
+          s.includes('medallion') || s.includes('synapse')) {
         return 'fabric';
       }
-      if (lower.includes('power bi') || lower.includes('powerbi') || lower.includes('dax') || (lower.includes('bi') && lower.includes('report'))) {
+
+      // 3. Power BI
+      if (s.includes('power bi') || s.includes('powerbi') || s.includes('dax') || s.includes('kpi report') ||
+          (s.includes('bi') && (s.includes('report') || s.includes('dashboard')))) {
         return 'powerbi';
       }
-      if (lower.includes('sql') || lower.includes('database') || lower.includes('postgres') || lower.includes('t-sql') || lower.includes('nosql') || lower.includes('index')) {
+
+      // 4. SQL Server & Databases
+      if (s.includes('sql') || s.includes('database') || s.includes('postgres') || s.includes('query') ||
+          s.includes('index') || s.includes('t-sql') || s.includes('stored procedure') || s.includes('mysql') ||
+          s.includes('mongodb') || s.includes('nosql')) {
         return 'sql';
       }
-      if (lower.includes('rag') || lower.includes('ai') || lower.includes('llm') || lower.includes('agent') || lower.includes('vector') || lower.includes('gpt') || lower.includes('gemini')) {
+
+      // 5. Artificial Intelligence
+      if (s.includes('ai') || s.includes('rag') || s.includes('llm') || s.includes('agent') ||
+          s.includes('vector') || s.includes('openai') || s.includes('gemini') || s.includes('copilot') ||
+          s.includes('prompt') || s.includes('machine learning') || s.includes('deep learning')) {
         return 'ai';
       }
-      if (lower.includes('azure') || lower.includes('cloud') || lower.includes('serverless') || lower.includes('app service')) {
+
+      // 6. Azure Cloud
+      if (s.includes('azure') || s.includes('aws') || s.includes('gcp') || s.includes('serverless') ||
+          s.includes('cloud') || s.includes('app service') || s.includes('blob storage')) {
         return 'azure';
       }
-      if (lower.includes('dotnet') || lower.includes('.net') || lower.includes('c#') || lower.includes('csharp') || lower.includes('asp.net') || lower.includes('ef core')) {
-        return 'dotnet';
+
+      // 7. C# & .NET (Only if explicitly C# / .NET!)
+      if (s.includes('.net') || s.includes('dotnet') || s.includes('c#') || s.includes('csharp') ||
+          s.includes('asp.net') || s.includes('ef core') || s.includes('dapper')) {
+        return 'csharp';
       }
-      if (lower.includes('react') || lower.includes('frontend') || lower.includes('typescript') || lower.includes('javascript') || lower.includes('next.js') || lower.includes('tailwind')) {
+
+      // 8. Frontend
+      if (s.includes('react') || s.includes('angular') || s.includes('vue') || s.includes('frontend') ||
+          s.includes('typescript') || s.includes('javascript') || s.includes('next.js') || s.includes('tailwind') ||
+          s.includes('css') || s.includes('html')) {
         return 'frontend';
       }
-      if (lower.includes('devops') || lower.includes('docker') || lower.includes('kubernetes') || lower.includes('ci/cd') || lower.includes('pipeline')) {
-        return 'devops';
+
+      // 9. DevOps & Infrastructure
+      if (s.includes('devops') || s.includes('docker') || s.includes('kubernetes') || s.includes('ci/cd') ||
+          s.includes('github action') || s.includes('terraform') || s.includes('helm') || s.includes('pipeline')) {
+        return 'infrastructure';
       }
-      if (lower.includes('security') || lower.includes('oauth') || lower.includes('zero trust') || lower.includes('cyber')) {
-        return 'security';
+
+      // 10. Cybersecurity
+      if (s.includes('security') || s.includes('cyber') || s.includes('oauth') || s.includes('auth') ||
+          s.includes('zero trust') || s.includes('jwt') || s.includes('penetration')) {
+        return 'cybersecurity';
       }
+
       return 'architecture';
     }
 
     function getDomainMetadata(domain, cleanTitle) {
       switch(domain) {
+        case 'architecture':
+          return {
+            category: 'Architecture',
+            tags: ['Microservices', 'Distributed-Systems', 'Architecture', 'System-Design', 'Cloud-Architecture', 'API-Gateway'],
+            imagePrompt: 'Cinematic 3D isometric blueprint of enterprise microservices architecture, floating decoupled service nodes connected by radiant glowing optical data fibers, dark sleek corporate obsidian and cobalt blue background, volumetric studio lighting, award-winning concept art, 8k resolution, minimalist, photorealistic, no text, no letters, no words, no watermark'
+          };
         case 'fabric':
           return {
             category: 'Microsoft-Fabric',
@@ -387,7 +446,7 @@
             tags: ['Azure', 'Cloud-Architecture', 'Enterprise-Cloud', 'Serverless', 'DevOps', 'Scalability'],
             imagePrompt: 'Global enterprise cloud infrastructure blueprint, floating serverless microservices nodes, interconnected optical network lattice, deep dark slate and cyan illumination, modern 3d technology blueprint, crisp studio render, 8k, no text, no words, no letters, no watermark'
           };
-        case 'dotnet':
+        case 'csharp':
           return {
             category: 'csharp',
             tags: ['C#', '.NET', 'ASP.NET-Core', 'Architecture', 'Web-API', 'Clean-Architecture'],
@@ -399,28 +458,160 @@
             tags: ['Frontend', 'React', 'TypeScript', 'JavaScript', 'UI-UX', 'Web-Development'],
             imagePrompt: 'Ultra modern responsive frontend web application interface design, clean isometric layered UI components, floating glass panels, vibrant cobalt and violet accents, dark corporate background, modern 3d illustration, 8k, no text, no words, no letters, no watermark'
           };
-        case 'devops':
+        case 'infrastructure':
           return {
             category: 'Infrastructure',
             tags: ['DevOps', 'CI/CD', 'Docker', 'Kubernetes', 'Infrastructure', 'Automation'],
             imagePrompt: 'Enterprise DevOps continuous integration pipeline, automated deployment gears, glowing containerized pods, dark industrial high-tech atmosphere, cyan and emerald status indicators, 3d isometric render, 8k, no text, no words, no letters, no watermark'
           };
-        case 'security':
+        case 'cybersecurity':
           return {
             category: 'Cybersecurity',
             tags: ['Cybersecurity', 'Security', 'Zero-Trust', 'Authentication', 'OAuth', 'Data-Protection'],
             imagePrompt: 'Enterprise zero trust cybersecurity architecture, glowing cryptographic shield, fortified biometric vault nodes, dark obsidian navy background, deep emerald and cyan security beams, 3d isometric digital render, 8k, no text, no words, no letters, no watermark'
           };
-        default:
-          return {
-            category: 'Architecture',
-            tags: ['Architecture', 'Enterprise-Architecture', 'Microservices', 'System-Design', 'Scalability', 'Design-Patterns'],
-            imagePrompt: 'Clean modern enterprise software architecture blueprint, modular geometric building blocks, precision technical design, dark corporate navy blue background, glowing sapphire interconnects, high-end 3D isometric render, 8k, no text, no words, no letters, no watermark'
-          };
       }
     }
 
     function generateDomainContent(domain, cleanTitle) {
+      if (domain === 'architecture') {
+        return {
+          visual: `Introduction
+As enterprise applications grow in complexity and scale, traditional monolithic architectures often become severe bottlenecks—slowing release cycles, coupling unrelated business logic, and creating single points of operational failure.
+
+Adopting **${cleanTitle}** enables engineering organizations to decompose monolithic systems into decoupled, autonomous domain services. Each service owns its bounded context, data storage, and deployment pipeline, empowering independent teams to ship features rapidly with zero cross-service deployment lock-in.
+
+By decoupling service boundaries, establishing asynchronous event-driven messaging, and routing traffic through resilient API gateways, organizations achieve sub-second latency, elastic scalability, and fault-isolated operational reliability.
+
+1. Core Architectural Pillars of ${cleanTitle}
+Building production-grade distributed architectures requires deliberate foundations across service boundaries, data consistency, and communication:
+
+Bounded Contexts & Domain-Driven Design (DDD)
+Decomposes large domains into focused, single-responsibility services. Each bounded context manages its own transactional state and private data store, preventing shared-database dependencies and tight coupling.
+
+Asynchronous Event-Driven Messaging
+Employs durable message brokers (such as Apache Kafka, RabbitMQ, or cloud event buses) using the Outbox pattern. Event-driven choreography ensures eventual consistency and prevents cascading synchronous HTTP timeouts.
+
+API Gateway & Dynamic Traffic Routing
+Serves as the unified front door for external clients, orchestrating request routing, authentication tokens, rate limiting, and SSL termination while shielding internal microservice topologies.
+
+Distributed Observability & Telemetry
+Instruments all inter-service requests with OpenTelemetry distributed trace IDs (W3C Trace Context), structured logging, and health probes for instant root-cause diagnosis across distributed hops.
+
+2. Monolithic Architecture vs Distributed Microservices: Key Differences
+Comparing the architectural evolution:
+
+Architectural Dimension | Monolithic Architecture | Distributed Microservices Pattern
+Deployment Model | Single massive unit; high risk on every release | Independent CI/CD per service; zero-downtime canary rollouts
+Data Management | Shared relational database with complex joins | Database-per-service pattern ensuring complete data autonomy
+Scalability | Vertical scaling; entire stack scaled together | Horizontal elastic scaling targeted to high-traffic services
+Fault Isolation | Single bug can crash the entire application process | Fault-isolated; failing service degrades gracefully via circuit breakers
+Team Autonomy | Large cross-functional dependencies and merge conflicts | Autonomous two-pizza teams owning end-to-end domain services
+
+3. End-to-End Enterprise Request & Event Flow
+A typical distributed request moves through a resilient, observable pipeline:
+1. Client Ingestion: The client application sends an authenticated request to the API Gateway.
+2. Gateway Validation: The API Gateway verifies JWT security tokens, applies rate limits, and attaches a unique distributed trace ID.
+3. Service Execution: The targeted microservice executes core domain logic against its private data store.
+4. Asynchronous Event Publishing: An Outbox worker publishes domain events to the message broker to notify downstream services.
+5. Downstream Reaction: Independent subscriber services consume the event asynchronously to update projections and analytics.
+
+4. Strategic Advantages of ${cleanTitle}
+Deploying a well-structured microservices architecture provides decisive competitive benefits:
+Accelerated Deployment Velocity: Domain teams deploy multiple updates daily without coordinating enterprise-wide release freezes.
+Elastic Cost Optimization: Cloud compute resources scale dynamically based on individual service demand rather than over-provisioning the entire application.
+Unmatched Fault Tolerance: Circuit breakers and bulkhead patterns ensure that a failure in non-critical reporting never impacts checkout or authentication.
+Technology Flexibility: Teams select the optimal programming language and database best suited for their specific domain problem.
+Seamless Organizational Scaling: New engineers onboard quickly by focusing on isolated service codebases rather than millions of lines of monolithic code.
+
+Conclusion
+Transitioning to microservices is an architectural strategy that aligns software architecture with organizational agility. By defining strict domain boundaries, embracing event-driven communication, and automating distributed telemetry, engineering teams build resilient systems ready for high-volume enterprise operations.
+
+Build Better Software with MagnusMinds
+At MagnusMinds IT Solution, our enterprise software architects specialize in microservices design, monolithic decomposition, event-driven systems, and cloud-native application modernization.
+
+Connect with MagnusMinds to architect your distributed systems for high performance and long-term scale.`,
+
+          html: `<h2>Introduction</h2>
+<p>As enterprise applications grow in complexity and scale, traditional monolithic architectures often become severe bottlenecks—slowing release cycles, coupling unrelated business logic, and creating single points of operational failure.</p>
+<p>Adopting <strong>${cleanTitle}</strong> enables engineering organizations to decompose monolithic systems into decoupled, autonomous domain services. Each service owns its bounded context, data storage, and deployment pipeline, empowering independent teams to ship features rapidly with zero cross-service deployment lock-in.</p>
+<p>By decoupling service boundaries, establishing asynchronous event-driven messaging, and routing traffic through resilient API gateways, organizations achieve sub-second latency, elastic scalability, and fault-isolated operational reliability.</p>
+
+<h2>1. Core Architectural Pillars of ${cleanTitle}</h2>
+<p>Building production-grade distributed architectures requires deliberate foundations across service boundaries, data consistency, and communication:</p>
+<p><strong>Bounded Contexts &amp; Domain-Driven Design (DDD)</strong><br>Decomposes large domains into focused, single-responsibility services. Each bounded context manages its own transactional state and private data store, preventing shared-database dependencies and tight coupling.</p>
+<p><strong>Asynchronous Event-Driven Messaging</strong><br>Employs durable message brokers (such as Apache Kafka, RabbitMQ, or cloud event buses) using the Outbox pattern. Event-driven choreography ensures eventual consistency and prevents cascading synchronous HTTP timeouts.</p>
+<p><strong>API Gateway &amp; Dynamic Traffic Routing</strong><br>Serves as the unified front door for external clients, orchestrating request routing, authentication tokens, rate limiting, and SSL termination while shielding internal microservice topologies.</p>
+<p><strong>Distributed Observability &amp; Telemetry</strong><br>Instruments all inter-service requests with OpenTelemetry distributed trace IDs (W3C Trace Context), structured logging, and health probes for instant root-cause diagnosis across distributed hops.</p>
+
+<h2>2. Monolithic Architecture vs Distributed Microservices: Key Differences</h2>
+<p>Comparing the architectural evolution:</p>
+<table border="1" cellpadding="8" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+  <thead>
+    <tr style="background-color: #f1f5f9;">
+      <th style="text-align: left; padding: 10px;">Architectural Dimension</th>
+      <th style="text-align: left; padding: 10px;">Monolithic Architecture</th>
+      <th style="text-align: left; padding: 10px;">Distributed Microservices Pattern</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding: 10px;"><strong>Deployment Model</strong></td>
+      <td style="padding: 10px;">Single massive unit; high risk on every release</td>
+      <td style="padding: 10px;">Independent CI/CD per service; zero-downtime canary rollouts</td>
+    </tr>
+    <tr>
+      <td style="padding: 10px;"><strong>Data Management</strong></td>
+      <td style="padding: 10px;">Shared relational database with complex joins</td>
+      <td style="padding: 10px;">Database-per-service pattern ensuring complete data autonomy</td>
+    </tr>
+    <tr>
+      <td style="padding: 10px;"><strong>Scalability</strong></td>
+      <td style="padding: 10px;">Vertical scaling; entire stack scaled together</td>
+      <td style="padding: 10px;">Horizontal elastic scaling targeted to high-traffic services</td>
+    </tr>
+    <tr>
+      <td style="padding: 10px;"><strong>Fault Isolation</strong></td>
+      <td style="padding: 10px;">Single bug can crash the entire application process</td>
+      <td style="padding: 10px;">Fault-isolated; failing service degrades gracefully via circuit breakers</td>
+    </tr>
+    <tr>
+      <td style="padding: 10px;"><strong>Team Autonomy</strong></td>
+      <td style="padding: 10px;">Large cross-functional dependencies and merge conflicts</td>
+      <td style="padding: 10px;">Autonomous two-pizza teams owning end-to-end domain services</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>3. End-to-End Enterprise Request &amp; Event Flow</h2>
+<p>A typical distributed request moves through a resilient, observable pipeline:</p>
+<ol>
+  <li><strong>Client Ingestion:</strong> The client application sends an authenticated request to the API Gateway.</li>
+  <li><strong>Gateway Validation:</strong> The API Gateway verifies JWT security tokens, applies rate limits, and attaches a unique distributed trace ID.</li>
+  <li><strong>Service Execution:</strong> The targeted microservice executes core domain logic against its private data store.</li>
+  <li><strong>Asynchronous Event Publishing:</strong> An Outbox worker publishes domain events to the message broker to notify downstream services.</li>
+  <li><strong>Downstream Reaction:</strong> Independent subscriber services consume the event asynchronously to update projections and analytics.</li>
+</ol>
+
+<h2>4. Strategic Advantages of ${cleanTitle}</h2>
+<p>Deploying a well-structured microservices architecture provides decisive competitive benefits:</p>
+<ul>
+  <li><strong>Accelerated Deployment Velocity:</strong> Domain teams deploy multiple updates daily without coordinating enterprise-wide release freezes.</li>
+  <li><strong>Elastic Cost Optimization:</strong> Cloud compute resources scale dynamically based on individual service demand rather than over-provisioning the entire application.</li>
+  <li><strong>Unmatched Fault Tolerance:</strong> Circuit breakers and bulkhead patterns ensure that a failure in non-critical reporting never impacts checkout or authentication.</li>
+  <li><strong>Technology Flexibility:</strong> Teams select the optimal programming language and database best suited for their specific domain problem.</li>
+  <li><strong>Seamless Organizational Scaling:</strong> New engineers onboard quickly by focusing on isolated service codebases rather than millions of lines of monolithic code.</li>
+</ul>
+
+<h2>Conclusion</h2>
+<p>Transitioning to microservices is an architectural strategy that aligns software architecture with organizational agility. By defining strict domain boundaries, embracing event-driven communication, and automating distributed telemetry, engineering teams build resilient systems ready for high-volume enterprise operations.</p>
+
+<h2>Build Better Software with MagnusMinds</h2>
+<p>At MagnusMinds IT Solution, our enterprise software architects specialize in microservices design, monolithic decomposition, event-driven systems, and cloud-native application modernization.</p>
+<p><a href="https://www.magnusminds.net/contact-us">Connect with MagnusMinds</a> to architect your distributed systems for high performance and long-term scale.</p>`
+        };
+      }
+
       if (domain === 'fabric') {
         return {
           visual: `Introduction
@@ -457,8 +648,6 @@ Security & Governance | Patchwork security across disparate services | Centraliz
 
 3. End-to-End Enterprise Data Flow
 Consider how an enterprise analytics team executes data ingestion and reporting:
-
-The workflow follows a streamlined, predictable path:
 1. Ingestion: Data Factory pipelines and shortcuts continuously ingest database CDC streams and log files into OneLake Bronze tables.
 2. Transformation: Automated Spark notebooks execute data quality checks, schema evolution, and deduplication to generate curated Silver tables.
 3. Aggregation: Data Warehouse SQL endpoints transform enriched datasets into Gold star schema dimension models.
@@ -467,7 +656,6 @@ The workflow follows a streamlined, predictable path:
 
 4. Strategic Advantages of ${cleanTitle}
 Deploying a unified architecture delivers measurable enterprise benefits:
-
 Reduced Storage & Compute Costs: Eliminates multiple redundant copies of identical data across storage buckets and warehouses.
 Accelerated Time-to-Insight: Analytics teams deliver high-fidelity dashboards in days rather than waiting for complex data migrations.
 Seamless Multi-Cloud Connectivity: OneLake shortcuts connect external AWS S3 and Google Cloud data with zero replication.
@@ -495,7 +683,6 @@ Connect with MagnusMinds to accelerate your enterprise data transformation with 
 <p><strong>Power BI Direct Lake Connectivity</strong><br>Unlocks real-time business intelligence by reading Delta tables in OneLake directly into Power BI without importing data into memory or incurring slow DirectQuery query translations.</p>
 
 <h2>2. Traditional Siloed Architecture vs Microsoft Fabric: Key Differences</h2>
-<p>Adopting Microsoft Fabric modernizes end-to-end data workflows:</p>
 <table border="1" cellpadding="8" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 15px 0;">
   <thead>
     <tr style="background-color: #f1f5f9;">
@@ -534,7 +721,6 @@ Connect with MagnusMinds to accelerate your enterprise data transformation with 
 </table>
 
 <h2>3. End-to-End Enterprise Data Flow</h2>
-<p>Consider how an enterprise analytics team executes data ingestion and reporting:</p>
 <ol>
   <li><strong>Ingestion:</strong> Data Factory pipelines and shortcuts continuously ingest database CDC streams and log files into OneLake Bronze tables.</li>
   <li><strong>Transformation:</strong> Automated Spark notebooks execute data quality checks, schema evolution, and deduplication to generate curated Silver tables.</li>
@@ -544,7 +730,6 @@ Connect with MagnusMinds to accelerate your enterprise data transformation with 
 </ol>
 
 <h2>4. Strategic Advantages of ${cleanTitle}</h2>
-<p>Deploying a unified architecture delivers measurable enterprise benefits:</p>
 <ul>
   <li><strong>Reduced Storage &amp; Compute Costs:</strong> Eliminates multiple redundant copies of identical data across storage buckets and warehouses.</li>
   <li><strong>Accelerated Time-to-Insight:</strong> Analytics teams deliver high-fidelity dashboards in days rather than waiting for complex data migrations.</li>
@@ -597,7 +782,6 @@ TempDB Configuration | Single default data file causing allocation contention | 
 Telemetry & Monitoring | Reactive troubleshooting during downtime incidents | Proactive Extended Events, Query Store, and index dmv checks
 
 3. Systematic Query Tuning Workflow
-Engineers should apply a disciplined workflow when isolating performance bottlenecks:
 1. Identify Expensive Queries: Query Store and wait statistics identify top resource consumers by CPU, duration, and logical reads.
 2. Analyze Execution Plans: Inspect graphical execution plans to identify table scans, implicit conversions, and memory spills.
 3. Refactor Indexing: Implement targeted covering indexes with included columns to eliminate key lookups.
@@ -605,7 +789,6 @@ Engineers should apply a disciplined workflow when isolating performance bottlen
 5. Baseline & Observe: Continuously measure p95 and p99 query duration using structured database telemetry.
 
 4. Strategic Advantages of Optimized Database Architecture
-High-throughput database architecture unlocks concrete operational benefits:
 Sub-Millisecond Response Times: Lean covering indexes slash query latency across high-volume API endpoints.
 Reduced Server Overhead: Halving CPU and disk I/O demands lowers cloud tier hosting expenses significantly.
 High Concurrency Without Deadlocks: Snapshot isolation ensures concurrent background workers never lock critical web requests.
@@ -626,14 +809,12 @@ Connect with MagnusMinds to optimize your database performance and unlock maximu
 <p>Implementing disciplined database architecture ensures that transactional databases and analytical queries scale predictably without causing lock escalation or exhausting server resources.</p>
 
 <h2>1. Core Pillars of Database Performance &amp; Reliability</h2>
-<p>Optimizing database workloads requires addressing foundational structural elements:</p>
 <p><strong>Clustered &amp; Covering Index Optimization</strong><br>Eliminates costly key lookups and full table scans by aligning physical storage order with frequent range queries and including all required columns in targeted non-clustered indexes.</p>
 <p><strong>Execution Plan Cache &amp; Parameter Sniffing Mitigation</strong><br>Monitors cached execution plans, isolates parameter sniffing anomalies, and standardizes query recompilation rules for predictable sub-millisecond query execution.</p>
 <p><strong>Concurrency Control &amp; Lock Escalation Management</strong><br>Leverages Read Committed Snapshot Isolation (RCSI) or snapshot isolation to prevent read operations from blocking write transactions during heavy traffic bursts.</p>
 <p><strong>Buffer Pool &amp; TempDB Throughput</strong><br>Configures multiple TempDB data files, isolates I/O contention, and optimizes memory grants to avoid spilling worktables to disk.</p>
 
 <h2>2. Unoptimized Database vs High-Throughput Architecture</h2>
-<p>Comparing typical database pitfalls with production-grade practices:</p>
 <table border="1" cellpadding="8" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 15px 0;">
   <thead>
     <tr style="background-color: #f1f5f9;">
@@ -723,8 +904,6 @@ Incremental Refresh & Direct Lake Modes
 Configures automated partition refreshes to process only modified data, slashing refresh durations from hours to minutes.
 
 2. Traditional Reporting vs Modern Enterprise BI Architecture
-Adopting modern BI practices radically enhances speed and governance:
-
 Aspect | Fragmented Reporting Stack | Modern Enterprise BI Standard
 Data Model | Massive, un-indexed flat tables | Clean star schema with 1-to-many relationships
 Calculations | Heavy calculated columns bloating memory | Lean DAX measures calculated dynamically on demand
@@ -759,14 +938,12 @@ Connect with MagnusMinds to elevate your business intelligence capabilities.`,
 <p>By designing clean dimensional star schemas, writing optimized DAX measures, and configuring modern data refresh strategies, business intelligence teams deliver enterprise analytics that scale smoothly.</p>
 
 <h2>1. Foundations for Enterprise Power BI Reporting</h2>
-<p>A reliable reporting platform rests on foundational modeling best practices:</p>
 <p><strong>Star Schema Dimensional Modeling</strong><br>Structures reporting data into fact and dimension tables, avoiding wide flat tables and snowflake relationships to maximize VertiPaq engine compression.</p>
 <p><strong>Optimized DAX Measures &amp; Context Transition</strong><br>Leverages efficient CALCULATE, FILTER, and iterator patterns while minimizing heavy row-by-row calculations to preserve dashboard interactivity.</p>
 <p><strong>Row-Level Security (RLS) &amp; Workspace Governance</strong><br>Enforces strict data access boundaries based on Azure Active Directory user roles, guaranteeing that viewers access only their authorized business units.</p>
 <p><strong>Incremental Refresh &amp; Direct Lake Modes</strong><br>Configures automated partition refreshes to process only modified data, slashing refresh durations from hours to minutes.</p>
 
 <h2>2. Traditional Reporting vs Modern Enterprise BI Architecture</h2>
-<p>Adopting modern BI practices radically enhances speed and governance:</p>
 <table border="1" cellpadding="8" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 15px 0;">
   <thead>
     <tr style="background-color: #f1f5f9;">
@@ -830,154 +1007,279 @@ Connect with MagnusMinds to elevate your business intelligence capabilities.`,
         };
       }
 
-      // Default Architecture / AI / Cloud
-      return {
-        visual: `Introduction
-Modern software engineering is advancing rapidly, shifting toward modular architectures, automated tooling, and intelligent system workflows.
+      if (domain === 'ai') {
+        return {
+          visual: `Introduction
+Artificial Intelligence and autonomous agentic workflows are fundamentally reshaping enterprise software delivery, automating complex decision paths, and supercharging system intelligence.
 
-When architecting **${cleanTitle}**, engineering leaders must prioritize architectural clarity, explicit service boundaries, and robust operational resilience.
+When engineering **${cleanTitle}**, technology teams must move beyond simple prompt wrappers toward resilient, grounded agent architectures with verifiable system boundaries.
 
-Establishing repeatable patterns and standardized protocols directly in your codebase ensures long-term maintainability, high throughput, and reliable execution across distributed enterprise systems.
+By integrating grounded retrieval (RAG), typed tool invocation protocols, deterministic guardrails, and structured telemetry, enterprises deploy autonomous capabilities that operate with high accuracy, auditability, and safety.
 
-1. Essential Foundations for ${cleanTitle}
-A resilient engineering architecture incorporates deliberate structural pillars:
+1. Essential Foundations for Enterprise AI Systems
+A production-grade AI system requires robust engineering boundaries:
 
-Explicit Standards & Codified Architecture
-Maintains clear repository conventions, dependency boundaries, and strict contracts to ensure consistency and prevent architectural drift.
+Grounded Context Retrieval (RAG & Vector Storage)
+Grounds model generations in verified corporate knowledge bases and semantic vector databases, eliminating hallucinations and ensuring factual fidelity.
 
-Standardized Protocol Integration
-Exposes typed, secured tools and APIs using industry-standard protocols, guaranteeing interoperability across independent microservices.
+Typed Tool & Protocol Integration
+Exposes secured enterprise APIs and system tools to models via standardized protocols with typed schemas, strict parameter validation, and atomic rollbacks.
 
-Domain Isolation & Fault Tolerance
-Isolates critical business operations with resilient retry policies, circuit breakers, and explicit failure domain boundaries.
+Autonomous Orchestration & Task Graph Execution
+Deconstructs complex requests into deterministic multi-stage directed acyclic graphs (DAGs), enabling specialized agents to collaborate seamlessly.
 
-Comprehensive Observability & Telemetry
-Instruments key workflows with OpenTelemetry traces, structured logs, and real-time health diagnostics for instant root-cause analysis.
+Guardrails & Human-in-the-Loop Governance
+Enforces policy validations and safety boundaries, requiring explicit human authorization for high-risk operations such as production database changes or financial transactions.
 
-2. Traditional vs Modern Architectural Patterns
-Adopting modern engineering practices transforms everyday software operations:
+2. Naive AI Integration vs Enterprise Grounded Architecture
+Dimension | Naive AI Wrapper | Enterprise Grounded Architecture
+Context Ingestion | Raw, unfiltered prompts with context overflow | Chunked, vectorized knowledge with semantic retrieval
+Tool Access | Unchecked script execution | Typed tool schemas with strict parameter validation
+Failure Recovery | Brittle failure cascade on API timeout | Exponential backoff, fallback models, and self-correction
+Governance | Unmonitored black-box outputs | Audit logging, evaluation benchmarks, and human approval gates
+Observability | Zero execution visibility | Full OpenTelemetry tracing capturing tokens, latency, and tool calls
 
-Component | Traditional Approach | Modern Structured Architecture
-System Context | Scattered across wikis, emails, and chats | Codified directly in repository contracts and specs
-Tooling & APIs | Ad-hoc, tightly coupled scripts | Standardized protocols with typed schema contracts
-Service Boundaries | Implicit rules frequently violated | Explicit boundaries enforced through automated checks
-Quality & Reviews | Manual, time-consuming peer reviews | Automated validation of standards, security, and performance
-Execution Pipeline | Brittle single-point-of-failure workflows | Fault-tolerant workflows with human approval gates
+3. End-to-End Autonomous Execution Lifecycle
+1. Intent Classification: The orchestrator analyzes user input and maps it to a structured plan.
+2. Context Retrieval: The system queries vector indices to retrieve relevant domain contracts and documentation.
+3. Tool Execution: The model calls typed tools in an isolated sandbox with parameter verification.
+4. Autonomous Diagnostics: Automated review checks evaluate the result against domain constraints and safety rules.
+5. Final Validation: Results are delivered to users with verifiable citations and audit traces.
 
-3. End-to-End Enterprise Workflow
-1. Requirements Alignment: Engineers model system changes based on codified architectural standards.
-2. Contract Verification: Typed interfaces and dependency injection rules guarantee compile-time safety.
-3. Automated Execution: Core business workflows execute asynchronously with distributed tracing.
-4. Diagnostics & Auditing: Telemetry platforms capture metrics, execution timings, and failure signatures.
-5. Continuous Delivery: Automated pipelines deploy changes safely across preview and production environments.
-
-4. Strategic Advantages of ${cleanTitle}
-High Delivery Velocity: Eliminates repetitive boilerplate and prevents regression loops.
-Reliable System Maintainability: Clean modular boundaries allow isolated updates without cascading outages.
-Faster Onboarding: New developers and automated assistants navigate codified patterns with confidence.
-Reduced Technical Debt: Encapsulates domain logic cleanly within bounded contexts.
-Lower Operational Risk: Real-time telemetry detects performance anomalies before they impact customers.
+4. Strategic Advantages of Grounded Enterprise AI
+Accelerated Productivity: Eliminates repetitive development tasks and speeds up complex system investigations.
+Consistent Compliance: Automated guardrails ensure model outputs strictly adhere to enterprise security policies.
+Reduced Operational Friction: Autonomous triage agents identify and resolve common support tickets without human intervention.
+Scalable System Intelligence: Bounded modular agents handle specialized domain tasks without code bloat.
 
 Conclusion
-Building durable software solutions requires disciplined architecture and repeatable engineering standards. Prioritizing robust contracts, modular boundaries, and structured observability positions systems to scale reliably as requirements evolve.
+Enterprise AI success depends on disciplined software engineering rather than model hype. Prioritizing structured context, typed tool protocols, and rigorous governance allows organizations to deliver durable, high-impact AI solutions.
 
 Build Better Software with MagnusMinds
-At MagnusMinds IT Solution, our senior engineers help technology leaders design, build, and deploy resilient enterprise applications and intelligent digital solutions.
+At MagnusMinds IT Solution, our software engineers build production-grade AI applications, RAG architectures, and autonomous agent integrations for enterprise leaders.
 
-Connect with MagnusMinds to explore how modern engineering practices can accelerate your software initiatives.`,
+Connect with MagnusMinds to accelerate your enterprise AI initiatives.`,
 
-        html: `<h2>Introduction</h2>
-<p>Modern software engineering is advancing rapidly, shifting toward modular architectures, automated tooling, and intelligent system workflows.</p>
-<p>When architecting <strong>${cleanTitle}</strong>, engineering leaders must prioritize architectural clarity, explicit service boundaries, and robust operational resilience.</p>
-<p>Establishing repeatable patterns and standardized protocols directly in your codebase ensures long-term maintainability, high throughput, and reliable execution across distributed enterprise systems.</p>
+          html: `<h2>Introduction</h2>
+<p>Artificial Intelligence and autonomous agentic workflows are fundamentally reshaping enterprise software delivery, automating complex decision paths, and supercharging system intelligence.</p>
+<p>When engineering <strong>${cleanTitle}</strong>, technology teams must move beyond simple prompt wrappers toward resilient, grounded agent architectures with verifiable system boundaries.</p>
+<p>By integrating grounded retrieval (RAG), typed tool invocation protocols, deterministic guardrails, and structured telemetry, enterprises deploy autonomous capabilities that operate with high accuracy, auditability, and safety.</p>
 
-<h2>1. Essential Foundations for ${cleanTitle}</h2>
-<p>A resilient engineering architecture incorporates deliberate structural pillars:</p>
-<p><strong>Explicit Standards &amp; Codified Architecture</strong><br>Maintains clear repository conventions, dependency boundaries, and strict contracts to ensure consistency and prevent architectural drift.</p>
-<p><strong>Standardized Protocol Integration</strong><br>Exposes typed, secured tools and APIs using industry-standard protocols, guaranteeing interoperability across independent microservices.</p>
-<p><strong>Domain Isolation &amp; Fault Tolerance</strong><br>Isolates critical business operations with resilient retry policies, circuit breakers, and explicit failure domain boundaries.</p>
-<p><strong>Comprehensive Observability &amp; Telemetry</strong><br>Instruments key workflows with OpenTelemetry traces, structured logs, and real-time health diagnostics for instant root-cause analysis.</p>
+<h2>1. Essential Foundations for Enterprise AI Systems</h2>
+<p><strong>Grounded Context Retrieval (RAG &amp; Vector Storage)</strong><br>Grounds model generations in verified corporate knowledge bases and semantic vector databases, eliminating hallucinations and ensuring factual fidelity.</p>
+<p><strong>Typed Tool &amp; Protocol Integration</strong><br>Exposes secured enterprise APIs and system tools to models via standardized protocols with typed schemas, strict parameter validation, and atomic rollbacks.</p>
+<p><strong>Autonomous Orchestration &amp; Task Graph Execution</strong><br>Deconstructs complex requests into deterministic multi-stage directed acyclic graphs (DAGs), enabling specialized agents to collaborate seamlessly.</p>
+<p><strong>Guardrails &amp; Human-in-the-Loop Governance</strong><br>Enforces policy validations and safety boundaries, requiring explicit human authorization for high-risk operations such as production database changes or financial transactions.</p>
 
-<h2>2. Traditional vs Modern Architectural Patterns</h2>
-<p>Adopting modern engineering practices transforms everyday software operations:</p>
+<h2>2. Naive AI Integration vs Enterprise Grounded Architecture</h2>
 <table border="1" cellpadding="8" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 15px 0;">
   <thead>
     <tr style="background-color: #f1f5f9;">
-      <th style="text-align: left; padding: 10px;">Component</th>
-      <th style="text-align: left; padding: 10px;">Traditional Approach</th>
-      <th style="text-align: left; padding: 10px;">Modern Structured Architecture</th>
+      <th style="text-align: left; padding: 10px;">Dimension</th>
+      <th style="text-align: left; padding: 10px;">Naive AI Wrapper</th>
+      <th style="text-align: left; padding: 10px;">Enterprise Grounded Architecture</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td style="padding: 10px;"><strong>System Context</strong></td>
-      <td style="padding: 10px;">Scattered across wikis, emails, and chats</td>
-      <td style="padding: 10px;">Codified directly in repository contracts and specs</td>
+      <td style="padding: 10px;"><strong>Context Ingestion</strong></td>
+      <td style="padding: 10px;">Raw, unfiltered prompts with context overflow</td>
+      <td style="padding: 10px;">Chunked, vectorized knowledge with semantic retrieval</td>
     </tr>
     <tr>
-      <td style="padding: 10px;"><strong>Tooling &amp; APIs</strong></td>
-      <td style="padding: 10px;">Ad-hoc, tightly coupled scripts</td>
-      <td style="padding: 10px;">Standardized protocols with typed schema contracts</td>
+      <td style="padding: 10px;"><strong>Tool Access</strong></td>
+      <td style="padding: 10px;">Unchecked script execution</td>
+      <td style="padding: 10px;">Typed tool schemas with strict parameter validation</td>
     </tr>
     <tr>
-      <td style="padding: 10px;"><strong>Service Boundaries</strong></td>
-      <td style="padding: 10px;">Implicit rules frequently violated</td>
-      <td style="padding: 10px;">Explicit boundaries enforced through automated checks</td>
+      <td style="padding: 10px;"><strong>Failure Recovery</strong></td>
+      <td style="padding: 10px;">Brittle failure cascade on API timeout</td>
+      <td style="padding: 10px;">Exponential backoff, fallback models, and self-correction</td>
     </tr>
     <tr>
-      <td style="padding: 10px;"><strong>Quality &amp; Reviews</strong></td>
-      <td style="padding: 10px;">Manual, time-consuming peer reviews</td>
-      <td style="padding: 10px;">Automated validation of standards, security, and performance</td>
+      <td style="padding: 10px;"><strong>Governance</strong></td>
+      <td style="padding: 10px;">Unmonitored black-box outputs</td>
+      <td style="padding: 10px;">Audit logging, evaluation benchmarks, and human approval gates</td>
     </tr>
     <tr>
-      <td style="padding: 10px;"><strong>Execution Pipeline</strong></td>
-      <td style="padding: 10px;">Brittle single-point-of-failure workflows</td>
-      <td style="padding: 10px;">Fault-tolerant workflows with human approval gates</td>
+      <td style="padding: 10px;"><strong>Observability</strong></td>
+      <td style="padding: 10px;">Zero execution visibility</td>
+      <td style="padding: 10px;">Full OpenTelemetry tracing capturing tokens, latency, and tool calls</td>
     </tr>
   </tbody>
 </table>
 
-<h2>3. End-to-End Enterprise Workflow</h2>
+<h2>3. End-to-End Autonomous Execution Lifecycle</h2>
 <ol>
-  <li><strong>Requirements Alignment:</strong> Engineers model system changes based on codified architectural standards.</li>
-  <li><strong>Contract Verification:</strong> Typed interfaces and dependency injection rules guarantee compile-time safety.</li>
-  <li><strong>Automated Execution:</strong> Core business workflows execute asynchronously with distributed tracing.</li>
-  <li><strong>Diagnostics &amp; Auditing:</strong> Telemetry platforms capture metrics, execution timings, and failure signatures.</li>
-  <li><strong>Continuous Delivery:</strong> Automated pipelines deploy changes safely across preview and production environments.</li>
+  <li><strong>Intent Classification:</strong> The orchestrator analyzes user input and maps it to a structured plan.</li>
+  <li><strong>Context Retrieval:</strong> The system queries vector indices to retrieve relevant domain contracts and documentation.</li>
+  <li><strong>Tool Execution:</strong> The model calls typed tools in an isolated sandbox with parameter verification.</li>
+  <li><strong>Autonomous Diagnostics:</strong> Automated review checks evaluate the result against domain constraints and safety rules.</li>
+  <li><strong>Final Validation:</strong> Results are delivered to users with verifiable citations and audit traces.</li>
 </ol>
 
-<h2>4. Strategic Advantages of ${cleanTitle}</h2>
+<h2>4. Strategic Advantages of Grounded Enterprise AI</h2>
 <ul>
-  <li><strong>High Delivery Velocity:</strong> Eliminates repetitive boilerplate and prevents regression loops.</li>
-  <li><strong>Reliable System Maintainability:</strong> Clean modular boundaries allow isolated updates without cascading outages.</li>
-  <li><strong>Faster Onboarding:</strong> New developers and automated assistants navigate codified patterns with confidence.</li>
-  <li><strong>Reduced Technical Debt:</strong> Encapsulates domain logic cleanly within bounded contexts.</li>
-  <li><strong>Lower Operational Risk:</strong> Real-time telemetry detects performance anomalies before they impact customers.</li>
+  <li><strong>Accelerated Productivity:</strong> Eliminates repetitive development tasks and speeds up complex system investigations.</li>
+  <li><strong>Consistent Compliance:</strong> Automated guardrails ensure model outputs strictly adhere to enterprise security policies.</li>
+  <li><strong>Reduced Operational Friction:</strong> Autonomous triage agents identify and resolve common support tickets without human intervention.</li>
+  <li><strong>Scalable System Intelligence:</strong> Bounded modular agents handle specialized domain tasks without code bloat.</li>
 </ul>
 
 <h2>Conclusion</h2>
-<p>Building durable software solutions requires disciplined architecture and repeatable engineering standards. Prioritizing robust contracts, modular boundaries, and structured observability positions systems to scale reliably as requirements evolve.</p>
+<p>Enterprise AI success depends on disciplined software engineering rather than model hype. Prioritizing structured context, typed tool protocols, and rigorous governance allows organizations to deliver durable, high-impact AI solutions.</p>
 
 <h2>Build Better Software with MagnusMinds</h2>
-<p>At MagnusMinds IT Solution, our senior engineers help technology leaders design, build, and deploy resilient enterprise applications and intelligent digital solutions.</p>
-<p><a href="https://www.magnusminds.net/contact-us">Connect with MagnusMinds</a> to explore how modern engineering practices can accelerate your software initiatives.</p>`
+<p>At MagnusMinds IT Solution, our software engineers build production-grade AI applications, RAG architectures, and autonomous agent integrations for enterprise leaders.</p>
+<p><a href="https://www.magnusminds.net/contact-us">Connect with MagnusMinds</a> to accelerate your enterprise AI initiatives.</p>`
+        };
+      }
+
+      // Default Generic Technical Architecture
+      return {
+        visual: `Introduction
+Modern enterprise software delivery requires moving beyond ad-hoc development practices toward disciplined, scalable architecture and repeatable engineering standards.
+
+When implementing **${cleanTitle}**, technical leaders must balance immediate feature velocity with long-term system maintainability, operational resilience, and architectural governance.
+
+By codifying explicit standards, isolating bounded domain components, and automating verification throughout the deployment pipeline, engineering teams construct resilient systems that adapt smoothly to business growth.
+
+1. Foundational Pillars for ${cleanTitle}
+Achieving predictable performance and operational stability demands disciplined structural foundations:
+
+Explicit Architecture & Codified Standards
+Maintains clear repository conventions, dependency boundaries, and interface contracts to eliminate ambiguity and prevent architectural drift.
+
+Modular Component Isolation
+Encapsulates domain logic in bounded modules, ensuring that changes to individual components do not trigger regression cascades across the system.
+
+Resilient Fault Handling & Isolation
+Implements circuit breakers, structured retry policies, and graceful degradation paths to withstand third-party outages and traffic surges.
+
+Comprehensive Distributed Telemetry
+Instruments critical workflows with OpenTelemetry metrics, structured logs, and automated health diagnostics for proactive issue detection.
+
+2. Traditional Development vs Modern Engineering Architecture
+Aspect | Traditional Development | Modern Engineering Standard
+Code Organization | Tightly coupled monoliths with implicit rules | Modular bounded contexts with explicit interfaces
+Dependency Management | Uncontrolled third-party libraries | Curated dependencies with strict version pinning
+Quality Assurance | Manual post-development testing cycles | Automated pre-commit and CI verification gates
+System Observability | Reactive error logging during downtime | Continuous distributed tracing and proactive alerting
+Deployment Model | High-risk manual deployments with freezes | Automated zero-downtime CI/CD pipelines with canary rollouts
+
+3. End-to-End Engineering Implementation Workflow
+1. Requirements Alignment: Engineers model system specifications based on codified architectural patterns.
+2. Contract Definition: Typed interfaces and schema contracts guarantee compile-time verification.
+3. Automated Implementation: Business logic is developed following established error-handling and logging conventions.
+4. Automated Diagnostics: Continuous integration pipelines execute unit tests, security scans, and performance benchmarks.
+5. Production Deployment: Verified builds are promoted through automated staging and production pipelines with health verification.
+
+4. Strategic Advantages of Modern Engineering Architecture
+High Delivery Velocity: Removes friction from the development cycle, allowing teams to ship features rapidly.
+Long-Term Maintainability: Clear service boundaries prevent technical debt from accumulating over time.
+Predictable Scalability: Modular systems scale horizontally to accommodate enterprise traffic surges.
+Enhanced Reliability: Isolated failure domains prevent partial system disruptions from becoming total outages.
+
+Conclusion
+Building durable enterprise software requires deliberate architectural planning and rigorous engineering standards. Prioritizing modular boundaries, clear contracts, and structured observability ensures software systems remain competitive and resilient.
+
+Build Better Software with MagnusMinds
+At MagnusMinds IT Solution, our senior architects and developers partner with technology leaders to design, build, and modernize scalable enterprise applications.
+
+Connect with MagnusMinds to explore how modern engineering practices can elevate your software delivery.`,
+
+        html: `<h2>Introduction</h2>
+<p>Modern enterprise software delivery requires moving beyond ad-hoc development practices toward disciplined, scalable architecture and repeatable engineering standards.</p>
+<p>When implementing <strong>${cleanTitle}</strong>, technical leaders must balance immediate feature velocity with long-term system maintainability, operational resilience, and architectural governance.</p>
+<p>By codifying explicit standards, isolating bounded domain components, and automating verification throughout the deployment pipeline, engineering teams construct resilient systems that adapt smoothly to business growth.</p>
+
+<h2>1. Foundational Pillars for ${cleanTitle}</h2>
+<p><strong>Explicit Architecture &amp; Codified Standards</strong><br>Maintains clear repository conventions, dependency boundaries, and interface contracts to eliminate ambiguity and prevent architectural drift.</p>
+<p><strong>Modular Component Isolation</strong><br>Encapsulates domain logic in bounded modules, ensuring that changes to individual components do not trigger regression cascades across the system.</p>
+<p><strong>Resilient Fault Handling &amp; Isolation</strong><br>Implements circuit breakers, structured retry policies, and graceful degradation paths to withstand third-party outages and traffic surges.</p>
+<p><strong>Comprehensive Distributed Telemetry</strong><br>Instruments critical workflows with OpenTelemetry metrics, structured logs, and automated health diagnostics for proactive issue detection.</p>
+
+<h2>2. Traditional Development vs Modern Engineering Architecture</h2>
+<table border="1" cellpadding="8" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+  <thead>
+    <tr style="background-color: #f1f5f9;">
+      <th style="text-align: left; padding: 10px;">Aspect</th>
+      <th style="text-align: left; padding: 10px;">Traditional Development</th>
+      <th style="text-align: left; padding: 10px;">Modern Engineering Standard</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding: 10px;"><strong>Code Organization</strong></td>
+      <td style="padding: 10px;">Tightly coupled monoliths with implicit rules</td>
+      <td style="padding: 10px;">Modular bounded contexts with explicit interfaces</td>
+    </tr>
+    <tr>
+      <td style="padding: 10px;"><strong>Dependency Management</strong></td>
+      <td style="padding: 10px;">Uncontrolled third-party libraries</td>
+      <td style="padding: 10px;">Curated dependencies with strict version pinning</td>
+    </tr>
+    <tr>
+      <td style="padding: 10px;"><strong>Quality Assurance</strong></td>
+      <td style="padding: 10px;">Manual post-development testing cycles</td>
+      <td style="padding: 10px;">Automated pre-commit and CI verification gates</td>
+    </tr>
+    <tr>
+      <td style="padding: 10px;"><strong>System Observability</strong></td>
+      <td style="padding: 10px;">Reactive error logging during downtime</td>
+      <td style="padding: 10px;">Continuous distributed tracing and proactive alerting</td>
+    </tr>
+    <tr>
+      <td style="padding: 10px;"><strong>Deployment Model</strong></td>
+      <td style="padding: 10px;">High-risk manual deployments with freezes</td>
+      <td style="padding: 10px;">Automated zero-downtime CI/CD pipelines with canary rollouts</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>3. End-to-End Engineering Implementation Workflow</h2>
+<ol>
+  <li><strong>Requirements Alignment:</strong> Engineers model system specifications based on codified architectural patterns.</li>
+  <li><strong>Contract Definition:</strong> Typed interfaces and schema contracts guarantee compile-time verification.</li>
+  <li><strong>Automated Implementation:</strong> Business logic is developed following established error-handling and logging conventions.</li>
+  <li><strong>Automated Diagnostics:</strong> Continuous integration pipelines execute unit tests, security scans, and performance benchmarks.</li>
+  <li><strong>Production Deployment:</strong> Verified builds are promoted through automated staging and production pipelines with health verification.</li>
+</ol>
+
+<h2>4. Strategic Advantages of Modern Engineering Architecture</h2>
+<ul>
+  <li><strong>High Delivery Velocity:</strong> Removes friction from the development cycle, allowing teams to ship features rapidly.</li>
+  <li><strong>Long-Term Maintainability:</strong> Clear service boundaries prevent technical debt from accumulating over time.</li>
+  <li><strong>Predictable Scalability:</strong> Modular systems scale horizontally to accommodate enterprise traffic surges.</li>
+  <li><strong>Enhanced Reliability:</strong> Isolated failure domains prevent partial system disruptions from becoming total outages.</li>
+</ul>
+
+<h2>Conclusion</h2>
+<p>Building durable enterprise software requires deliberate architectural planning and rigorous engineering standards. Prioritizing modular boundaries, clear contracts, and structured observability ensures software systems remain competitive and resilient.</p>
+
+<h2>Build Better Software with MagnusMinds</h2>
+<p>At MagnusMinds IT Solution, our senior architects and developers partner with technology leaders to design, build, and modernize scalable enterprise applications.</p>
+<p><a href="https://www.magnusminds.net/contact-us">Connect with MagnusMinds</a> to explore how modern engineering practices can elevate your software delivery.</p>`
       };
     }
 
     function generateBlog() {
       const topicInput = document.getElementById('topicInput');
-      const rawTopic = topicInput.value.trim() || 'Microsoft Fabric';
+      const rawTopic = topicInput.value.trim() || 'Microservices';
       const cleanTitle = rawTopic.replace(/\s*\|\s*MagnusMinds$/i, '').trim();
       const slug = generateSlug(cleanTitle);
 
-      const domain = classifyDomain(cleanTitle);
+      const domain = classifyTopic(cleanTitle);
       const meta = getDomainMetadata(domain, cleanTitle);
 
       // Clean keywords strictly derived from cleanTitle and domain tags
       const keywords = [cleanTitle, ...meta.tags].filter((v, i, a) => a.indexOf(v) === i).join(', ');
       const metaDescription = `An engineering perspective on ${cleanTitle} by MagnusMinds: explore architecture, core concepts, structured patterns, and enterprise advantages.`;
 
-      // Build High-Res Flux Banner URL with Seed
+      // Save prompt for user copy
+      currentImagePrompt = meta.imagePrompt;
+
+      // Build High-Res Flux Banner URL
       let seed = 0;
       for (let i = 0; i < cleanTitle.length; i++) {
         seed = (seed * 31 + cleanTitle.charCodeAt(i)) % 999999;
@@ -1003,6 +1305,9 @@ Connect with MagnusMinds to explore how modern engineering practices can acceler
       bannerImg.onload = function() {
         imgLoading.classList.add('hidden');
       };
+      bannerImg.onerror = function() {
+        imgLoading.classList.add('hidden');
+      };
       bannerImg.src = imageUrl;
       dlBtn.href = imageUrl;
       dlBtn.download = `${slug}_banner.jpg`;
@@ -1013,7 +1318,7 @@ Connect with MagnusMinds to explore how modern engineering practices can acceler
       document.getElementById('fieldDescriptionHtml').value = content.html;
       document.getElementById('previewContent').innerHTML = content.html;
 
-      // Unhide results card and smooth scroll
+      // Reveal results card and smooth scroll
       const resultsCard = document.getElementById('resultsCard');
       resultsCard.classList.remove('hidden');
       resultsCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
