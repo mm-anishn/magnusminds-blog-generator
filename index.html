@@ -677,14 +677,23 @@
         return 'sage';
       }
 
-      // 5. Workplace, Ethics, Culture, Leadership, Non-Technical
+      // 5. Workplace, Ethics, Culture, Leadership, Non-Technical, Strategy & HR
       if (s.includes('ethic') || s.includes('culture') || s.includes('leadership') || /\bteam\b/.test(s) ||
           s.includes('communication') || s.includes('soft skill') || s.includes('productivity') ||
           s.includes('time management') || /\bcareer\b/.test(s) || s.includes('mentorship') ||
           s.includes('mindset') || s.includes('management') || s.includes('professionalism') ||
           s.includes('burnout') || s.includes('remote work') || s.includes('hiring') ||
-          s.includes('interview') || s.includes('motivation') || s.includes('collaboration')) {
+          s.includes('interview') || s.includes('motivation') || s.includes('collaboration') ||
+          s.includes('retention') || s.includes('strategy') || s.includes('agile') ||
+          s.includes('scrum') || s.includes('human resources') || s.includes('employee')) {
         return 'workplace';
+      }
+
+      // 5b. Cybersecurity & Zero Trust
+      if (s.includes('security') || s.includes('cyber') || s.includes('zero trust') || /\bauth\b/.test(s) ||
+          s.includes('oauth') || s.includes('jwt') || s.includes('vulnerability') || s.includes('firewall') ||
+          s.includes('encryption') || s.includes('penetration') || s.includes('compliance')) {
+        return 'security';
       }
 
       // 6. DevOps & Containers
@@ -792,6 +801,21 @@
               { label: 'Offline Sync', sub: 'Local Persistence', icon: 'shield', color: '#6366f1' }
             ],
             workflow: ['Design', 'State', 'Implement', 'Verify', 'Distribute']
+          };
+
+        case 'security':
+          return {
+            category: 'Cybersecurity',
+            tags: [dynamicTopicTag || 'Cybersecurity', 'Zero-Trust', 'Cloud-Security', 'Compliance', 'Identity-Access', 'Risk-Management'],
+            brand: 'MagnusMinds | Security',
+            summary: `Enterprise security posture, zero-trust governance, and threat mitigation strategies for ${cleanTitle}.`,
+            badges: [
+              { label: 'Zero Trust', sub: 'Continuous Verify', icon: 'shield', color: '#e11d48' },
+              { label: 'Identity', sub: 'RBAC & MFA', icon: 'bolt', color: '#0284c7' },
+              { label: 'Encryption', sub: 'In-Transit & Rest', icon: 'layers', color: '#10b981' },
+              { label: 'Compliance', sub: 'SOC2 & ISO', icon: 'handshake', color: '#7c3aed' }
+            ],
+            workflow: ['Audit', 'Isolate', 'Enforce', 'Monitor', 'Remediate']
           };
 
         case 'frontend':
@@ -2008,11 +2032,6 @@ Mastering **${cleanTitle}** empowers teams to turn complex challenges into predi
 
     // Domain-Specific High-Resolution Studio Covers
     const domainBanners = {
-      architecture: [
-        'assets/microservices_cover.jpg',
-        'assets/microservices_cover_2.jpg',
-        'assets/microservices_cover_3.jpg'
-      ],
       fabric: [
         'assets/fabric_cover.jpg',
         'assets/fabric_cover_2.jpg'
@@ -2022,56 +2041,488 @@ Mastering **${cleanTitle}** empowers teams to turn complex challenges into predi
         'assets/sql_cover_2.jpg'
       ],
       powerbi: [
-        'assets/powerbi_cover.jpg',
-        'assets/fabric_cover.jpg'
+        'assets/powerbi_cover.jpg'
       ],
       sage: [
-        'assets/sage_cover.jpg',
-        'assets/tech_cover.jpg'
+        'assets/sage_cover.jpg'
       ],
       workplace: [
-        'assets/work_ethics_cover.jpg',
-        'assets/tech_cover.jpg'
+        'assets/work_ethics_cover.jpg'
       ],
       mobile: [
-        'assets/flutter_cover.jpg',
-        'assets/tech_cover.jpg'
+        'assets/flutter_cover.jpg'
       ],
-      devops: [
-        'assets/tech_cover.jpg',
-        'assets/microservices_cover.jpg'
-      ],
-      ai: [
-        'assets/tech_cover.jpg',
-        'assets/microservices_cover_2.jpg'
-      ],
-      csharp: [
-        'assets/tech_cover.jpg',
-        'assets/microservices_cover_3.jpg'
-      ],
-      git: [
-        'assets/flutter_cover.jpg',
-        'assets/tech_cover.jpg'
-      ],
-      marketing: [
-        'assets/work_ethics_cover.jpg',
-        'assets/tech_cover.jpg'
-      ],
-      universal: [
-        'assets/tech_cover.jpg',
+      architecture: [
+        'assets/microservices_cover.jpg',
         'assets/microservices_cover_2.jpg',
-        'assets/fabric_cover_2.jpg'
+        'assets/microservices_cover_3.jpg'
       ]
     };
 
     let currentBannerVariant = 0;
 
-    function getDomainBanner(domain) {
-      if (domain && domainBanners[domain]) {
-        const list = domainBanners[domain];
-        return list[currentBannerVariant % list.length];
+    // Dynamic Studio Banner Synthesizer (1200x630 HD) for ANY topic (technical or non-technical)
+    function synthesizeCustomBanner(title, category, summary, domain, variant = 0) {
+      const canvas = document.createElement('canvas');
+      canvas.width = 1200;
+      canvas.height = 630;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return 'assets/tech_cover.jpg';
+
+      const safeTitle = (title || 'Technical Architecture').trim();
+      const safeCategory = (category || 'ENTERPRISE TECH').toUpperCase().trim();
+      const safeSummary = (summary || ('In-depth engineering analysis and architectural patterns for ' + safeTitle)).trim();
+      const safeDomain = (domain || 'universal').toLowerCase();
+
+      // Deterministic hash for novel/unmapped topics
+      let hash = 0;
+      for (let i = 0; i < safeTitle.length; i++) {
+        hash = (hash << 5) - hash + safeTitle.charCodeAt(i);
+        hash |= 0;
       }
-      return 'assets/tech_cover.jpg';
+      const absHash = Math.abs(hash);
+
+      // Domain Theme Definitions
+      const domainThemes = {
+        frontend: [
+          { bg: '#080e1a', accent: '#0284c7', secondary: '#38bdf8', badgeBg: 'rgba(2, 132, 199, 0.22)', badgeBorder: '#38bdf8', tag: 'FRONTEND & WEB DEV', icon: 'code' },
+          { bg: '#0f172a', accent: '#f59e0b', secondary: '#fbbf24', badgeBg: 'rgba(245, 158, 11, 0.22)', badgeBorder: '#fbbf24', tag: 'JAVASCRIPT & UI', icon: 'js' },
+          { bg: '#090d16', accent: '#06b6d4', secondary: '#22d3ee', badgeBg: 'rgba(6, 182, 212, 0.22)', badgeBorder: '#22d3ee', tag: 'MODERN WEB ENGINEERING', icon: 'code' }
+        ],
+        workplace: [
+          { bg: '#0a192f', accent: '#059669', secondary: '#34d399', badgeBg: 'rgba(5, 150, 105, 0.22)', badgeBorder: '#34d399', tag: 'LEADERSHIP & CULTURE', icon: 'strategy' },
+          { bg: '#0f172a', accent: '#2563eb', secondary: '#60a5fa', badgeBg: 'rgba(37, 99, 235, 0.22)', badgeBorder: '#60a5fa', tag: 'PROFESSIONAL EXCELLENCE', icon: 'strategy' },
+          { bg: '#111827', accent: '#7c3aed', secondary: '#a78bfa', badgeBg: 'rgba(124, 58, 237, 0.22)', badgeBorder: '#a78bfa', tag: 'ORGANIZATIONAL STRATEGY', icon: 'strategy' }
+        ],
+        marketing: [
+          { bg: '#110d24', accent: '#ec4899', secondary: '#f43f5e', badgeBg: 'rgba(236, 72, 153, 0.22)', badgeBorder: '#f43f5e', tag: 'MARKETING & SEO', icon: 'growth' },
+          { bg: '#0c1527', accent: '#2563eb', secondary: '#fbbf24', badgeBg: 'rgba(37, 99, 235, 0.22)', badgeBorder: '#fbbf24', tag: 'GROWTH STRATEGY', icon: 'growth' }
+        ],
+        security: [
+          { bg: '#0a0a14', accent: '#e11d48', secondary: '#06b6d4', badgeBg: 'rgba(225, 29, 72, 0.22)', badgeBorder: '#06b6d4', tag: 'CYBERSECURITY & ZERO TRUST', icon: 'shield' },
+          { bg: '#090e17', accent: '#0284c7', secondary: '#10b981', badgeBg: 'rgba(2, 132, 199, 0.22)', badgeBorder: '#10b981', tag: 'SECURITY ARCHITECTURE', icon: 'shield' }
+        ],
+        powerbi: [
+          { bg: '#10172a', accent: '#f59e0b', secondary: '#10b981', badgeBg: 'rgba(245, 158, 11, 0.22)', badgeBorder: '#f59e0b', tag: 'POWER BI & ANALYTICS', icon: 'chart' },
+          { bg: '#0b132b', accent: '#10b981', secondary: '#34d399', badgeBg: 'rgba(16, 185, 129, 0.22)', badgeBorder: '#34d399', tag: 'EXECUTIVE INTELLIGENCE', icon: 'chart' }
+        ],
+        sql: [
+          { bg: '#091326', accent: '#0284c7', secondary: '#fbbf24', badgeBg: 'rgba(2, 132, 199, 0.22)', badgeBorder: '#0284c7', tag: 'SQL & DATABASE ENGINE', icon: 'database' },
+          { bg: '#0b1120', accent: '#2563eb', secondary: '#38bdf8', badgeBg: 'rgba(37, 99, 235, 0.22)', badgeBorder: '#38bdf8', tag: 'DATA ARCHITECTURE', icon: 'database' }
+        ],
+        fabric: [
+          { bg: '#09152b', accent: '#0284c7', secondary: '#22d3ee', badgeBg: 'rgba(2, 132, 199, 0.22)', badgeBorder: '#22d3ee', tag: 'MICROSOFT FABRIC', icon: 'network' },
+          { bg: '#0a192f', accent: '#3b82f6', secondary: '#60a5fa', badgeBg: 'rgba(59, 130, 246, 0.22)', badgeBorder: '#60a5fa', tag: 'LAKEHOUSE ARCHITECTURE', icon: 'network' }
+        ],
+        sage: [
+          { bg: '#061a14', accent: '#059669', secondary: '#34d399', badgeBg: 'rgba(5, 150, 105, 0.22)', badgeBorder: '#34d399', tag: 'SAGE INVOICE AUTOMATION', icon: 'strategy' },
+          { bg: '#0b1728', accent: '#0284c7', secondary: '#10b981', badgeBg: 'rgba(2, 132, 199, 0.22)', badgeBorder: '#10b981', tag: 'FINANCIAL ERP ENGINE', icon: 'strategy' }
+        ],
+        architecture: [
+          { bg: '#090d16', accent: '#7c3aed', secondary: '#38bdf8', badgeBg: 'rgba(124, 58, 237, 0.22)', badgeBorder: '#38bdf8', tag: 'MICROSERVICES & ARCHITECTURE', icon: 'network' },
+          { bg: '#0b1120', accent: '#0066cc', secondary: '#818cf8', badgeBg: 'rgba(0, 102, 204, 0.22)', badgeBorder: '#818cf8', tag: 'DISTRIBUTED SYSTEMS', icon: 'network' }
+        ],
+        devops: [
+          { bg: '#081426', accent: '#0284c7', secondary: '#10b981', badgeBg: 'rgba(2, 132, 199, 0.22)', badgeBorder: '#10b981', tag: 'DEVOPS & CLOUD INFRA', icon: 'network' },
+          { bg: '#0f172a', accent: '#6366f1', secondary: '#38bdf8', badgeBg: 'rgba(99, 102, 241, 0.22)', badgeBorder: '#38bdf8', tag: 'CI/CD & AUTOMATION', icon: 'network' }
+        ],
+        mobile: [
+          { bg: '#0a1128', accent: '#0284c7', secondary: '#a855f7', badgeBg: 'rgba(2, 132, 199, 0.22)', badgeBorder: '#a855f7', tag: 'MOBILE & FLUTTER', icon: 'mobile' },
+          { bg: '#0f172a', accent: '#38bdf8', secondary: '#c084fc', badgeBg: 'rgba(56, 189, 248, 0.22)', badgeBorder: '#c084fc', tag: 'CROSS-PLATFORM ENGINEERING', icon: 'mobile' }
+        ],
+        ai: [
+          { bg: '#050811', accent: '#8b5cf6', secondary: '#06b6d4', badgeBg: 'rgba(139, 92, 246, 0.22)', badgeBorder: '#06b6d4', tag: 'ARTIFICIAL INTELLIGENCE & LLM', icon: 'network' },
+          { bg: '#090d16', accent: '#3b82f6', secondary: '#a855f7', badgeBg: 'rgba(59, 130, 246, 0.22)', badgeBorder: '#a855f7', tag: 'MACHINE LEARNING & AGENTS', icon: 'network' }
+        ],
+        universal: [
+          { bg: '#0b1120', accent: '#0066cc', secondary: '#38bdf8', badgeBg: 'rgba(0, 102, 204, 0.22)', badgeBorder: '#38bdf8', tag: 'ENGINEERING & INNOVATION', icon: 'nexus' },
+          { bg: '#090d16', accent: '#7c3aed', secondary: '#c084fc', badgeBg: 'rgba(124, 58, 237, 0.22)', badgeBorder: '#c084fc', tag: 'ENTERPRISE TECHNOLOGY', icon: 'nexus' },
+          { bg: '#061a14', accent: '#059669', secondary: '#34d399', badgeBg: 'rgba(5, 150, 105, 0.22)', badgeBorder: '#34d399', tag: 'STRATEGIC INSIGHTS', icon: 'strategy' }
+        ]
+      };
+
+      let themeList = domainThemes[safeDomain];
+      if (!themeList || themeList.length === 0) {
+        const novelPalettes = [
+          { bg: '#0b1329', accent: '#0284c7', secondary: '#38bdf8', badgeBg: 'rgba(2, 132, 199, 0.22)', badgeBorder: '#38bdf8', tag: safeCategory, icon: 'nexus' },
+          { bg: '#100f24', accent: '#8b5cf6', secondary: '#c084fc', badgeBg: 'rgba(139, 92, 246, 0.22)', badgeBorder: '#c084fc', tag: safeCategory, icon: 'nexus' },
+          { bg: '#091520', accent: '#0d9488', secondary: '#2dd4bf', badgeBg: 'rgba(13, 148, 136, 0.22)', badgeBorder: '#2dd4bf', tag: safeCategory, icon: 'nexus' },
+          { bg: '#171120', accent: '#f43f5e', secondary: '#fb7185', badgeBg: 'rgba(244, 63, 94, 0.22)', badgeBorder: '#fb7185', tag: safeCategory, icon: 'nexus' },
+          { bg: '#0c1a14', accent: '#10b981', secondary: '#34d399', badgeBg: 'rgba(16, 185, 129, 0.22)', badgeBorder: '#34d399', tag: safeCategory, icon: 'strategy' }
+        ];
+        const selectedIndex = (absHash + variant) % novelPalettes.length;
+        themeList = [novelPalettes[selectedIndex]];
+      }
+
+      const theme = themeList[variant % themeList.length];
+
+      // 1. Base Dark Canvas Background
+      const bgGrad = ctx.createLinearGradient(0, 0, 1200, 630);
+      bgGrad.addColorStop(0, theme.bg);
+      bgGrad.addColorStop(1, '#020617');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, 1200, 630);
+
+      // 2. Ambient Diffused Glow Orbs
+      const glow1 = ctx.createRadialGradient(950, 220, 20, 950, 220, 420);
+      glow1.addColorStop(0, theme.accent + '55');
+      glow1.addColorStop(1, 'transparent');
+      ctx.fillStyle = glow1;
+      ctx.fillRect(0, 0, 1200, 630);
+
+      const glow2 = ctx.createRadialGradient(280, 540, 10, 280, 540, 380);
+      glow2.addColorStop(0, theme.secondary + '22');
+      glow2.addColorStop(1, 'transparent');
+      ctx.fillStyle = glow2;
+      ctx.fillRect(0, 0, 1200, 630);
+
+      // 3. Technical Grid Blueprint Overlay
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
+      ctx.lineWidth = 1;
+      for (let x = 40; x < 1200; x += 40) {
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, 630); ctx.stroke();
+      }
+      for (let y = 40; y < 630; y += 40) {
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(1200, y); ctx.stroke();
+      }
+
+      // 4. Subtle Ambient Floating Particles
+      ctx.fillStyle = theme.secondary + '44';
+      const particleSeeds = [
+        [150, 120, 2], [320, 80, 1.5], [640, 140, 2], [720, 560, 2.5],
+        [1120, 100, 3], [1080, 520, 2], [850, 90, 1.5], [520, 480, 2]
+      ];
+      for (let p of particleSeeds) {
+        ctx.beginPath();
+        ctx.arc(p[0], p[1], p[2], 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // 5. MagnusMinds Official Branding Header
+      ctx.fillStyle = '#0066cc';
+      if (ctx.roundRect) {
+        ctx.beginPath();
+        ctx.roundRect(80, 64, 28, 28, [7]);
+        ctx.fill();
+      } else {
+        ctx.fillRect(80, 64, 28, 28);
+      }
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '900 16px Inter, sans-serif';
+      ctx.fillText('M', 87, 84);
+
+      ctx.font = '800 20px Inter, sans-serif';
+      ctx.fillText('MAGNUSMINDS', 118, 84);
+      ctx.fillStyle = theme.secondary;
+      ctx.font = '600 11px Inter, sans-serif';
+      ctx.fillText('ENTERPRISE TECHNOLOGY INSIGHTS', 120, 102);
+
+      // 6. Category Pill Badge
+      const pillText = safeCategory || theme.tag;
+      ctx.font = 'bold 12px Inter, sans-serif';
+      const pillWidth = ctx.measureText(pillText).width + 28;
+      ctx.fillStyle = theme.badgeBg;
+      ctx.strokeStyle = theme.badgeBorder || theme.accent;
+      ctx.lineWidth = 1.5;
+      if (ctx.roundRect) {
+        ctx.beginPath();
+        ctx.roundRect(80, 134, pillWidth, 28, [14]);
+        ctx.fill();
+        ctx.stroke();
+      } else {
+        ctx.fillRect(80, 134, pillWidth, 28);
+      }
+
+      ctx.fillStyle = '#ffffff';
+      ctx.fillText(pillText, 94, 152);
+
+      // 7. Dynamic Multi-Line Title Rendering
+      ctx.fillStyle = '#ffffff';
+      const words = safeTitle.split(' ');
+
+      let fontSize = 44;
+      if (safeTitle.length < 24) fontSize = 50;
+      else if (safeTitle.length > 55) fontSize = 38;
+
+      ctx.font = '800 ' + fontSize + 'px Inter, sans-serif';
+
+      let lines = [];
+      let currentLine = '';
+      const maxTextWidth = 630;
+
+      for (let w of words) {
+        const testLine = currentLine ? currentLine + ' ' + w : w;
+        if (ctx.measureText(testLine).width < maxTextWidth) {
+          currentLine = testLine;
+        } else {
+          if (currentLine) lines.push(currentLine);
+          currentLine = w;
+        }
+      }
+      if (currentLine) lines.push(currentLine);
+
+      if (lines.length > 3) {
+        lines = [lines[0], lines[1], lines.slice(2).join(' ')];
+        if (ctx.measureText(lines[2]).width > maxTextWidth) {
+          while (lines[2].length > 0 && ctx.measureText(lines[2] + '...').width > maxTextWidth) {
+            lines[2] = lines[2].slice(0, -1).trim();
+          }
+          lines[2] += '...';
+        }
+      }
+
+      const lineHeight = fontSize + 10;
+      let startY = 220;
+      if (lines.length === 1) startY = 250;
+      else if (lines.length === 3) startY = 205;
+
+      for (let i = 0; i < lines.length; i++) {
+        ctx.fillText(lines[i], 80, startY + (i * lineHeight));
+      }
+
+      // 8. Description Summary Subtitle
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '500 16px Inter, sans-serif';
+      const cleanSummary = safeSummary.replace(/\s+/g, ' ').slice(0, 140) + '...';
+      const sWords = cleanSummary.split(' ');
+      let sLine1 = '';
+      let sLine2 = '';
+      for (let w of sWords) {
+        if (ctx.measureText(sLine1 + w + ' ').width < 600) {
+          sLine1 += w + ' ';
+        } else {
+          sLine2 += w + ' ';
+        }
+      }
+
+      const summaryY = startY + (lines.length * lineHeight) + 24;
+      ctx.fillText(sLine1.trim(), 80, summaryY);
+      if (sLine2.trim()) {
+        ctx.fillText(sLine2.trim(), 80, summaryY + 24);
+      }
+
+      // 9. Visual Graphic tailored to Domain on Right Side
+      const cx = 950;
+      const cy = 340;
+
+      if (theme.icon === 'code' || safeDomain === 'frontend') {
+        const winX = 760;
+        const winY = 170;
+        const winW = 370;
+        const winH = 260;
+
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+        ctx.strokeStyle = theme.accent;
+        ctx.lineWidth = 1.5;
+        if (ctx.roundRect) {
+          ctx.beginPath();
+          ctx.roundRect(winX, winY, winW, winH, [12]);
+          ctx.fill();
+          ctx.stroke();
+        } else {
+          ctx.fillRect(winX, winY, winW, winH);
+        }
+
+        ctx.fillStyle = '#ef4444'; ctx.beginPath(); ctx.arc(winX + 24, winY + 22, 5, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#f59e0b'; ctx.beginPath(); ctx.arc(winX + 40, winY + 22, 5, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#10b981'; ctx.beginPath(); ctx.arc(winX + 56, winY + 22, 5, 0, Math.PI * 2); ctx.fill();
+
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '600 12px "JetBrains Mono", monospace, sans-serif';
+        const fileExt = safeTitle.toLowerCase().includes('type') ? 'index.ts' : 'app.js';
+        ctx.fillText(fileExt + ' — MagnusMinds UI', winX + 80, winY + 26);
+
+        const codeLines = [
+          { text: 'import { createEngine } from "@magnusminds/core";', color: '#38bdf8', indent: 0 },
+          { text: 'export const app = createEngine({', color: '#c084fc', indent: 0 },
+          { text: '  feature: "' + safeTitle.replace(/[^a-zA-Z0-9 ]/g, '').slice(0, 22) + '",', color: '#facc15', indent: 18 },
+          { text: '  architecture: "reactive-client",', color: '#34d399', indent: 18 },
+          { text: '  performance: "sub-second",', color: '#38bdf8', indent: 18 },
+          { text: '  productionReady: true', color: '#f43f5e', indent: 18 },
+          { text: '});', color: '#c084fc', indent: 0 }
+        ];
+
+        ctx.font = '500 13px "JetBrains Mono", monospace, sans-serif';
+        codeLines.forEach((cl, idx) => {
+          ctx.fillStyle = cl.color;
+          ctx.fillText(cl.text, winX + 20 + cl.indent, winY + 65 + (idx * 26));
+        });
+
+        const badgeX = winX + winW - 80;
+        const badgeY = winY - 14;
+        ctx.fillStyle = theme.accent;
+        if (ctx.roundRect) {
+          ctx.beginPath();
+          ctx.roundRect(badgeX, badgeY, 68, 28, [14]);
+          ctx.fill();
+        } else {
+          ctx.fillRect(badgeX, badgeY, 68, 28);
+        }
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '800 12px Inter, sans-serif';
+        ctx.fillText('{ JS }', badgeX + 18, badgeY + 18);
+
+      } else if (theme.icon === 'strategy' || safeDomain === 'workplace' || safeDomain === 'sage') {
+        ctx.strokeStyle = theme.secondary + '55';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(cx, cy, 130, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.strokeStyle = theme.accent;
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(cx - 110, cy + 90);
+        ctx.bezierCurveTo(cx - 30, cy + 40, cx + 20, cy - 30, cx + 110, cy - 80);
+        ctx.stroke();
+
+        const milestones = [
+          { x: cx - 110, y: cy + 90, label: 'VISION', color: theme.secondary },
+          { x: cx - 10, y: cy + 10, label: 'EXECUTION', color: '#ffffff' },
+          { x: cx + 110, y: cy - 80, label: 'IMPACT', color: theme.accent }
+        ];
+
+        for (let m of milestones) {
+          ctx.fillStyle = m.color;
+          ctx.beginPath();
+          ctx.arc(m.x, m.y, 14, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+          ctx.lineWidth = 3;
+          ctx.stroke();
+
+          ctx.fillStyle = '#ffffff';
+          ctx.font = '700 11px Inter, sans-serif';
+          ctx.fillText(m.label, m.x - 22, m.y + 32);
+        }
+
+      } else if (theme.icon === 'database' || safeDomain === 'sql') {
+        const dbX = 790;
+        const dbY = 200;
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+        ctx.strokeStyle = theme.accent;
+        ctx.lineWidth = 2;
+        if (ctx.roundRect) {
+          ctx.beginPath();
+          ctx.roundRect(dbX, dbY, 320, 200, [12]);
+          ctx.fill();
+          ctx.stroke();
+        } else {
+          ctx.fillRect(dbX, dbY, 320, 200);
+        }
+
+        ctx.fillStyle = theme.accent + '33';
+        ctx.fillRect(dbX, dbY, 320, 38);
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '700 13px "JetBrains Mono", monospace';
+        ctx.fillText('DATABASE_CLUSTER: ' + safeTitle.slice(0, 15).toUpperCase(), dbX + 16, dbY + 24);
+
+        const rows = ['PK  cluster_id (GUID)', 'IDX query_optimizer (MS)', 'VAL execution_plan (XML)', 'LOG telemetry_stream'];
+        rows.forEach((r, idx) => {
+          ctx.fillStyle = idx === 0 ? '#fbbf24' : '#94a3b8';
+          ctx.fillText(r, dbX + 16, dbY + 70 + (idx * 30));
+        });
+
+      } else {
+        ctx.strokeStyle = theme.secondary + '44';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(cx, cy, 140, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.strokeStyle = theme.accent + '88';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(cx, cy, 80, 0, Math.PI * 2);
+        ctx.stroke();
+
+        const coreGrad = ctx.createRadialGradient(cx, cy, 5, cx, cy, 45);
+        coreGrad.addColorStop(0, '#ffffff');
+        coreGrad.addColorStop(0.5, theme.secondary);
+        coreGrad.addColorStop(1, theme.accent);
+        ctx.fillStyle = coreGrad;
+        ctx.beginPath();
+        ctx.arc(cx, cy, 40, 0, Math.PI * 2);
+        ctx.fill();
+
+        const satellites = [
+          { angle: 0.3 + (variant * 0.5), r: 140, size: 14, color: theme.secondary },
+          { angle: 1.8 + (variant * 0.5), r: 140, size: 12, color: '#ffffff' },
+          { angle: 3.4 + (variant * 0.5), r: 140, size: 16, color: theme.accent },
+          { angle: 4.9 + (variant * 0.5), r: 80, size: 11, color: theme.secondary }
+        ];
+
+        for (let s of satellites) {
+          const sx = cx + Math.cos(s.angle) * s.r;
+          const sy = cy + Math.sin(s.angle) * s.r;
+
+          ctx.strokeStyle = theme.secondary + '66';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(cx, cy);
+          ctx.lineTo(sx, sy);
+          ctx.stroke();
+
+          ctx.fillStyle = s.color;
+          ctx.beginPath();
+          ctx.arc(sx, sy, s.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      // 10. Bottom Brand Accent Bar
+      const barGrad = ctx.createLinearGradient(80, 0, 1120, 0);
+      barGrad.addColorStop(0, theme.accent);
+      barGrad.addColorStop(0.5, theme.secondary);
+      barGrad.addColorStop(1, 'transparent');
+      ctx.fillStyle = barGrad;
+      ctx.fillRect(80, 560, 1040, 4);
+
+      ctx.fillStyle = '#64748b';
+      ctx.font = '600 12px Inter, sans-serif';
+      ctx.fillText('magnusminds.com • Enterprise Architecture & Engineering', 80, 582);
+
+      return canvas.toDataURL('image/jpeg', 0.95);
+    }
+
+    // Dynamic AI Image Generator directly from the blog description and technology context
+    function generateAiImageUrl(topic, summary, domain, seed) {
+      let techContext = domain.toUpperCase();
+      const lower = topic.toLowerCase();
+      if (lower.includes('.net') || lower.includes('dotnet') || lower.includes('c#')) {
+        techContext = 'Microsoft .NET Core and C# asynchronous architecture';
+      } else if (lower.includes('php') || lower.includes('laravel')) {
+        techContext = 'Modern PHP server-side runtime and backend request lifecycle';
+      } else if (lower.includes('react') || lower.includes('javascript') || lower.includes('vue')) {
+        techContext = 'Modern reactive frontend web architecture';
+      } else if (domain === 'workplace') {
+        techContext = 'Executive leadership, team accountability, and collaborative workplace culture';
+      } else if (domain === 'security') {
+        techContext = 'Cybersecurity, zero trust architecture, and identity governance';
+      } else if (domain === 'fabric') {
+        techContext = 'Microsoft Fabric medallion lakehouse and OneLake data architecture';
+      } else if (domain === 'sql') {
+        techContext = 'High-performance SQL Server database indexing and query execution';
+      }
+
+      const prompt = `Professional 3D isometric blog cover illustration for "${topic}". Technology focus: ${techContext}. Core purpose & context: ${summary.slice(0, 160)}. Modern enterprise software architecture, vibrant studio lighting, clean tech composition, 8k resolution, zero watermark`;
+      return `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=1200&height=630&nologo=true&seed=${seed}`;
+    }
+
+    function getDomainBanner(domain, title, category, summary, variant = currentBannerVariant) {
+      const studioList = domainBanners[domain];
+      // If we have a dedicated studio photo for this domain AND currentBannerVariant is even
+      if (studioList && studioList.length > 0 && (variant % 2 === 0)) {
+        return studioList[Math.floor(variant / 2) % studioList.length];
+      }
+      // For all other domains (frontend, ai, devops, csharp, git, marketing, security, universal, novel topics),
+      // OR on alternate variants of studio domains, dynamically synthesize an HD 1200x630 banner tailored to this EXACT topic!
+      try {
+        return synthesizeCustomBanner(title, category, summary, domain, variant);
+      } catch (err) {
+        console.error('Banner synthesis error:', err);
+        return studioList ? studioList[0] : 'assets/tech_cover.jpg';
+      }
     }
 
     function generateNewBannerImage() {
@@ -2089,52 +2540,70 @@ Mastering **${cleanTitle}** empowers teams to turn complex challenges into predi
 
       img.style.opacity = '0.2';
       spinner.classList.remove('hidden');
-      if (spinnerText) spinnerText.textContent = `Generating new AI variation for "${currentActiveDetails.title}"...`;
-      if (spinnerSubtext) spinnerSubtext.textContent = 'Re-prompting AI with generated description for alternate composition';
+      if (spinnerText) spinnerText.textContent = `Generating new AI image for "${currentActiveDetails.title}"...`;
+      if (spinnerSubtext) spinnerSubtext.textContent = 'Re-prompting AI generator with full description for fresh composition';
       if (btnText) btnText.textContent = 'Generating...';
       if (genImageBtn) genImageBtn.disabled = true;
 
       currentBannerVariant++;
       const domain = currentActiveDetails.domain || 'universal';
-      const targetSrc = getDomainBanner(domain);
+      const randomSeed = Math.floor(Math.random() * 900000) + 100000;
+      const aiTargetSrc = generateAiImageUrl(currentActiveDetails.title, currentActiveDetails.meta?.summary || '', domain, randomSeed);
+      const fallbackSrc = getDomainBanner(domain, currentActiveDetails.title, currentActiveDetails.meta?.category, currentActiveDetails.meta?.summary, currentBannerVariant);
 
       const preload = new Image();
-      preload.src = targetSrc;
       preload.onload = function() {
-        setTimeout(() => {
-          img.src = targetSrc;
-          img.style.opacity = '1';
-          spinner.classList.add('hidden');
-          if (btnText) btnText.textContent = 'Generate New Image';
-          if (genImageBtn) genImageBtn.disabled = false;
-          showToast('✨ New AI image variation generated from description!');
-        }, 500);
+        img.src = aiTargetSrc;
+        img.style.opacity = '1';
+        spinner.classList.add('hidden');
+        if (btnText) btnText.textContent = 'Generate New Image';
+        if (genImageBtn) genImageBtn.disabled = false;
+        showToast('✨ New AI image generated from description!');
       };
       preload.onerror = function() {
-        setTimeout(() => {
-          img.src = targetSrc;
-          img.style.opacity = '1';
-          spinner.classList.add('hidden');
-          if (btnText) btnText.textContent = 'Generate New Image';
-          if (genImageBtn) genImageBtn.disabled = false;
-        }, 500);
+        img.src = fallbackSrc;
+        img.style.opacity = '1';
+        spinner.classList.add('hidden');
+        if (btnText) btnText.textContent = 'Generate New Image';
+        if (genImageBtn) genImageBtn.disabled = false;
       };
+      preload.src = aiTargetSrc;
     }
 
-    function downloadBannerImage() {
+    async function downloadBannerImage() {
       const img = document.getElementById('bannerImagePreview');
       if (!img.src) {
         showToast('No banner image available to download!');
         return;
       }
-      const a = document.createElement('a');
-      a.href = img.src;
       const slug = (currentActiveDetails && currentActiveDetails.slug) ? currentActiveDetails.slug : 'blog';
-      a.download = `${slug}_cover.jpg`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      showToast('Banner downloaded successfully!');
+      try {
+        if (img.src.startsWith('data:')) {
+          const a = document.createElement('a');
+          a.href = img.src;
+          a.download = `${slug}_cover.jpg`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          showToast('Banner downloaded successfully!');
+        } else {
+          showToast('Preparing banner download...');
+          const resp = await fetch(img.src);
+          const blob = await resp.blob();
+          const blobUrl = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = blobUrl;
+          a.download = `${slug}_cover.jpg`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(blobUrl);
+          showToast('Banner downloaded successfully!');
+        }
+      } catch (e) {
+        // Fallback direct link
+        window.open(img.src, '_blank');
+      }
     }
 
     function generateBlog() {
@@ -2192,6 +2661,9 @@ Based on this description, can you provide a background blog cover proper one?`;
       const genBtnText = document.getElementById('genBtnText');
       const genImageBtn = document.getElementById('genImageBtn');
 
+      // Reset variant on new blog generation
+      currentBannerVariant = 0;
+
       // Clear previous image and show prominent generation state
       bannerImg.style.opacity = '0.1';
       spinner.classList.remove('hidden');
@@ -2200,30 +2672,28 @@ Based on this description, can you provide a background blog cover proper one?`;
       if (genBtnText) genBtnText.textContent = 'Generating...';
       if (genImageBtn) genImageBtn.disabled = true;
 
-      const targetBannerSrc = getDomainBanner(domain);
+      const initialSeed = Math.floor(Math.random() * 900000) + 100000;
+      const aiBannerSrc = generateAiImageUrl(cleanTitle, meta.summary || '', domain, initialSeed);
+      const fallbackBannerSrc = getDomainBanner(domain, cleanTitle, meta.category, meta.summary, 0);
 
-      // Preload image so it appears instantly after generation animation
+      // Preload AI image generated directly from description
       const preload = new Image();
-      preload.src = targetBannerSrc;
       preload.onload = function() {
-        setTimeout(() => {
-          bannerImg.src = targetBannerSrc;
-          bannerImg.style.opacity = '1';
-          spinner.classList.add('hidden');
-          if (genBtnText) genBtnText.textContent = 'Generate New Image';
-          if (genImageBtn) genImageBtn.disabled = false;
-          showToast(`✨ AI cover generated for ${cleanTitle}!`);
-        }, 700);
+        bannerImg.src = aiBannerSrc;
+        bannerImg.style.opacity = '1';
+        spinner.classList.add('hidden');
+        if (genBtnText) genBtnText.textContent = 'Generate New Image';
+        if (genImageBtn) genImageBtn.disabled = false;
+        showToast(`✨ AI cover generated for ${cleanTitle}!`);
       };
       preload.onerror = function() {
-        setTimeout(() => {
-          bannerImg.src = targetBannerSrc;
-          bannerImg.style.opacity = '1';
-          spinner.classList.add('hidden');
-          if (genBtnText) genBtnText.textContent = 'Generate New Image';
-          if (genImageBtn) genImageBtn.disabled = false;
-        }, 700);
+        bannerImg.src = fallbackBannerSrc;
+        bannerImg.style.opacity = '1';
+        spinner.classList.add('hidden');
+        if (genBtnText) genBtnText.textContent = 'Generate New Image';
+        if (genImageBtn) genImageBtn.disabled = false;
       };
+      preload.src = aiBannerSrc;
       renderPreviewDisplay();
 
       // Reveal results card and smooth scroll
