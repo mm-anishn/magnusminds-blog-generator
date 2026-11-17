@@ -343,23 +343,20 @@
           <div class="flex items-center justify-between mb-1.5">
             <label class="text-xs font-bold text-slate-700 uppercase tracking-wide">Image * (1200×630 Blog Banner)</label>
             <div class="flex items-center space-x-2">
-              <button onclick="copyImagePrompt()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold px-2.5 py-1 rounded border border-slate-300 transition cursor-pointer flex items-center space-x-1">
-                <span>📋 Copy Image Prompt</span>
+              <button id="genImageBtn" onclick="generateNewBannerImage()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold px-2.5 py-1 rounded border border-slate-300 transition cursor-pointer flex items-center space-x-1">
+                <span id="genBtnIcon">🔄</span>
+                <span id="genBtnText">Generate New Image</span>
               </button>
-              <label for="bannerUploadInput" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold px-2.5 py-1 rounded border border-slate-300 transition cursor-pointer flex items-center space-x-1">
-                <span>📁 Upload Banner</span>
-              </label>
-              <input type="file" id="bannerUploadInput" accept="image/*" class="hidden" onchange="handleBannerUpload(event)">
               <button id="downloadBannerBtn" onclick="downloadBannerImage()" class="text-xs text-white bg-brand-500 hover:bg-brand-600 px-2.5 py-1 rounded font-semibold cursor-pointer">⬇ Download Banner</button>
             </div>
           </div>
-          <div class="border border-slate-200 rounded-xl bg-slate-900/5 h-[165px] flex items-center justify-center overflow-hidden relative shadow-inner group">
-            <img id="bannerImagePreview" src="assets/work_ethics_cover.jpg" alt="Blog Banner Preview" class="w-full h-full object-cover rounded-lg">
-            <div id="bannerPlaceholder" class="hidden absolute inset-0 flex flex-col items-center justify-center p-4 text-center bg-slate-50">
-              <svg class="w-8 h-8 text-slate-400 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-              <p class="text-xs font-semibold text-slate-700">No Banner Image Loaded</p>
-              <p class="text-[11px] text-slate-500">Copy prompt to generate via AI, or upload a banner</p>
+          <div class="border border-slate-200 rounded-xl bg-slate-900/5 h-[165px] flex items-center justify-center overflow-hidden relative shadow-inner">
+            <!-- Loading Spinner -->
+            <div id="imageLoadingSpinner" class="hidden absolute inset-0 bg-white/85 backdrop-blur-xs flex flex-col items-center justify-center z-10 space-y-2">
+              <div class="w-7 h-7 border-3 border-brand-500 border-t-transparent rounded-full animate-spin"></div>
+              <span id="spinnerText" class="text-xs font-semibold text-slate-700">Generating AI cover from description...</span>
             </div>
+            <img id="bannerImagePreview" src="assets/fabric_cover.jpg" alt="Blog Banner Preview" class="w-full h-full object-cover rounded-lg">
           </div>
           <p class="text-[11px] text-slate-500 mt-1 flex items-center justify-between">
             <span>Prompt: <em>Based on this description, can you provide a background blog cover proper one?</em></span>
@@ -2046,24 +2043,21 @@ Requirements: High-resolution 16:9 widescreen corporate technical infographic ba
       document.getElementById('fieldTags').value = meta.tags.join(', ');
       document.getElementById('fieldSlug').value = slug;
 
-      // Setup Image Prompt and Banner Preview
+      // Setup Image Prompt and Domain-Specific Relevant Banner
+      currentActiveDetails.domain = domain;
       currentImagePrompt = `# Description:
 ${content.visual}
 
 Based on this description, can you provide a background blog cover proper one?`;
 
       const bannerImg = document.getElementById('bannerImagePreview');
-      const placeholder = document.getElementById('bannerPlaceholder');
-      if (domain === 'workplace') {
-        bannerImg.src = 'assets/work_ethics_cover.jpg';
-        bannerImg.classList.remove('hidden');
-        placeholder.classList.add('hidden');
-      } else {
-        // If an image was uploaded, preserve it, otherwise show preview
-        if (!bannerImg.src || bannerImg.src.includes('work_ethics_cover.jpg')) {
-          bannerImg.src = 'assets/work_ethics_cover.jpg';
-        }
-      }
+      const spinner = document.getElementById('imageLoadingSpinner');
+      spinner.classList.remove('hidden');
+
+      setTimeout(() => {
+        bannerImg.src = getDomainBanner(domain);
+        spinner.classList.add('hidden');
+      }, 300);
       renderPreviewDisplay();
 
       // Reveal results card and smooth scroll
