@@ -29,14 +29,14 @@ const QUALITY_RULES = [
   { id: 'ASYNC-002', severity: 'CRITICAL', category: 'async-safety', exts: ['.cs'], regex: /async\s+void\s+(?!On[A-Z]|Handle[A-Z])[A-Za-z0-9_]+\s*\(/, message: 'async void method detected on non-event handler.', suggestion: 'Return Task or ValueTask so exceptions can be awaited and observed.' },
 
   // Error Handling
-  { id: 'PAT-001', severity: 'CRITICAL', category: 'anti-pattern', regex: /catch\s*(?:\([^)]*\))?\s*\{\s*\}/, message: 'Empty catch block silently swallowing exceptions.', suggestion: 'Log error context or rethrow. Never silently suppress errors.' },
+  { id: 'PAT-001', severity: 'CRITICAL', category: 'anti-pattern', regex: /catch\s*(?:\([^)]*\))?\s*\{/, message: 'Potential empty or silent catch block.', suggestion: 'Log error context or rethrow. Never silently suppress errors.' },
   { id: 'ERR-002', severity: 'WARNING', category: 'anti-pattern', exts: ['.cs'], regex: /\bthrow\s+[a-zA-Z0-9_]+\s*;/, message: 'throw ex; wipes the original stack trace.', suggestion: 'Use bare "throw;" to preserve stack trace context.' },
 
   // Database & Performance
   { id: 'PERF-001', severity: 'WARNING', category: 'performance-nplus1', regex: /(?:_db|_context|context|repository|_repository)\.[A-Za-z0-9_]+\.(?:Where|Find|FirstOrDefault|SingleOrDefault|Select|Query)\s*\(/, message: 'Database/ORM call detected; verify this is not inside a loop (N+1 query risk).', suggestion: 'Batch-fetch data before loops using IN/Contains clauses.' },
 
   // Debug code
-  { id: 'DBG-001', severity: 'WARNING', category: 'debug', exts: ['.js', '.ts', '.jsx', '.tsx'], regex: /\bconsole\.(?:log|debug|dir|trace)\s*\(/, message: 'console.log/debug statement left in code.', suggestion: 'Remove temporary debug logging or use structured logger.' },
+  { id: 'DBG-001', severity: 'WARNING', category: 'debug', exts: ['.js', '.ts', '.jsx', '.tsx', '.html'], regex: /\bconsole\.(?:log|debug|dir|trace)\s*\(/, message: 'console.log/debug statement left in code.', suggestion: 'Remove temporary debug logging or use structured logger.' },
   { id: 'DBG-002', severity: 'CRITICAL', category: 'debug', regex: /\bdebugger\s*;?/, message: 'debugger statement left in code.', suggestion: 'Remove debugger breakpoint before merging.' },
   { id: 'DBG-003', severity: 'INFO', category: 'debug', regex: /(?:breakpoint\(\)|import pdb; pdb\.set_trace\(\)|var_dump\(|dd\()/, message: 'Debug inspect statement found.', suggestion: 'Remove debug inspect functions before committing.' }
 ];
@@ -72,11 +72,55 @@ function analyzeDiff(diffText) {
     if (line.startsWith('+') && !line.startsWith('+++')) {
       const addedContent = line.substring(1);
       const lineNumber = currentNewLine++;
-      const isTestFile = /(?:test|spec|mock|fixture)/i.test(currentFile);
+      const isTestFile = /(?:[\.\/]test[s]?[\.\/]|_test\.|\.test\.|\.spec\.)/i.test(currentFile);
 
       for (const rule of QUALITY_RULES) {
         if (rule.category === 'debug' && isTestFile) continue;
         if (rule.exts && !rule.exts.some(ext => currentFile.toLowerCase().endsWith(ext))) continue;
+
+        if (rule.id === 'PAT-001') {
+          if (/catch\s*(?:\([^)]*\))?\s*\{\s*\}/.test(addedContent)) {
+            issues.push({
+              file: currentFile || 'unknown',
+              line: lineNumber,
+              rule: rule.id,
+              category: rule.category,
+              severity: rule.severity,
+              message: 'Empty catch block silently swallowing exceptions.',
+              snippet: addedContent.trim(),
+              suggestion: rule.suggestion
+            });
+          } else if (/catch\s*(?:\([^)]*\))?\s*\{/.test(addedContent)) {
+            let isEmpty = true;
+            for (let j = i + 1; j < Math.min(i + 6, lines.length); j++) {
+              const nextLine = lines[j];
+              if (nextLine.startsWith('+') && !nextLine.startsWith('+++')) {
+                const trimmed = nextLine.substring(1).trim();
+                if (trimmed === '}') {
+                  break;
+                } else if (trimmed && !trimmed.startsWith('//') && !trimmed.startsWith('/*') && !trimmed.startsWith('*')) {
+                  isEmpty = false;
+                  break;
+                }
+              } else if (!nextLine.startsWith('-')) {
+                break;
+              }
+            }
+            if (isEmpty) {
+              issues.push({
+                file: currentFile || 'unknown',
+                line: lineNumber,
+                rule: rule.id,
+                category: rule.category,
+                severity: rule.severity,
+                message: 'Empty or comment-only catch block silently swallowing errors.',
+                snippet: addedContent.trim(),
+                suggestion: rule.suggestion
+              });
+            }
+          }
+          continue;
+        }
 
         if (rule.regex.test(addedContent)) {
           issues.push({
@@ -175,14 +219,6 @@ async function main() {
 
   if (!token || !repo || !prNumberStr) {
     console.log('Missing GITHUB_TOKEN, GITHUB_REPOSITORY, or PR_NUMBER. Testing in local offline mode...');
-    const sample = `diff --git a/index.html b/index.html
---- a/index.html
-+++ b/index.html
-@@ -10,3 +10,4 @@
-+  console.log("testing pr verifier");
-`;
-    const res = analyzeDiff(sample);
-    console.log('Offline test passed:', res);
     process.exit(0);
   }
 
@@ -239,7 +275,7 @@ async function main() {
     `| Metric | Score | Status |`,
     `| :--- | :--- | :--- |`,
     `| **Overall Quality & Health** | **${overallScore}/100** | ${overallScore >= 80 ? '✅ Pass' : '⚠️ Action Needed'} |`,
-    `| **Code Quality ("Up to Mark")** | **${quality.qualityScore}/100** | ${critical === 0 ? '✅ Up to Mark' : '❌ Critical Bugs/Secrets'} |`,
+    `| **Code Quality ("Up to Mark")** | **${quality.qualityScore}/100** | ${critical === 0 ? '✅ Up to Mark' : '❌ Critical Issues Found'} |`,
     `| **Existing Repo Consistency** | **${consistency.consistencyScore}/100** | ${consistency.duplicateWheels.length === 0 ? '✅ Consistent' : '⚠️ Duplicate Code'} |`,
     `| **Test Coverage** | **${consistency.testCoverageScore}/100** | ${consistency.missingTests.length === 0 ? '✅ Covered' : '⚠️ Missing Tests'} |`,
     '',
@@ -302,7 +338,6 @@ async function main() {
   if (!submitRes.ok) {
     const errText = await submitRes.text();
     console.error(`Failed to submit review: ${errText}`);
-    // Fallback: post as standard PR comment if review fails
     await fetch(`https://api.github.com/repos/${repo}/issues/${prNumber}/comments`, {
       method: 'POST',
       headers: { ...headers, 'Content-Type': 'application/json' },
