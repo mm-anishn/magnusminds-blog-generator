@@ -531,9 +531,20 @@
   </footer>
 
   <script>
-    let currentImagePrompt = '';
-    let currentThemeIndex = 0;
-    let currentActiveDetails = null;
+    // Global State Initialization (Window-bound & Hoisted for 100% Reference Safety)
+    window.currentContentAngle = 0;
+    window.currentGenerationSeed = Math.floor(Math.random() * 900000) + 100000;
+    window.currentBannerVariant = 0;
+    window.currentImagePrompt = '';
+    window.currentThemeIndex = 0;
+    window.currentActiveDetails = null;
+
+    var currentContentAngle = 0;
+    var currentGenerationSeed = window.currentGenerationSeed;
+    var currentBannerVariant = 0;
+    var currentImagePrompt = '';
+    var currentThemeIndex = 0;
+    var currentActiveDetails = null;
 
     function setTopic(val) {
       document.getElementById('topicInput').value = val;
@@ -1311,8 +1322,7 @@ Format your entire response as a single valid JSON object with EXACTLY these key
     // INFINITE PROCEDURAL SYNTHESIS ENGINE (ZERO API KEY REQUIRED)
     // Generates 100% unique, non-fixed descriptions & banners on every click!
     // =========================================================================
-    let currentGenerationSeed = Math.floor(Math.random() * 900000) + 100000;
-    let currentContentAngle = 0;
+    // Global variables initialized at top of script
 
     function getPseudorandom(seed) {
       let s = seed % 2147483647;
@@ -1728,7 +1738,7 @@ ${summaryText}`;
       ]
     };
 
-    let currentBannerVariant = 0;
+    // currentBannerVariant initialized at top of script
 
     // Multi-Style Visual Banner Synthesizer (5 Distinct Design Archetypes)
 function synthesizeCustomBanner(title, category, summary, domain, variant = 0) {
@@ -2468,8 +2478,10 @@ function synthesizeCustomBanner(title, category, summary, domain, variant = 0) {
       }
 
       if (!content) {
-        content = generateDomainContent(domain, cleanTitle, currentContentAngle);
-        const aIndex = currentContentAngle % 3;
+        var safeSeed = (typeof currentGenerationSeed !== 'undefined') ? currentGenerationSeed : (window.currentGenerationSeed || Math.floor(Math.random() * 900000));
+        var safeAngle = (typeof currentContentAngle !== 'undefined') ? currentContentAngle : (window.currentContentAngle || 0);
+        content = generateDomainContent(domain, cleanTitle, safeSeed);
+        const aIndex = safeAngle % 3;
         const lower = cleanTitle.toLowerCase();
         if (lower.includes('php2shell') || (lower.includes('shell') && lower.includes('php'))) {
           const descs = [
@@ -2709,7 +2721,8 @@ function synthesizeCustomBanner(title, category, summary, domain, variant = 0) {
       }
 
       if (!content) {
-        content = generateDomainContent(domain, cleanTitle, currentContentAngle);
+        var safeSeed = (typeof currentGenerationSeed !== 'undefined') ? currentGenerationSeed : (window.currentGenerationSeed || Math.floor(Math.random() * 900000));
+        content = generateDomainContent(domain, cleanTitle, safeSeed);
       }
       document.getElementById('fieldDescriptionText').value = content.visual;
       document.getElementById('fieldDescriptionHtml').value = content.html;
