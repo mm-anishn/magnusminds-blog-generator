@@ -1,0 +1,7 @@
+name = "magnusminds-blog-api"
+main = "worker/index.js"
+compatibility_date = "2024-11-01"
+
+[vars]
+# You can set public non-secret variables here.
+# Set your private GEMINI_API_KEY using: npx wrangler secret put GEMINI_API_KEY

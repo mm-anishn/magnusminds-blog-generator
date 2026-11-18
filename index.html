@@ -464,14 +464,37 @@
       </div>
 
       <div class="space-y-4">
+        <!-- Way 1: Serverless API Proxy (Recommended for Shared Team Use) -->
         <div>
-          <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1.5">Google Gemini API Key (100% Free)</label>
+          <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1.5">
+            Way 1: Team Cloudflare / Vercel Serverless API URL
+          </label>
+          <div class="flex space-x-2">
+            <input type="url" id="serverlessApiInput" placeholder="https://magnusminds-blog-api.workers.dev (or /api/generate)" class="flex-1 px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-800 font-mono focus:outline-none focus:border-brand-500">
+            <button onclick="testServerlessApi()" id="testServerlessBtn" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold cursor-pointer transition">Test API</button>
+          </div>
+          <p class="text-[11px] text-slate-500 mt-1">
+            Deploy the included <code>worker/index.js</code> (Cloudflare) or <code>api/generate.js</code> (Vercel) so coworkers never need their own keys.
+          </p>
+        </div>
+
+        <div class="relative flex py-1 items-center">
+          <div class="flex-grow border-t border-slate-200"></div>
+          <span class="flex-shrink mx-3 text-[11px] font-bold text-slate-400 uppercase tracking-wider">OR</span>
+          <div class="flex-grow border-t border-slate-200"></div>
+        </div>
+
+        <!-- Direct Client-Side Gemini Key -->
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1.5">
+            Direct Google Gemini API Key (Client-Side)
+          </label>
           <div class="flex space-x-2">
             <input type="password" id="geminiApiKeyInput" placeholder="AIzaSy..." class="flex-1 px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-800 font-mono focus:outline-none focus:border-brand-500">
             <button onclick="toggleKeyVisibility()" class="px-2.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-xs font-semibold cursor-pointer">👁</button>
           </div>
-          <p class="text-[11px] text-slate-500 mt-1.5">
-            Get a free Gemini API key in 10 seconds from <a href="https://aistudio.google.com/apikey" target="_blank" class="text-brand-600 hover:underline font-semibold">Google AI Studio</a> (Free tier: 15 req/min, 0 cost).
+          <p class="text-[11px] text-slate-500 mt-1">
+            Get a free personal key from <a href="https://aistudio.google.com/apikey" target="_blank" class="text-brand-600 hover:underline font-semibold">Google AI Studio</a> (Free tier: 15 req/min, $0 cost).
           </p>
         </div>
 
@@ -1053,17 +1076,29 @@
       return localStorage.getItem('mm_gemini_api_key') || '';
     }
 
+    function getStoredServerlessUrl() {
+      return localStorage.getItem('mm_serverless_url') || '';
+    }
+
     function updateAiBadge() {
       const key = getStoredApiKey();
+      const serverlessUrl = getStoredServerlessUrl();
       const badge = document.getElementById('aiStatusBadge');
       const icon = document.getElementById('aiStatusIcon');
       const modalStatus = document.getElementById('aiModalEngineStatus');
 
-      if (key && key.trim().length > 10) {
+      if (serverlessUrl && serverlessUrl.trim()) {
+        if (badge) badge.textContent = 'AI Mode: Serverless Cloud API';
+        if (icon) icon.textContent = '☁️';
+        if (modalStatus) {
+          modalStatus.textContent = `Connected: Serverless API (${serverlessUrl})`;
+          modalStatus.className = 'font-semibold text-sky-600';
+        }
+      } else if (key && key.trim().length > 10) {
         if (badge) badge.textContent = 'AI Mode: Gemini 2.0 Active';
         if (icon) icon.textContent = '✨';
         if (modalStatus) {
-          modalStatus.textContent = 'Connected: Gemini 2.0 Flash (Live)';
+          modalStatus.textContent = 'Connected: Gemini 2.0 Flash (Client Key)';
           modalStatus.className = 'font-semibold text-brand-600';
         }
       } else {
@@ -1078,8 +1113,10 @@
 
     function openAiSettingsModal() {
       const modal = document.getElementById('aiSettingsModal');
-      const input = document.getElementById('geminiApiKeyInput');
-      if (input) input.value = getStoredApiKey();
+      const keyInput = document.getElementById('geminiApiKeyInput');
+      const apiInput = document.getElementById('serverlessApiInput');
+      if (keyInput) keyInput.value = getStoredApiKey();
+      if (apiInput) apiInput.value = getStoredServerlessUrl();
       updateAiBadge();
       if (modal) modal.classList.remove('hidden');
     }
@@ -1097,25 +1134,92 @@
     }
 
     function saveApiKey() {
-      const input = document.getElementById('geminiApiKeyInput');
-      const val = (input ? input.value : '').trim();
-      if (val) {
-        localStorage.setItem('mm_gemini_api_key', val);
-        showToast('✨ Gemini API Key saved! Live AI generation is now active.');
+      const keyInput = document.getElementById('geminiApiKeyInput');
+      const apiInput = document.getElementById('serverlessApiInput');
+
+      const keyVal = (keyInput ? keyInput.value : '').trim();
+      const apiVal = (apiInput ? apiInput.value : '').trim();
+
+      if (apiVal) {
+        localStorage.setItem('mm_serverless_url', apiVal);
+      } else {
+        localStorage.removeItem('mm_serverless_url');
+      }
+
+      if (keyVal) {
+        localStorage.setItem('mm_gemini_api_key', keyVal);
       } else {
         localStorage.removeItem('mm_gemini_api_key');
-        showToast('API Key removed. Reverted to Smart Offline Mode.');
       }
+
+      showToast('Settings saved successfully!');
       updateAiBadge();
       closeAiSettingsModal();
     }
 
     function clearApiKey() {
       localStorage.removeItem('mm_gemini_api_key');
-      const input = document.getElementById('geminiApiKeyInput');
-      if (input) input.value = '';
+      localStorage.removeItem('mm_serverless_url');
+      const keyInput = document.getElementById('geminiApiKeyInput');
+      const apiInput = document.getElementById('serverlessApiInput');
+      if (keyInput) keyInput.value = '';
+      if (apiInput) apiInput.value = '';
       updateAiBadge();
-      showToast('Switched to Smart Offline Engine.');
+      showToast('Reset all AI settings to Smart Offline Engine.');
+    }
+
+    async function testServerlessApi() {
+      const apiInput = document.getElementById('serverlessApiInput');
+      const url = (apiInput ? apiInput.value : '').trim() || getStoredServerlessUrl() || '/api/generate';
+      const btn = document.getElementById('testServerlessBtn');
+
+      if (!url) {
+        showToast('Please enter a serverless API URL first.');
+        return;
+      }
+
+      if (btn) btn.textContent = 'Testing...';
+      try {
+        const resp = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ topic: 'Health Ping Check' })
+        });
+        if (resp.ok) {
+          showToast('✅ Serverless API is working and generating!');
+        } else {
+          const err = await resp.json().catch(() => ({}));
+          showToast('⚠️ API responded with: ' + (err.error || resp.statusText));
+        }
+      } catch (e) {
+        showToast('❌ Failed to reach serverless API: ' + e.message);
+      } finally {
+        if (btn) btn.textContent = 'Test API';
+      }
+    }
+
+    // Auto-detect URL query params for easy team link sharing (?api=... or ?key=...)
+    function checkUrlQueryParams() {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        let updated = false;
+        if (params.has('api')) {
+          localStorage.setItem('mm_serverless_url', params.get('api'));
+          updated = true;
+        }
+        if (params.has('key') || params.has('team_key')) {
+          localStorage.setItem('mm_gemini_api_key', params.get('key') || params.get('team_key'));
+          updated = true;
+        }
+        if (updated) {
+          updateAiBadge();
+          showToast('✨ Team AI configuration auto-loaded from URL!');
+          // Clean URL without reload
+          window.history.replaceState({}, document.title, window.location.pathname);
+        }
+      } catch (e) {
+        console.warn('URL param parse error:', e);
+      }
     }
 
     async function testApiKey() {
@@ -4012,6 +4116,7 @@ function synthesizeCustomBanner(title, category, summary, domain, variant = 0) {
       currentContentAngle++;
       const domain = currentActiveDetails.domain || 'universal';
       const cleanTitle = currentActiveDetails.title;
+      const serverlessUrl = getStoredServerlessUrl() || (window.location.hostname !== 'mm-anishn.github.io' ? '/api/generate' : '');
       const apiKey = getStoredApiKey();
       const newAngleBtn = document.getElementById('newAngleBtn');
       const newAngleBtnText = document.getElementById('newAngleBtnText');
@@ -4019,7 +4124,36 @@ function synthesizeCustomBanner(title, category, summary, domain, variant = 0) {
       let content = null;
       let metaDescription = '';
 
-      if (apiKey && apiKey.trim().length > 10) {
+      // 1. Prioritize Serverless Cloud API for New Technical Angle
+      if (serverlessUrl) {
+        try {
+          if (newAngleBtn) newAngleBtn.disabled = true;
+          if (newAngleBtnText) newAngleBtnText.textContent = 'Generating Angle...';
+          showToast(`☁️ Serverless API generating fresh angle for "${cleanTitle}"...`);
+          const sResp = await fetch(serverlessUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ topic: cleanTitle, angle: currentContentAngle })
+          });
+          if (sResp.ok) {
+            const sData = await sResp.json();
+            const b = sData.blog;
+            if (b && b.visualText && b.sourceHtml) {
+              content = { visual: b.visualText, html: b.sourceHtml };
+              metaDescription = b.metaDescription || '';
+              showToast('✅ 100% Unique Angle generated by Serverless API!');
+            }
+          }
+        } catch (err) {
+          console.warn('Serverless angle fetch failed:', err);
+        } finally {
+          if (newAngleBtn) newAngleBtn.disabled = false;
+          if (newAngleBtnText) newAngleBtnText.textContent = 'New Technical Angle';
+        }
+      }
+
+      // 2. Direct Gemini Key fallback
+      if (!content && apiKey && apiKey.trim().length > 10) {
         try {
           if (newAngleBtn) newAngleBtn.disabled = true;
           if (newAngleBtnText) newAngleBtnText.textContent = 'AI Generating Angle...';
@@ -4219,11 +4353,44 @@ function synthesizeCustomBanner(title, category, summary, domain, variant = 0) {
       // Clean keywords derived strictly from title and tags
       const keywords = [cleanTitle, ...meta.tags].filter((v, i, a) => a.indexOf(v) === i).join(', ');
 
+      const serverlessUrl = getStoredServerlessUrl() || (window.location.hostname !== 'mm-anishn.github.io' ? '/api/generate' : '');
       const apiKey = getStoredApiKey();
       let content = null;
       let metaDescription = '';
 
-      if (apiKey && apiKey.trim().length > 10) {
+      // 1. Prioritize Serverless Cloud API (Way 1)
+      if (serverlessUrl) {
+        const btn = document.querySelector('button[onclick="generateBlog()"]');
+        try {
+          if (btn) btn.disabled = true;
+          showToast(`☁️ Serverless Cloud API is writing unique blog for "${cleanTitle}"...`);
+          const sResp = await fetch(serverlessUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ topic: cleanTitle, angle: currentContentAngle })
+          });
+          if (sResp.ok) {
+            const sData = await sResp.json();
+            const b = sData.blog;
+            if (b && b.visualText && b.sourceHtml) {
+              content = { visual: b.visualText, html: b.sourceHtml };
+              metaDescription = b.metaDescription || '';
+              if (b.category) meta.category = b.category;
+              if (Array.isArray(b.tags) && b.tags.length > 0) meta.tags = b.tags;
+              showToast('✅ 100% Unique Blog generated by Serverless API!');
+            }
+          } else {
+            console.warn('Serverless API returned error:', sResp.status);
+          }
+        } catch (err) {
+          console.warn('Serverless API fetch failed:', err);
+        } finally {
+          if (btn) btn.disabled = false;
+        }
+      }
+
+      // 2. Direct Gemini Key (if serverless did not produce content)
+      if (!content && apiKey && apiKey.trim().length > 10) {
         const btn = document.querySelector('button[onclick="generateBlog()"]');
         try {
           if (btn) btn.disabled = true;
@@ -4366,6 +4533,10 @@ Based on this description, can you provide a background blog cover proper one?`;
       resultsCard.classList.remove('hidden');
       resultsCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+
+    // Auto-run on page load
+    checkUrlQueryParams();
+    updateAiBadge();
   </script>
 </body>
 </html>
