@@ -4251,8 +4251,17 @@ function synthesizeCustomBanner(title, category, summary, domain, variant = 0) {
       document.getElementById('fieldDescriptionHtml').value = content.html;
 
       // Angle-aware and domain-tailored meta description
-      let metaDescription = '';
-      const aIndex = (currentContentAngle || 0) % 3;
+      if (!metaDescription) {
+        const aIndex = (currentContentAngle || 0) % 3;
+        const lower = cleanTitle.toLowerCase();
+        if (lower.includes('php2shell') || (lower.includes('shell') && lower.includes('php'))) {
+          const descs = [
+            "Post-mortem analysis of the php2shell incident: why enterprise infrastructure requires compiled, type-safe .NET to eliminate web shell attack surfaces.",
+            "Eliminating Remote Code Execution (RCE): how C# compile-time invariants and memory-safe primitives protect systems from dynamic gadget exploits.",
+            "The zero-downtime migration playbook: using Microsoft YARP to strangle vulnerable PHP monoliths and cut over to hardened .NET microservices."
+          ];
+          metaDescription = descs[aIndex];
+        } else
       if (domain === 'csharp') {
         const descs = [
           `Master asynchronous concurrency, non-blocking ThreadPool patterns, and high-throughput APIs in ${cleanTitle} with production-grade engineering principles by MagnusMinds.`,
@@ -4295,6 +4304,7 @@ function synthesizeCustomBanner(title, category, summary, domain, variant = 0) {
           `Executive roadmap and enterprise ROI framework for ${cleanTitle}: guide strategic modernizations with verifiable milestones and governance frameworks.`
         ];
         metaDescription = descs[aIndex];
+        }
       }
 
       // Construct High-End Infographic Image Prompt for AI Generators based on generated description
