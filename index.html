@@ -1333,162 +1333,58 @@ Format your entire response as a single valid JSON object with EXACTLY these key
       };
     }
 
-    function generateDomainContent(domain, cleanTitle, seedModifier = 0) {
+    function generateDomainContent(domain, cleanTitle, angleIndex = 0, seedModifier = 0) {
+      const activeAngle = Math.abs(parseInt(angleIndex, 10) || 0);
       const activeSeed = (currentGenerationSeed + (seedModifier * 1337) + Date.now()) % 1000000;
-      const rng = getPseudorandom(activeSeed);
+      const rng = getPseudorandom(activeSeed + (activeAngle * 777));
       const pick = (arr) => arr[Math.floor(rng() * arr.length)];
-      const pickN = (arr, n) => {
-        const copy = [...arr];
-        const out = [];
-        for (let i = 0; i < n && copy.length > 0; i++) {
-          const idx = Math.floor(rng() * copy.length);
-          out.push(copy.splice(idx, 1)[0]);
-        }
-        return out;
-      };
 
       const lower = cleanTitle.toLowerCase();
       const words = cleanTitle.replace(/[^a-zA-Z0-9 ]/g, '').split(/\s+/).filter(w => w.length > 2);
       const primarySubject = words.length > 0 ? words[0] : 'Enterprise';
       const secondarySubject = words.length > 1 ? words.slice(1, 3).join(' ') : 'Architecture';
 
-      // -----------------------------------------------------------------------
-      // 1. TOPIC-SPECIFIC KNOWLEDGE MODULES
-      // -----------------------------------------------------------------------
+      // 1. TOPIC FAMILY DETECTION
       let topicFamily = 'universal';
       if (lower.includes('php2shell') || (lower.includes('shell') && (lower.includes('php') || lower.includes('.net') || lower.includes('rce')))) {
         topicFamily = 'php2shell';
-      } else if (lower.includes('sql') || lower.includes('database') || lower.includes('query') || lower.includes('postgres')) {
+      } else if (lower.includes('sql') || lower.includes('database') || lower.includes('query') || lower.includes('postgres') || lower.includes('dax') && lower.includes('sql')) {
         topicFamily = 'sql';
-      } else if (lower.includes('c#') || lower.includes('.net') || lower.includes('dotnet')) {
+      } else if (lower.includes('dotnet') || lower.includes('c#') || lower.includes('microservice') || lower.includes('async') || lower.includes('polly') || lower.includes('api')) {
         topicFamily = 'csharp';
-      } else if (lower.includes('php') || lower.includes('laravel') || lower.includes('backend')) {
+      } else if (lower.includes('php') || lower.includes('laravel') || lower.includes('backend') || lower.includes('fastcgi')) {
         topicFamily = 'backend';
-      } else if (lower.includes('fabric') || lower.includes('powerbi') || lower.includes('lakehouse')) {
+      } else if (lower.includes('fabric') || lower.includes('powerbi') || lower.includes('lakehouse') || lower.includes('synapse') || lower.includes('dax') || lower.includes('onelake')) {
         topicFamily = 'fabric';
-      } else if (lower.includes('workplace') || lower.includes('culture') || lower.includes('ethics') || lower.includes('leadership')) {
+      } else if (lower.includes('invoice') || lower.includes('sage') || lower.includes('finance') || lower.includes('accounting') || lower.includes('billing')) {
+        topicFamily = 'fintech';
+      } else if (lower.includes('workplace') || lower.includes('culture') || lower.includes('ethics') || lower.includes('leadership') || lower.includes('team')) {
         topicFamily = 'workplace';
-      } else if (lower.includes('security') || lower.includes('exploit') || lower.includes('zero-trust') || lower.includes('vulnerability')) {
-        topicFamily = 'security';
       }
 
-      // -----------------------------------------------------------------------
-      // 2. PROCEDURAL HOOK PERMUTATIONS (8 Organic Variants)
-      // -----------------------------------------------------------------------
-      const hookTemplates = [
+      // 2. DYNAMIC INTRODUCTORY HOOKS (Varied by Angle & Seed)
+      const hookPool = [
         `In enterprise distributed systems handling mission-critical workloads, ${cleanTitle} represents a foundational architectural imperative. Rather than treating this as an isolated operational task, engineering leaders must evaluate the underlying execution pipeline, memory invariants, and latency trade-offs that govern stability under peak load.`,
         `Recent high-scale production post-mortems demonstrate that system bottlenecks around ${cleanTitle} rarely originate from hardware constraints; they stem from sub-optimal architectural boundaries, unmonitored contention points, and unverified runtime assumptions.`,
         `Achieving predictable sub-millisecond latencies and high availability requires engineering teams to move beyond default configurations when tackling ${cleanTitle}. Systematic performance profiling and rigorous contract isolation form the bedrock of sustainable enterprise scale.`,
-        `As modern software ecosystems evolve toward decoupled, event-driven topologies, mastering ${cleanTitle} has become essential for engineering organizations striving for zero-downtime deployments and ironclad reliability.`,
-        `When high-concurrency traffic surges hit production clusters, latent inefficiencies in ${cleanTitle} quickly escalate into cascading gateway timeouts and cluster instability. Designing defensive guardrails is non-negotiable.`,
-        `The architectural evolution of ${cleanTitle} reflects a broader industry transition from monolithic, interpreted paradigms toward type-safe, compiled, and memory-bounded execution runtimes.`,
-        `Engineering for tier-1 reliability demands an empirical approach to ${cleanTitle}: measuring p99 tail latency, isolating thread pool contention, and enforcing strict transactional boundaries before code reaches production.`,
-        `Deconstructing ${cleanTitle} from first principles reveals critical insights into runtime scheduling, zero-allocation memory mechanics, and distributed resilience that transform brittle services into resilient platforms.`
+        `As modern software ecosystems evolve toward decoupled, event-driven topologies, mastering ${cleanTitle} has become essential for engineering organizations striving for zero-downtime deployments and ironclad reliability.`
       ];
-      const hook = pick(hookTemplates);
+      const hook = hookPool[activeAngle % hookPool.length];
 
-      // -----------------------------------------------------------------------
-      // 3. PROCEDURAL DOMAIN ANALYSES & SECTIONS
-      // -----------------------------------------------------------------------
-      let sec1Heading = '';
-      let sec1Text = '';
-      let sec2Heading = '';
-      let sec2Text = '';
-      let codeSnippet = '';
-      let codeLang = 'csharp';
-      let tableRows = [];
-      let checklistItems = [];
-      let summaryText = '';
+      // 3. MULTI-ANGLE KNOWLEDGE REPOSITORY
+      const repository = {
+        sql: [
+          {
+            sec1Heading: `B-Tree Indexing Mechanics & Sargable Predicate Optimization`,
+            sec1Text: `When high-throughput queries execute against multi-million-row tables, query bottlenecks rarely stem from IO capacity alone. The Cost-Based Optimizer (CBO) evaluates cardinality statistics to choose physical operators. Non-sargable WHERE predicates, implicit data type conversions (such as comparing VARCHAR to NVARCHAR columns), and scalar functions on indexed columns force expensive clustered index scans, saturating buffer pools and triggering excessive disk page reads.
 
-      if (topicFamily === 'php2shell') {
-        const sec1Headings = [
-          'The Incident Catalyst: Anatomy of the php2shell Exploit',
-          'Root Cause Deconstruction: How Web Shells Compromise Interpreted Runtimes',
-          'The Perimeter Breach: Arbitrary File Ingestion Under Adversarial Attack'
-        ];
-        sec1Heading = pick(sec1Headings);
-        sec1Text = `In dynamic interpreted architectures like PHP-FPM, the web server treats files within the document root as directly executable scripts. An attacker uploading a polymorphic payload (php2shell) exploits local file inclusion or unsanitized multipart upload handlers to drop executable code. Once invoked via HTTP, the PHP interpreter executes arbitrary system commands under the www-data worker daemon with full filesystem visibility.`;
+Designing targeted covering indexes with INCLUDE clauses stores referenced projection attributes directly within index leaf pages. This eliminates random bookmark lookups into the clustered base table, converting fragmented random I/O into deterministic sequential range scans.`,
+            sec2Heading: `Query Store Diagnostics & Plan Regression Remediation`,
+            sec2Text: `Parameter sniffing and stale statistics frequently trigger severe plan regressions, causing the optimizer to select nested loop joins with high-volume spools instead of parallel hash matches. 
 
-        const sec2Headings = [
-          'The Architectural Remedy: Why Compiled .NET Is Structurally Immune',
-          'Eliminating Web Shell Vectors through Kestrel In-Memory Routing',
-          'Type Safety & Assembly Verification: The CoreCLR Defense Matrix'
-        ];
-        sec2Heading = pick(sec2Headings);
-        sec2Text = `Migrating to ASP.NET Core eliminates the entire web shell attack class by structural design. Kestrel does not map URLs to disk files; all requests resolve to compiled, strongly typed delegate expressions in memory. Dropping a file onto a .NET container filesystem cannot trigger execution because Kestrel possesses zero concept of on-the-fly script interpretation.`;
-
-        codeLang = 'csharp';
-        codeSnippet = `// Production Defense: Zero-Disk Ingestion Pipeline with Magic Byte Header Validation
-public sealed class HardenedUploadQuarantineService
-{
-    private static readonly ReadOnlyMemory<byte> AllowedSignature = new byte[] { 0xFF, 0xD8, 0xFF }; // Clean binary header
-    private readonly IBlobStorageClient _isolatedStorage;
-    private readonly ILogger<HardenedUploadQuarantineService> _logger;
-
-    public HardenedUploadQuarantineService(IBlobStorageClient isolatedStorage, ILogger<HardenedUploadQuarantineService> logger)
-    {
-        _isolatedStorage = isolatedStorage;
-        _logger = logger;
-    }
-
-    public async Task<QuarantineResult> ValidateAndQuarantineAsync(Stream rawStream, string clientName, CancellationToken ct)
-    {
-        // 1. Read first 16 bytes into stack-allocated Span without heap allocation
-        Span<byte> headerBytes = stackalloc byte[16];
-        int read = await rawStream.ReadAsync(headerBytes.ToArray(), 0, 16, ct);
-
-        // 2. Reject mismatched binary signatures to prevent polymorphic shell uploads
-        if (read < 3 || !headerBytes.Slice(0, 3).SequenceEqual(AllowedSignature.Span))
-        {
-            _logger.LogWarning("Potential Web Shell or Payload Spoofing Blocked: {ClientName}", clientName);
-            throw new SecurityException("Invalid binary signature: payload rejected by policy.");
-        }
-
-        // 3. Stream directly into detached, non-executable cloud blob storage
-        rawStream.Position = 0;
-        var quarantineKey = $"isolated-artifacts/{Guid.NewGuid():N}.bin";
-        await _isolatedStorage.UploadDetachedAsync(quarantineKey, rawStream, ct);
-
-        return new QuarantineResult(quarantineKey, Status: "Verified & Quarantined");
-    }
-}`;
-
-        tableRows = [
-          ['Arbitrary Script Execution', 'High: Files placed in webroot execute via HTTP', 'Immune: Kestrel routes via compiled delegates only', 'Structural Routing Isolation'],
-          ['Type Confusion & Juggling', 'Vulnerable: Loose equality ("0 == \'php\'") traps', 'Immune: Strict static typing verified at compile-time', 'Static Type System'],
-          ['Object Deserialization RCE', 'High Risk: Native unserialize() gadget chains', 'Zero Risk: System.Text.Json with sealed DTO contracts', 'Absence of Dynamic Eval Runtime'],
-          ['Process & Worker Model', 'OS process forks per worker daemon', 'Managed thread pool in isolated single process', 'Predictable memory & tracing boundaries'],
-          ['Container Attack Surface', 'Full Linux OS, Perl, Shell utils required', 'Distroless chiseled container with zero shell binaries', 'Zero shell binaries (/bin/sh) to invoke']
-        ];
-
-        checklistItems = [
-          'Deploy on Chiseled Ubuntu / Distroless .NET images with zero shell binaries (/bin/sh or /bin/bash completely stripped).',
-          'Enforce Read-Only Root Filesystems (readOnlyRootFilesystem: true in Kubernetes security context) to prevent disk persistence.',
-          'Stream all user-uploaded content directly to detached cloud object storage (S3/Blob) using pre-signed, time-limited URLs.',
-          'Apply process-level Seccomp and AppArmor profiles to block fork() and execve() system calls across production pods.'
-        ];
-
-        summaryText = `Migrating from PHP to .NET transforms enterprise security from reactive patching to structural immunity. By replacing dynamic script execution with compiled, type-safe runtimes, organizations permanently eliminate web shell attack surfaces.`;
-
-      } else if (topicFamily === 'sql') {
-        const sec1Headings = [
-          `Execution Plan Optimization: Resolving Bottlenecks in ${cleanTitle}`,
-          `B-Tree Page Mechanics & Clustered Index Architecture`,
-          `Query Store Profiling: Diagnosing CPU Spikes & Memory Spills in SQL`
-        ];
-        sec1Heading = pick(sec1Headings);
-        sec1Text = `When high-throughput queries execute against multi-million-row tables, query bottlenecks rarely stem from IO capacity alone. The Cost-Based Optimizer (CBO) evaluates cardinality statistics to choose physical operators. Non-sargable WHERE predicates, implicit type conversions, and missing covering indexes force expensive clustered index scans, saturating buffer pools and triggering excessive disk reads.`;
-
-        const sec2Headings = [
-          'Eliminating Reader-Writer Blocking with Snapshot Isolation (RCSI)',
-          'Concurrency Control, Lock Escalation & Deadlock Resolution',
-          'Buffer Pool Saturation & TempDB Allocation Contention'
-        ];
-        sec2Heading = pick(sec2Headings);
-        sec2Text = `In high-concurrency OLTP workloads, standard Read Committed locking causes concurrent read queries to acquire shared locks, blocking transactional write updates. Enabling Read Committed Snapshot Isolation (RCSI) serves read queries from TempDB row-version stores, completely eliminating reader-writer blocking and mitigating deadlocks without altering application query syntax.`;
-
-        codeLang = 'sql';
-        codeSnippet = `-- Production-Grade Non-Clustered Covering Index with Included Columns
+Utilizing SQL Server Query Store to force proven execution plan IDs provides instantaneous production triage without requiring emergency application code rollouts or database downtime.`,
+            codeLang: `sql`,
+            codeSnippet: `-- Production Covering Index with Compression & Online Rebuild
 CREATE NONCLUSTERED INDEX [IX_TransactionStore_Customer_Status]
 ON [dbo].[Transactions] ([CustomerId] ASC, [TransactionStatus] ASC)
 INCLUDE ([TransactionDate], [SettlementAmount], [ReferenceHash])
@@ -1499,47 +1395,380 @@ WITH (
     RESUMABLE = ON
 );
 
--- Enable Non-Blocking Read Committed Snapshot Isolation (RCSI)
+-- Query Store Plan Forcing for Regressed Execution
+EXEC sp_query_store_force_plan @query_id = 1482, @plan_id = 3901;`,
+            tableRows: [
+              ['Indexing Architecture', 'Unindexed overlapping non-sargable filters', 'Covering indexes matching execution plan predicates', 'Zero bookmark lookups'],
+              ['Predicate Evaluation', 'Scalar functions (YEAR(Date) = 2024)', 'Bounded range scans (Date >= 2024-01-01)', 'Full index seek utilization'],
+              ['Join Strategy', 'Nested loops scanning 10M rows', 'Memory-bounded Hash/Merge join with accurate stats', '92% CPU reduction'],
+              ['Plan Stability', 'Volatile parameter sniffing regressions', 'Query Store forced execution plan IDs', 'Guaranteed execution bounds'],
+              ['Maintenance Window', 'Blocking offline index rebuilds', 'Resumable online index reorganization with PAGE compression', 'Zero user-facing locks']
+            ],
+            checklistItems: [
+              'Enforce sargable predicates in all query boundaries; eliminate scalar conversions on indexed WHERE clauses.',
+              'Create targeted covering indexes with INCLUDE clauses to satisfy high-frequency query projections directly from leaf pages.',
+              'Enable Query Store with MAX_STORAGE_SIZE_MB = 4096 and automated cleanup to capture regression profiles.',
+              'Schedule automated FULLSCAN statistics updates on high-churn transactional tables to prevent skewed cardinality estimations.'
+            ],
+            summaryText: `Systematic query tuning, covering index architectures, and Query Store stability mechanisms enable relational database engines to deliver predictable, sub-millisecond query execution on tier-1 transactional datasets.`
+          },
+          {
+            sec1Heading: `ACID Concurrency: Transaction Isolation Levels & Deadlock Prevention`,
+            sec1Text: `In high-throughput transactional databases (OLTP), lock contention and deadlocks represent the primary barriers to scalability. When multiple concurrent transactions request incompatible locks on overlapping database resources, transactions stall, wait queues spike, and database deadlocks abort user transactions. Designing robust transactional boundaries requires deep mastery of ACID isolation levels and modern non-blocking concurrency models.
+
+A deadlock occurs when two or more transactions hold exclusive locks that the other requires, forming a cyclic dependency graph that cannot be resolved without terminating one of the sessions as a deadlock victim. Investigating deadlock XML graphs reveals resource locks on keys, pages, or entire tables.`,
+            sec2Heading: `Eliminating Reader-Writer Blocking with Snapshot Isolation (RCSI)`,
+            sec2Text: `In standard Read Committed isolation, analytical queries acquire shared (S) locks that block concurrent UPDATE or INSERT transactions from acquiring exclusive (X) locks. 
+
+Enabling Read Committed Snapshot Isolation (RCSI) redirects readers to row versions stored in TempDB, allowing non-blocking reads of committed data while transactional writers proceed without interruption.`,
+            codeLang: `sql`,
+            codeSnippet: `-- Enable Non-Blocking Read Committed Snapshot Isolation (RCSI)
 ALTER DATABASE [EnterpriseCommerce]
 SET READ_COMMITTED_SNAPSHOT ON
-WITH ROLLBACK IMMEDIATE;`;
+WITH ROLLBACK IMMEDIATE;
 
-        tableRows = [
-          ['Indexing Strategy', 'Overlapping, unindexed non-sargable filters', 'Targeted covering indexes matching execution plan predicates', 'Zero bookmark lookups'],
-          ['Concurrency Model', 'Pessimistic shared locks blocking write updates', 'Read Committed Snapshot Isolation (RCSI)', 'Eliminates read-write deadlocks'],
-          ['Data Projections', 'Wildcard SELECT * pulling 40+ columns', 'Lean projection covering index includes', '90% lower buffer pool memory usage'],
-          ['TempDB Configuration', 'Single default data file causing allocation stalls', 'Equal-sized files matching CPU cores with trace flag 1118', 'Sub-millisecond page allocations'],
-          ['Index Maintenance', 'Rebuilding entire tables during peak hours', 'Resumable online index reorganization with PAGE compression', 'Zero user-facing query stalls']
-        ];
+-- Explicit Deadlock Priority & Short Transaction Boundary
+SET DEADLOCK_PRIORITY LOW;
+BEGIN TRANSACTION;
+    UPDATE [dbo].[Accounts] WITH (UPDLOCK, ROWLOCK)
+    SET Balance = Balance - 500.00
+    WHERE AccountId = @SourceId;
 
-        checklistItems = [
-          'Implement targeted covering indexes with INCLUDE clauses to satisfy high-frequency query predicates directly from index leaf pages.',
-          'Enable Read Committed Snapshot Isolation (RCSI) to decouple analytical read queries from transactional write locks.',
-          'Partition TempDB across multiple equally sized data files matching logical CPU cores to eradicate PAGELATCH contention.',
-          'Schedule automated statistics updates with FULLSCAN on high-churn tables to prevent bad execution plan caching.'
-        ];
+    UPDATE [dbo].[Accounts] WITH (UPDLOCK, ROWLOCK)
+    SET Balance = Balance + 500.00
+    WHERE AccountId = @TargetId;
+COMMIT TRANSACTION;`,
+            tableRows: [
+              ['Concurrency Model', 'Pessimistic shared locks blocking write updates', 'Read Committed Snapshot Isolation (RCSI)', 'Eliminates read-write deadlocks'],
+              ['Lock Granularity', 'Lock escalation to full table locks at 5,000 threshold', 'Strict ROWLOCK hints with escalation disabled', 'Isolated row-level modifications'],
+              ['Reader Overhead', 'Shared locks held until query completion', 'TempDB row versioning with zero lock acquisition', 'Sub-millisecond read response'],
+              ['Deadlock Victim Selection', 'Arbitrary runtime kill based on log volume', 'Deterministic SET DEADLOCK_PRIORITY governance', 'Batch jobs fail before customer checkouts'],
+              ['Transaction Duration', 'Long-running multi-statement open sessions', 'Micro-transactions with deferred side-effects', 'Near-zero lock hold times']
+            ],
+            checklistItems: [
+              'Enable Read Committed Snapshot Isolation (RCSI) across all transactional production databases to eradicate reader-writer blocking.',
+              'Access shared tables in an identical alphabetical or primary key order across all application endpoints to eliminate cyclic deadlocks.',
+              'Set LOCK_TIMEOUT to 5000ms to fail fast rather than allowing transactions to block threads indefinitely.',
+              'Keep transactional boundaries strictly focused on atomic state updates; never invoke external HTTP calls within open transactions.'
+            ],
+            summaryText: `Mastering ACID isolation levels, enabling RCSI row-versioning, and enforcing deterministic resource ordering protects relational data platforms from catastrophic lock starvation under peak enterprise concurrency.`
+          },
+          {
+            sec1Heading: `Scaling Massive Datasets: Table Partitioning & Sliding Window Maintenance`,
+            sec1Text: `As transactional tables exceed hundreds of millions of rows, monolithic table maintenance, index rebuilds, and archival purges become unviable without triggering severe production locks. Partitioning large tables by horizontal date ranges allows query operations to achieve partition elimination, skipping unneeded data segments entirely and pruning disk scans.
 
-        summaryText = `Systematic query tuning, covering index architectures, and non-blocking snapshot isolation enable relational database engines to deliver predictable, sub-millisecond query execution on tier-1 transactional datasets.`;
+Sliding window maintenance automates the ingestion of new time-bounded partitions while seamlessly archiving historical records.`,
+            sec2Heading: `Sliding Window Partition Switching for Zero-Downtime Archival`,
+            sec2Text: `Traditional DELETE operations on large tables generate millions of transactional log records, causing severe log growth and replication lag. 
 
-      } else if (topicFamily === 'csharp') {
-        const sec1Headings = [
-          `Architectural Mechanics: Non-Blocking Concurrency in ${cleanTitle}`,
-          `The Asynchronous State Machine & ThreadPool Optimization`,
-          `Zero-Allocation Primitives: Memory Optimization in Modern C#`
-        ];
-        sec1Heading = pick(sec1Headings);
-        sec1Text = `In enterprise .NET Core services handling hundreds of thousands of concurrent requests, synchronous blocking execution rapidly exhausts worker threads. The C# compiler transforms async methods into allocation-conscious IAsyncStateMachine structs, releasing active ThreadPool workers back to the runtime during network, database, or disk IO completion cycles.`;
+Partition switching enables instant metadata-only data movements: a cold partition is switched into a standalone staging table in milliseconds with zero row copying, enabling seamless background truncation.`,
+            codeLang: `sql`,
+            codeSnippet: `-- Create Partition Function & Scheme for Monthly Rolling Retention
+CREATE PARTITION FUNCTION [pf_TransactionDates] (DATETIME2(0))
+AS RANGE RIGHT FOR VALUES ('2026-01-01', '2026-02-01', '2026-03-01', '2026-04-01');
 
-        const sec2Headings = [
-          'Memory Invariants: Span<T>, Memory<T> & ArrayPool Mechanics',
-          'Eliminating GC Pressure in Latency-Sensitive Microservices',
-          'Distributed Fault Tolerance with Microsoft Polly v8 Pipelines'
-        ];
-        sec2Heading = pick(sec2Headings);
-        sec2Text = `Garbage collection pauses in Generation 0 and Generation 1 represent the single greatest cause of tail-latency spikes in high-throughput C# microservices. Leveraging memory-safe primitives like Span<T>, ReadOnlySpan<T>, and renting buffers from ArrayPool<T>.Shared allows zero-copy parsing without allocating managed objects on the GC heap.`;
+CREATE PARTITION SCHEME [ps_TransactionDates]
+AS PARTITION [pf_TransactionDates] ALL TO ([PRIMARY]);
 
-        codeLang = 'csharp';
-        codeSnippet = `// High-Performance Zero-Allocation Stream Processing in .NET 9
+-- Instant Metadata-Only Partition Switch for Cold Data Archival
+ALTER TABLE [dbo].[Transactions] 
+SWITCH PARTITION 1 TO [archive].[Transactions_2025_Q4];
+TRUNCATE TABLE [archive].[Transactions_2025_Q4];`,
+            tableRows: [
+              ['Archival Mechanism', 'Blocking DELETE statements running for hours', 'Metadata partition switch executing in <10ms', 'Zero transaction log bloating'],
+              ['Query Pruning', 'Full table scan across entire history', 'Static partition elimination on filter column', '95% reduction in page reads'],
+              ['Index Maintenance', 'Rebuilding monolithic 500GB table indexes', 'Granular partition-level online index rebuilds', 'Isolated maintenance impact'],
+              ['Storage Tiering', 'All historical data on expensive NVMe tier', 'Cold partitions placed on lower-cost storage filegroups', 'Significant infrastructure savings'],
+              ['Backup Elasticity', 'Full database backup spanning tens of hours', 'Piecemeal filegroup backups for volatile active data', 'Rapid disaster recovery SLA']
+            ],
+            checklistItems: [
+              'Align all clustered and non-clustered indexes to the partition scheme to enable clean metadata partition switching.',
+              'Automate partition split operations ahead of time using scheduled maintenance SQL Agent jobs.',
+              'Ensure partition key columns are included in query predicates to maximize partition elimination benefits.',
+              'Use partition-level lock escalation (SET LOCK_ESCALATION = AUTO) to prevent table-level locks during concurrent partition updates.'
+            ],
+            summaryText: `Adopting horizontal table partitioning and sliding window partition switching transforms massive datasets into manageable, high-performance storage units capable of infinite scaling.`
+          },
+          {
+            sec1Heading: `TempDB Optimization & Memory-Optimized In-Memory OLTP`,
+            sec1Text: `TempDB is a shared global resource utilized for sorting, hash joins, row versioning, and temporary tables. Under high concurrency, frequent allocation and deallocation of temporary objects cause severe PAGELATCH_UP and PAGELATCH_EX contention on Special Allocation Map (PFS and GAM) pages, creating severe system-wide throughput bottlenecks.
+
+Configuring TempDB with multiple equally sized data files matching logical CPU cores eradicates allocation page bottlenecks.`,
+            sec2Heading: `Memory-Optimized In-Memory OLTP & Latch-Free Data Access`,
+            sec2Text: `For ultra-high-frequency telemetry or session caching, standard relational engines encounter physical latching barriers. 
+
+SQL Server In-Memory OLTP replaces traditional page-and-latch mechanics with lock-free Bw-tree data structures and natively compiled stored procedures, delivering multi-fold throughput increases.`,
+            codeLang: `sql`,
+            codeSnippet: `-- Create In-Memory OLTP Memory-Optimized Table
+CREATE TABLE [dbo].[SessionCache]
+(
+    [SessionToken] CHAR(64) NOT NULL,
+    [UserId] INT NOT NULL,
+    [ExpiresAtUtc] DATETIME2(0) NOT NULL,
+    CONSTRAINT [PK_SessionCache] PRIMARY KEY NONCLUSTERED HASH ([SessionToken]) WITH (BUCKET_COUNT = 2000000)
+) WITH (MEMORY_OPTIMIZED = ON, DURABILITY = SCHEMA_ONLY);
+
+-- Configure TempDB Multiple Uniform Data Files
+ALTER DATABASE [tempdb] MODIFY FILE (NAME = N'tempdev', SIZE = 8GB, FILEGROWTH = 1GB);
+ALTER DATABASE [tempdb] ADD FILE (NAME = N'tempdev2', FILENAME = N'D:\Data\tempdb2.ndf', SIZE = 8GB, FILEGROWTH = 1GB);`,
+            tableRows: [
+              ['TempDB Contention', 'Single data file with severe PAGELATCH contention', 'Uniform multi-file layout matching CPU core count', 'Eliminates allocation stalls'],
+              ['OLTP Access Model', 'Pessimistic page latches and buffer locks', 'Latch-free Bw-tree in-memory lockless structures', 'Millions of transactions/sec'],
+              ['Stored Procedure Model', 'Interpreted T-SQL evaluated at runtime', 'C-compiled native DLL loaded directly into process', '30x faster execution speed'],
+              ['Durability Trade-off', 'Disk-bound write-ahead log (WAL) on every commit', 'Configurable SCHEMA_ONLY durability for transient caches', 'Zero disk IO latency overhead'],
+              ['Memory Boundary', 'Dynamic buffer pool eviction under pressure', 'Dedicated In-Memory OLTP resource pool governor', 'Predictable memory isolation']
+            ],
+            checklistItems: [
+              'Provision multiple equally sized TempDB data files on dedicated ultra-fast NVMe storage volumes.',
+              'Implement MEMORY_OPTIMIZED tables for high-velocity, transient data structures such as shopping carts or session tokens.',
+              'Calibrate HASH index bucket counts to approximately 1.5x to 2x the anticipated maximum unique cardinality.',
+              'Isolate In-Memory OLTP memory allocations using dedicated Resource Governor memory pools.'
+            ],
+            summaryText: `Resolving TempDB allocation contention and deploying In-Memory OLTP engines removes the final physical latching bottlenecks, empowering database tiers to achieve microsecond transactional performance.`
+          }
+        ],
+
+        fabric: [
+          {
+            sec1Heading: `Microsoft Fabric Direct Lake Mode: High-Velocity Semantic Models`,
+            sec1Text: `Traditional Power BI deployment patterns forced enterprise teams into an agonizing trade-off: Import mode provided blisteringly fast in-memory DAX queries at the expense of hours-long scheduled data refreshes, while DirectQuery provided real-time data access at the expense of agonizingly slow relational database queries. 
+
+Microsoft Fabric Direct Lake mode shatters this compromise. By reading Delta Parquet files directly from OneLake storage into VertiPaq memory without data duplication or ETL ingestion, Direct Lake provides raw Import mode performance backed by real-time cloud data pipelines.`,
+            sec2Heading: `V-Order Compression & Delta Parquet Ingestion`,
+            sec2Text: `The performance foundation of Direct Lake rests upon Microsoft V-Order optimization. V-Order applies specialized sorting, dictionary encoding, and run-length compression algorithms to Delta Lake parquet structures during ingestion. 
+
+When Power BI executes a DAX measure, the VertiPaq engine pages these compressed Delta parquet blocks directly into memory, achieving instant columnar query speeds with zero row-by-row translation overhead.`,
+            codeLang: `python`,
+            codeSnippet: `# PySpark Lakehouse Ingestion with V-Order Optimization in Microsoft Fabric
+from pyspark.sql import functions as F
+
+# Read raw bronze telemetry feed
+bronze_df = spark.read.format("json").load("Files/telemetry/raw/*.json")
+
+# Clean, deduplicate and apply structured schema for Silver tier
+silver_df = bronze_df.filter(F.col("device_id").isNotNull()) \
+    .withColumn("timestamp", F.to_timestamp("event_time")) \
+    .withColumn("ingested_at", F.current_timestamp()) \
+    .dropDuplicates(["device_id", "timestamp"])
+
+# Write out with Fabric native V-Order compression enabled
+silver_df.write.format("delta") \
+    .mode("append") \
+    .option("parquet.vorder.enabled", "true") \
+    .partitionBy("event_date") \
+    .saveAsTable("silver_telemetry_events")`,
+            tableRows: [
+              ['Semantic Storage Model', 'Import Mode (Duplicated PBICache files)', 'Direct Lake (Direct Zero-Copy OneLake Access)', 'Zero refresh wait times'],
+              ['Query Speed', 'High memory usage with stale cached snapshots', 'Native VertiPaq speeds directly on Delta tables', 'Sub-second DAX execution'],
+              ['ETL Pipeline Delay', '6-12 hour scheduled gateway refreshes', 'Near-instantaneous availability upon Delta commit', 'Real-time decision velocity'],
+              ['Storage Optimization', 'Proprietary binary cache files', 'Open Parquet format with Fabric V-Order sorting', 'Cross-engine interoperability'],
+              ['Governance Footprint', 'Fragmented datasets across business units', 'Single unified OneLake enterprise catalog', 'Full lineage & data security']
+            ],
+            checklistItems: [
+              'Ensure all Gold-tier Delta tables have V-Order optimization enabled during Apache Spark write pipelines.',
+              'Avoid complex DAX calculated columns in Direct Lake semantic models; engineer transformations upstream in Spark/SQL lakehouse views.',
+              'Keep memory consumption within Fabric Capacity SKU limits to prevent DirectQuery fallback transitions.',
+              'Implement incremental table maintenance (VACUUM and OPTIMIZE) to prevent fragmented small-file proliferation in OneLake.'
+            ],
+            summaryText: `Microsoft Fabric Direct Lake mode eliminates legacy data refresh barriers, unlocking instant enterprise analytics directly against open Delta Parquet files at VertiPaq speeds.`
+          },
+          {
+            sec1Heading: `Medallion Architecture: Engineering Bronze, Silver & Gold Lakehouse Tiers`,
+            sec1Text: `Building a sustainable enterprise analytics platform requires structuring data flow into strictly governed, verifiable stages. The Medallion Lakehouse architecture organizes data into Bronze (Raw Ingestion), Silver (Cleansed & Enriched), and Gold (Curated Business Aggregations) layers.
+
+Bronze captures append-only raw telemetry and transactional snapshots without mutation. Silver validates schema contracts, de-duplicates records, and cleanses anomalies. Gold surfaces star-schema dimensional models optimized for executive BI consumption.`,
+            sec2Heading: `Automated Data Quality & Delta Lake ACID Verification`,
+            sec2Text: `By enforcing ACID transactional semantics over cloud object storage via Delta Lake log protocols, data engineering teams prevent dirty reads and failed pipeline state corruption. 
+
+Employing Great Expectations and Spark contract assertions at the Silver ingestion boundary ensures that contaminated data never reaches downstream executive dashboards.`,
+            codeLang: `python`,
+            codeSnippet: `# Medallion Lakehouse Silver-to-Gold Star Schema Aggregator
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col, sum, count, trunc
+
+spark = SparkSession.builder.getOrCreate()
+
+# Ingest cleansed silver transactions
+silver_transactions = spark.read.table("silver_sales_transactions")
+
+# Build Gold Curated Fact Table with Dimensional Foreign Keys
+gold_fact_sales = silver_transactions.groupBy(
+    col("customer_dim_id"),
+    col("product_dim_id"),
+    trunc(col("transaction_date"), "month").alias("sales_month")
+).agg(
+    sum("net_revenue").alias("total_revenue"),
+    count("transaction_id").alias("order_count")
+)
+
+# Commit atomically to Gold dimensional model
+gold_fact_sales.write.format("delta") \
+    .mode("overwrite") \
+    .option("overwriteSchema", "true") \
+    .saveAsTable("gold_fact_monthly_sales")`,
+            tableRows: [
+              ['Bronze Tier', 'Append-only immutable raw JSON/Parquet payload logs', 'Raw source of truth with full replay capability', 'Zero data loss'],
+              ['Silver Tier', 'Deduplicated, type-cast, schema-enforced Delta tables', 'Conformed domain data ready for data science', 'High data fidelity'],
+              ['Gold Tier', 'Optimized Kimball star schema fact and dimension tables', 'Curated executive reporting with sub-second queries', 'Executive alignment'],
+              ['ACID Integrity', 'Partial pipeline crashes corrupt downstream data', 'Atomic multi-part commits managed by Delta Log', 'Zero corrupt reads'],
+              ['Data Lineage', 'Opaque batch transformations in stored procedures', 'Verifiable end-to-end data lineage in Fabric catalog', 'Complete auditability']
+            ],
+            checklistItems: [
+              'Maintain Bronze raw data in append-only storage to guarantee reproducible pipeline replayability.',
+              'Implement strict schema evolution policies (mergeSchema = false) at the Silver ingestion gate to catch upstream drift.',
+              'Model Gold-tier lakehouse assets into Kimball star schemas with surrogate keys for optimal BI reporting.',
+              'Schedule automated OPTIMIZE and Z-ORDER jobs on high-cardinality foreign keys in Gold fact tables.'
+            ],
+            summaryText: `The Medallion Lakehouse pattern enforces rigorous engineering discipline across the data lifecycle, transforming raw telemetry into reliable, executive-ready enterprise intelligence.`
+          },
+          {
+            sec1Heading: `DAX Query Optimization: Storage Engine vs Formula Engine Mechanics`,
+            sec1Text: `When Power BI visual performance degrades, the root cause invariably traces back to a fundamental architectural mismatch between the DAX Storage Engine (VertiPaq) and the Formula Engine (FE). The Storage Engine operates multi-threaded, scanning millions of compressed in-memory rows in milliseconds. 
+
+Conversely, the Formula Engine is single-threaded and executes complex procedural logic, context transitions, and scalar loops. High DAX latency occurs when measures force calculations out of VertiPaq and into the single-threaded Formula Engine.`,
+            sec2Heading: `Eliminating High-Cardinality Bottlenecks & Context Transitions`,
+            sec2Text: `Iterative DAX functions like SUMX, FILTER, and CALCULATE inside row iterations generate excessive context transitions, materializing massive internal callback tables. 
+
+Refactoring measures to leverage matrix vectorization, Boolean filters, and pre-aggregated dimensional granularity preserves pure Storage Engine execution.`,
+            codeLang: `dax`,
+            codeSnippet: `// High-Performance DAX Measure with Storage Engine Vectorization
+Enterprise Revenue YTD :=
+VAR CurrentMaxDate = MAX('Date'[FullDateAlternateKey])
+VAR FilteredDates = 
+    CALCULATETABLE(
+        DATESYTD('Date'[FullDateAlternateKey]),
+        'Date'[FullDateAlternateKey] <= CurrentMaxDate
+    )
+RETURN
+    CALCULATE(
+        // Use lean base measure evaluated purely inside Storage Engine
+        [Total Net Sales],
+        KEEPFILTERS(FilteredDates),
+        // Avoid scalar row iteration; rely on columnar predicate pushdown
+        'Customer'[CustomerStatus] = "Active"
+    )`,
+            tableRows: [
+              ['Execution Engine', 'Formula Engine (Single-threaded procedural evaluations)', 'Storage Engine / VertiPaq (Multi-threaded columnar)', '15x query speedup'],
+              ['Context Transition', 'CALCULATE inside row iterations creating 100k callbacks', 'Pre-computed scalar variables and table variables', 'Near-zero memory spool'],
+              ['Filter Mechanics', 'FILTER(All(Table), Condition) scanning entire base table', 'Lean Boolean predicate pushdown: Table[Col] = Val', 'Direct index vectorization'],
+              ['Relationship Type', 'Many-to-many bi-directional cross-filtering', 'Single-direction 1-to-many dimensional relationships', 'Deterministic join graph'],
+              ['Card-Size Impact', 'Displaying GUIDs and timestamps in visual tables', 'Surrogate integer keys with hidden raw telemetry', '80% smaller memory model']
+            ],
+            checklistItems: [
+              'Profile visual queries using DAX Studio; verify that Storage Engine query duration represents >85% of total execution time.',
+              'Eliminate bi-directional cross-filtering across semantic relationships to prevent circular join graph ambiguities.',
+              'Replace nested SUMX evaluations with pre-aggregated dimensional base measures.',
+              'Remove high-cardinality columns (such as timestamps or transaction IDs) from reporting models unless strictly needed.'
+            ],
+            summaryText: `Optimizing DAX measures for columnar Storage Engine execution transforms sluggish dashboards into instantaneous, responsive enterprise analytical experiences.`
+          }
+        ],
+
+        csharp: [
+          {
+            sec1Heading: `The Asynchronous State Machine: Non-Blocking IO Mechanics`,
+            sec1Text: `In enterprise .NET Core services handling hundreds of thousands of concurrent requests, synchronous blocking execution rapidly exhausts worker threads. The C# compiler transforms async methods into allocation-conscious IAsyncStateMachine structs, releasing active ThreadPool workers back to the runtime during network, database, or disk IO completion cycles.
+
+When an awaited operation completes, an IO Completion Port (IOCP) signals the runtime to enqueue continuation callbacks onto an available worker thread without thread suspension overhead.`,
+            sec2Heading: `ThreadPool Starvation & The Sync-Over-Async Anti-Pattern`,
+            sec2Text: `One of the most catastrophic failures in enterprise .NET services is invoking .Result, .Wait(), or Task.Result on asynchronous Tasks. 
+
+This blocks the active ThreadPool thread while waiting for a continuation, leading to thread pool starvation, exponential latency spikes, and cascading HTTP 503 gateway timeouts.`,
+            codeLang: `csharp`,
+            codeSnippet: `// High-Throughput Asynchronous Streaming Controller
+[HttpGet("stream-records")]
+public async IAsyncEnumerable<TelemetryDto> StreamTelemetryAsync([EnumeratorCancellation] CancellationToken ct)
+{
+    // Stream directly from storage via IAsyncEnumerable without buffering full dataset
+    await using var session = await _sessionFactory.OpenAsync(ct);
+    await foreach (var record in session.ReadStreamAsync(ct))
+    {
+        yield return new TelemetryDto(record.Id, record.Metric, record.Timestamp);
+    }
+}
+
+// Memory-Optimized ValueTask Method for Cache Hits
+public ValueTask<UserProfileDto> GetProfileAsync(Guid userId)
+{
+    if (_localCache.TryGetValue(userId, out var cached))
+    {
+        // Zero Task allocation on synchronous cache hit
+        return ValueTask.FromResult(cached);
+    }
+    return new ValueTask<UserProfileDto>(FetchFromDatabaseAsync(userId));
+}`,
+            tableRows: [
+              ['Execution Model', 'Synchronous Thread.Sleep() / .Result blocking (1MB stack)', 'Asynchronous IAsyncStateMachine with non-blocking IO', 'Handles 100k+ concurrent requests'],
+              ['Task Allocation', 'Allocating Task<T> heap objects on every cache hit', 'ValueTask<T> returning synchronously without heap alloc', 'Zero Gen0 GC allocation pressure'],
+              ['Streaming Model', 'Buffering List<T> with 50MB memory footprint', 'IAsyncEnumerable<T> streaming records sequentially', 'Minimal constant memory usage'],
+              ['Cancellation', 'Orphaned long-running background tasks', 'Strict CancellationToken propagation across calls', 'Instant abort on client disconnect'],
+              ['Locking Primitive', 'Blocking lock(syncRoot) holding thread', 'Non-blocking SemaphoreSlim.WaitAsync()', 'Full asynchronous concurrency control']
+            ],
+            checklistItems: [
+              'Propagate CancellationToken through every asynchronous database, HTTP, and disk call to prevent orphaned worker execution.',
+              'Prefer ValueTask<T> for high-frequency methods that frequently complete synchronously from local memory caches.',
+              'Never call .Result or .Wait() in ASP.NET Core pipelines; enforce Roslyn analyzers to flag sync-over-async anti-patterns.',
+              'Use SemaphoreSlim for asynchronous concurrency throttling instead of legacy lock primitives.'
+            ],
+            summaryText: `Architecting non-blocking, asynchronous pipelines in .NET Core allows teams to achieve sub-millisecond latencies and scale to hundreds of thousands of concurrent requests on minimal compute infrastructure.`
+          },
+          {
+            sec1Heading: `Distributed Resilience: Circuit Breakers & Polly v8 Pipelines`,
+            sec1Text: `In microservice architectures, transient network partitions and downstream service outages are inevitable. A service that repeatedly invokes a failing dependency exhausts its own connection pools, threads, and memory, triggering cascading failure across the entire cluster.
+
+Implementing resilient communication boundaries with Microsoft Polly v8 decouples failure modes using proven reliability patterns.`,
+            sec2Heading: `Exponential Backoff, Decorrelated Jitter & Bulkhead Isolation`,
+            sec2Text: `Standard fixed retries create devastating thundering herd surges that overpower recovering services. 
+
+Combining exponential backoff with decorrelated random jitter spreads retry load, while circuit breakers fail fast immediately when error thresholds are crossed, allowing degraded dependencies to recover safely.`,
+            codeLang: `csharp`,
+            codeSnippet: `// Enterprise Polly v8 Resilience Pipeline Configuration
+var resiliencePipeline = new ResiliencePipelineBuilder<HttpResponseMessage>()
+    .AddRetry(new RetryStrategyOptions<HttpResponseMessage>
+    {
+        MaxRetryAttempts = 3,
+        Delay = TimeSpan.FromMilliseconds(200),
+        BackoffType = DelayBackoffType.Exponential,
+        UseJitter = true,
+        ShouldHandle = new PredicateBuilder<HttpResponseMessage>()
+            .Handle<HttpRequestException>()
+            .HandleResult(r => (int)r.StatusCode >= 500)
+    })
+    .AddCircuitBreaker(new CircuitBreakerStrategyOptions<HttpResponseMessage>
+    {
+        FailureRatio = 0.5,
+        SamplingDuration = TimeSpan.FromSeconds(10),
+        MinimumThroughput = 20,
+        BreakDuration = TimeSpan.FromSeconds(30)
+    })
+    .AddTimeout(TimeSpan.FromSeconds(3))
+    .Build();`,
+            tableRows: [
+              ['Retry Mechanics', 'Immediate fixed retry causing thundering herd', 'Exponential backoff with decorrelated random jitter', 'Even distribution of recovery load'],
+              ['Fault Handling', 'Silent failure with hanging connections', 'Circuit breaker failing fast after error threshold', 'Downstream system recovery'],
+              ['Isolation Boundary', 'Single global threadpool starved by one slow service', 'Bulkhead isolation limiting concurrent calls to 50', 'Blast radius contained'],
+              ['Timeout Governance', 'Default 100-second HttpClient hanging timeouts', 'Strict 3-second deadline with cancellation tokens', 'Immediate resource reclamation'],
+              ['Fallback Posture', 'Uncaught 500 errors returned to end users', 'Graceful cached fallback DTO with degraded telemetry', 'Uninterrupted user experience']
+            ],
+            checklistItems: [
+              'Equip every external HTTP and gRPC client with a Polly v8 resilience pipeline before shipping to production.',
+              'Always enable decorrelated jitter on retry strategies to prevent synchronized connection spikes.',
+              'Configure circuit breakers with minimum throughput thresholds to prevent false trips during low-traffic periods.',
+              'Instrument OpenTelemetry metrics on circuit breaker state transitions (Closed, Open, Half-Open) for real-time alerting.'
+            ],
+            summaryText: `Employing circuit breakers, jittered exponential backoffs, and bulkhead boundaries transforms brittle distributed microservices into self-healing, fault-tolerant enterprise platforms.`
+          },
+          {
+            sec1Heading: `Zero-Allocation C#: Memory Optimization with Span<T> & ArrayPool`,
+            sec1Text: `Garbage collection pauses in Generation 0 and Generation 1 represent the single greatest cause of tail-latency spikes in high-throughput C# microservices. 
+
+Leveraging memory-safe primitives like Span<T>, ReadOnlySpan<T>, and renting buffers from ArrayPool<T>.Shared allows zero-copy parsing without allocating managed objects on the GC heap.`,
+            sec2Heading: `Stack Allocation & High-Performance Binary Serialization`,
+            sec2Text: `By allocating transient buffers on the thread stack with stackalloc and using MemoryMarshal, applications slice and inspect network payloads with zero memory allocations. 
+
+This enables .NET services to achieve sustained high throughput without triggering generational garbage collection pauses.`,
+            codeLang: `csharp`,
+            codeSnippet: `// High-Performance Zero-Allocation Stream Processing in .NET 9
 public sealed class TelemetryStreamProcessor
 {
     private static readonly ArrayPool<byte> Pool = ArrayPool<byte>.Shared;
@@ -1566,87 +1795,246 @@ public sealed class TelemetryStreamProcessor
             Pool.Return(buffer);
         }
     }
-}`;
+}`,
+            tableRows: [
+              ['Memory Allocation', 'Managed GC heap allocations (new byte[])', 'ArrayPool<T>.Shared + stack-allocated Span<T>', 'Zero Gen0 GC allocation pauses'],
+              ['String Parsing', 'Substring() allocating new strings per token', 'ReadOnlySpan<char> slicing memory in place', 'Zero memory overhead'],
+              ['Data Marshalling', 'Copying byte arrays across network boundaries', 'Zero-copy Memory<T> wrapping native memory', 'Maximum memory bus throughput'],
+              ['Garbage Collection', 'Frequent Gen0/Gen1 collections causing 15ms pauses', 'Sustained sub-millisecond p99 execution bounds', 'Predictable real-time latency'],
+              ['Safety Invariants', 'Dangerous unsafe pointers risking memory corruption', 'Type-safe, memory-safe Span<T> verified by Roslyn', 'Full enterprise safety guarantees']
+            ],
+            checklistItems: [
+              'Rent byte buffers from ArrayPool<T>.Shared inside try-finally blocks for high-throughput stream processing.',
+              'Replace String.Substring and String.Split with ReadOnlySpan<char> and MemoryExtensions.EnumerateLines.',
+              'Use UTF-8 string literals ("text"u8) to eliminate UTF-16 to UTF-8 transcoding allocations in web APIs.',
+              'Benchmark critical code paths with BenchmarkDotNet; verify zero allocated bytes per operation.'
+            ],
+            summaryText: `Embracing zero-allocation memory mechanics in C# eliminates garbage collection pauses, enabling .NET microservices to deliver bare-metal performance with complete type safety.`
+          }
+        ],
 
-        tableRows = [
-          ['Concurrency Model', 'Synchronous thread blocking (1MB stack/thread)', 'Asynchronous IAsyncStateMachine with non-blocking IO', 'Handles 100k+ concurrent requests'],
-          ['Memory Allocation', 'Managed GC heap allocations (new byte[])', 'ArrayPool<T>.Shared + stack-allocated Span<T>', 'Zero Gen0 GC allocation pauses'],
-          ['Cache Access', 'Task<T> heap object allocation on cache hit', 'ValueTask<T> struct allocation on synchronous path', 'Zero allocation on cache returns'],
-          ['Resilience Strategy', 'Brittle point-to-point calls with raw retries', 'Polly v8 Resilience Pipeline with exponential backoff & jitter', 'Prevents cascading retry storms'],
-          ['Telemetry Export', 'Unstructured console log outputs', 'OpenTelemetry metrics, activity traces, and structured JSON logs', 'Granular p99 latency diagnostics']
-        ];
+        fintech: [
+          {
+            sec1Heading: `Automated Invoice OCR Ingestion & Asynchronous Parsing Pipelines`,
+            sec1Text: `Manual invoice entry in enterprise finance departments introduces crippling labor costs, delayed reconciliation cycles, and elevated error rates. Automating Sage accounting workflows begins with high-fidelity document ingestion. 
 
-        checklistItems = [
-          'Propagate CancellationToken through every asynchronous database, HTTP, and disk call to prevent orphaned worker execution.',
-          'Prefer ValueTask<T> for high-frequency methods that frequently complete synchronously from local memory caches.',
-          'Rent byte buffers from ArrayPool<T>.Shared inside try-finally blocks to eliminate heap allocations under high throughput.',
-          'Configure Polly resilience pipelines with exponential backoff and decorrelated jitter to prevent cascading microservice collapse.'
-        ];
+Modern optical character recognition (OCR) and layout-aware machine learning models extract key-value pairs—including purchase order numbers, line-item descriptions, tax breakdowns, and payment terms—from unstructured PDFs and scanned invoices.`,
+            sec2Heading: `Asynchronous Webhook Callbacks & Message Queue Buffering`,
+            sec2Text: `Processing large batches of vendor invoices synchronously overwhelms ERP accounting systems and API rate limits. 
 
-        summaryText = `Adopting non-blocking asynchronous workflows, zero-allocation memory primitives, and resilient pipeline boundaries transforms .NET microservices into robust, ultra-fast enterprise platforms.`;
-
-      } else {
-        // Universal / Novel / Management / Architecture Topics
-        const sec1Headings = [
-          `Architectural Foundations: Deconstructing ${cleanTitle}`,
-          `System Boundaries & Core Design Principles in ${cleanTitle}`,
-          `The Strategic Imperative: Modernizing ${cleanTitle} in Production`
-        ];
-        sec1Heading = pick(sec1Headings);
-        sec1Text = `Implementing ${cleanTitle} within enterprise technology environments requires balancing delivery velocity with architectural discipline. Establishing decoupled boundaries, unambiguous domain contracts, and verifiable operational metrics protects systems from structural decay and unmaintainable technical debt.`;
-
-        const sec2Headings = [
-          'Operational Resilience & Failure-Mode Analysis',
-          'Empirical Latency Trade-Offs & Concurrency Scalability',
-          'Production Guardrails & Site Reliability Engineering (SRE)'
-        ];
-        sec2Heading = pick(sec2Headings);
-        sec2Text = `Complex distributed platforms fail in complex ways. Rather than relying on theoretical availability models, engineering organizations must conduct rigorous failure-mode and effects analysis (FMEA), profile tail-latency distributions under synthetic stress, and institute automated canary rollback gates.`;
-
-        codeLang = 'csharp';
-        codeSnippet = `// Resilient Production Boundary Handler for ${cleanTitle.replace(/[^a-zA-Z0-9]/g, '')}
-public sealed class WorkflowExecutionPipeline
+Implementing message queue buffering with RabbitMQ or Azure Service Bus decouples document upload from financial ledger processing, ensuring zero dropped invoices during month-end surges.`,
+            codeLang: `csharp`,
+            codeSnippet: `// Production Ingestion Boundary for Sage Financial Documents
+public sealed class InvoiceProcessingQueueService
 {
-    private readonly ITelemetryReporter _telemetry;
-    private readonly IResiliencePipeline _resilience;
+    private readonly IChannel _busChannel;
+    private readonly ILogger<InvoiceProcessingQueueService> _logger;
 
-    public WorkflowExecutionPipeline(ITelemetryReporter telemetry, IResiliencePipeline resilience)
+    public async Task EnqueueInvoiceAsync(InvoicePayload invoice, CancellationToken ct)
     {
-        _telemetry = telemetry;
-        _resilience = resilience;
-    }
-
-    public async Task<ExecutionResult> ExecuteAsync(OperationalContext context, CancellationToken ct)
-    {
-        using var activity = TelemetrySource.StartActivity("Execute_${primarySubject}");
-        return await _resilience.ExecuteAsync(async token =>
+        var message = JsonSerializer.SerializeToUtf8Bytes(invoice);
+        var props = new BasicProperties
         {
-            _telemetry.LogTrace("Executing operational boundary for {ContextId}", context.Id);
-            return await context.ProcessAsync(token);
-        }, ct);
+            ContentType = "application/json",
+            DeliveryMode = DeliveryModes.Persistent,
+            MessageId = invoice.DocumentId.ToString("N")
+        };
+
+        await _busChannel.BasicPublishAsync(
+            exchange: "finance.invoices",
+            routingKey: "invoice.ingest",
+            mandatory: true,
+            basicProperties: props,
+            body: message,
+            cancellationToken: ct
+        );
+        _logger.LogInformation("Invoice {Id} securely enqueued for ledger processing.", invoice.DocumentId);
     }
-}`;
+}`,
+            tableRows: [
+              ['Ingestion Model', 'Manual clerk data entry taking 15 minutes/bill', 'Automated OCR extraction completing in <3 seconds', '95% reduction in cycle time'],
+              ['Processing Model', 'Synchronous web requests stalling under volume', 'Decoupled asynchronous durable message queue', 'Zero system timeouts'],
+              ['Error Rate', 'Typographical errors in amounts and VAT codes', 'Algorithmic checksum and cross-field validation', '99.8% ingestion accuracy'],
+              ['Peak Scalability', 'Month-end backlog causing payment delays', 'Auto-scaling consumer workers clearing queues', 'Instant elastic scale'],
+              ['Audit Trail', 'Paper documents filed in physical cabinets', 'Immutable digital ledger snapshots with OCR source', 'Comprehensive regulatory compliance']
+            ],
+            checklistItems: [
+              'Enforce strict digital signatures and SHA-256 hash checks on all ingested invoice files to verify authenticity.',
+              'Buffer all financial document ingestion through durable, persistent message queues with dead-letter recovery.',
+              'Validate calculated tax subtotals against extracted line items before submitting batches to Sage accounting APIs.',
+              'Store raw PDF documents in non-executable, encrypted cloud storage linked to ERP transaction IDs.'
+            ],
+            summaryText: `Automating document ingestion and decoupling invoice processing via resilient queue architectures eliminates manual accounting bottlenecks and accelerates financial close cycles.`
+          },
+          {
+            sec1Heading: `Automated 2-Way & 3-Way Matching Against Sage ERP Ledgers`,
+            sec1Text: `The core integrity of automated accounts payable rests upon multi-way matching. In 2-Way matching, invoice totals and line items are verified against approved Purchase Orders (PO). In 3-Way matching, the system cross-references the Invoice, Purchase Order, and Goods Received Note (GRN) to ensure goods have been physically received before payment is released.
 
-        tableRows = [
-          ['System Topology', 'Tight point-to-point monolithic coupling', 'Decoupled event-driven domain boundaries', 'Isolated failure blast radius'],
-          ['Execution Latency', 'High tail latency under concurrency spikes', 'Predictable sub-20ms p95 response times', 'Horizontal autoscaling elasticity'],
-          ['Observability Posture', 'Reactive error tracking during user outages', 'Proactive OpenTelemetry traces and SLO dashboards', 'Real-time bottleneck identification'],
-          ['Deployment Cadence', 'High-risk big-bang releases with downtime', 'Automated canary deployments with error rate gating', 'Zero user-facing service interruptions']
-        ];
+Implementing algorithmic tolerance thresholds accommodates fractional currency rounding and authorized price variances without requiring manual human intervention.`,
+            sec2Heading: `Handling Price Tolerances & Exception Escalation`,
+            sec2Text: `When an invoice variance exceeds pre-configured percentage thresholds, the system flags the transaction and routes it to department managers through automated approval workflows. 
 
-        checklistItems = [
-          `Establish verifiable Service Level Objectives (SLOs) and Error Budgets for ${cleanTitle} to govern release velocity.`,
-          'Automate contractual integration testing across all service boundaries prior to merging feature branches.',
-          'Instrument OpenTelemetry distributed tracing across all ingress, processing, and persistence transitions.',
-          'Conduct quarterly chaos engineering simulations to validate automated failover and system resilience.'
-        ];
+Approved invoices are committed directly to Sage ERP ledgers via idempotent REST APIs, eliminating duplicate payments.`,
+            codeLang: `csharp`,
+            codeSnippet: `// Algorithmic 3-Way Invoice Reconciliation Engine
+public sealed class ReconciliationService
+{
+    private const decimal AllowedPriceVariancePercentage = 0.02m; // 2% tolerance
 
-        summaryText = `Aligning ${cleanTitle} with decoupled architectural boundaries, empirical SRE resilience, and automated production guardrails ensures sustained technical excellence and long-term enterprise scalability.`;
-      }
+    public MatchResult EvaluateThreeWayMatch(InvoiceDto inv, PurchaseOrderDto po, GoodsReceivedNoteDto grn)
+    {
+        // 1. Verify PO number and Vendor identity match
+        if (inv.VendorCode != po.VendorCode || po.Id != grn.PurchaseOrderId)
+            return MatchResult.Failed("Vendor or Purchase Order mismatch.");
 
-      // -----------------------------------------------------------------------
-      // 4. ASSEMBLE CLEAN VISUAL TEXT & SOURCE HTML
-      // -----------------------------------------------------------------------
+        // 2. Verify delivered quantities match invoiced quantities
+        if (inv.QuantityBilled > grn.QuantityDelivered)
+            return MatchResult.Failed("Billed quantity exceeds verified delivered goods.");
+
+        // 3. Verify total variance is within strict financial tolerance
+        decimal priceDifference = Math.Abs(inv.TotalAmount - po.AuthorizedAmount);
+        decimal maxAllowedVariance = po.AuthorizedAmount * AllowedPriceVariancePercentage;
+
+        if (priceDifference > maxAllowedVariance)
+            return MatchResult.RouteToManualApproval($"Price variance of {priceDifference:C} exceeds tolerance.");
+
+        return MatchResult.AutoApproved();
+    }
+}`,
+            tableRows: [
+              ['Matching Model', 'Clerks manually comparing paper POs and receipts', 'Automated 3-Way cross-reconciliation engine', 'Immediate match determination'],
+              ['Fraud Prevention', 'Invoices paid without verified physical delivery', 'Strict Goods Received Note (GRN) verification gate', 'Eliminates unauthorized payments'],
+              ['Duplicate Detection', 'Accidental duplicate invoice payments', 'Cryptographic hash checking on invoice numbers & amounts', '100% duplicate prevention'],
+              ['Approval Cadence', 'Invoices sitting in manager email inboxes for days', 'Automated threshold routing with mobile one-click signoff', '80% faster payment approvals'],
+              ['ERP Sync', 'Manual batch entry into Sage accounting at end of day', 'Instant idempotent API ledger posting', 'Real-time cash flow visibility']
+            ],
+            checklistItems: [
+              'Enforce 3-Way matching for all physical inventory invoices to guarantee delivery before cash disbursement.',
+              'Implement cryptographic deduplication checks (VendorCode + InvoiceNumber + Amount) to prevent double payments.',
+              'Configure automated manager approval escalation paths when invoice variances exceed policy limits.',
+              'Use idempotent API request headers (Idempotency-Key) when posting financial records into Sage ERP.'
+            ],
+            summaryText: `Algorithmic 3-Way matching and automated approval routing eliminate duplicate payments, protect corporate capital, and ensure complete accounting auditability.`
+          }
+        ],
+
+        universal: [
+          {
+            sec1Heading: `Architectural Foundations: Deconstructing ${cleanTitle}`,
+            sec1Text: `Implementing ${cleanTitle} within enterprise technology environments requires balancing delivery velocity with architectural discipline. Establishing decoupled boundaries, unambiguous domain contracts, and verifiable operational metrics protects systems from structural decay and unmaintainable technical debt.
+
+A resilient system treats every boundary as potentially hostile and every network transition as inherently fallible. Designing for failure from day one transforms brittle architectures into durable platforms.`,
+            sec2Heading: `System Boundaries & Inversion of Control`,
+            sec2Text: `By enforcing strict Inversion of Control (IoC) and dependency inversion principles, applications isolate volatile infrastructure implementations from stable core business logic. 
+
+This enables seamless cloud migrations, isolated automated testing, and predictable operational evolution over decades.`,
+            codeLang: `csharp`,
+            codeSnippet: `// Production Domain Boundary Interface & Pipeline Isolation
+public interface IOperationalBoundary<in TCommand, TResult>
+{
+    Task<TResult> HandleAsync(TCommand command, CancellationToken ct);
+}
+
+public sealed class LoggingOperationalDecorator<TCommand, TResult> : IOperationalBoundary<TCommand, TResult>
+{
+    private readonly IOperationalBoundary<TCommand, TResult> _inner;
+    private readonly ILogger _logger;
+
+    public async Task<TResult> HandleAsync(TCommand command, CancellationToken ct)
+    {
+        using var scope = _logger.BeginScope("Handling {CommandType}", typeof(TCommand).Name);
+        _logger.LogInformation("Initiating operational boundary transition.");
+        var result = await _inner.HandleAsync(command, ct);
+        _logger.LogInformation("Operational boundary completed successfully.");
+        return result;
+    }
+}`,
+            tableRows: [
+              ['System Topology', 'Tight point-to-point monolithic coupling', 'Decoupled event-driven domain boundaries', 'Isolated failure blast radius'],
+              ['Execution Latency', 'High tail latency under concurrency spikes', 'Predictable sub-20ms p95 response times', 'Horizontal autoscaling elasticity'],
+              ['Observability Posture', 'Reactive error tracking during user outages', 'Proactive OpenTelemetry traces and SLO dashboards', 'Real-time bottleneck identification'],
+              ['Deployment Cadence', 'High-risk big-bang releases with downtime', 'Automated canary deployments with error rate gating', 'Zero user-facing service interruptions'],
+              ['Data Integrity', 'Shared direct database writes across teams', 'Strict bounded context ownership with event streaming', 'Zero cross-domain data corruption']
+            ],
+            checklistItems: [
+              'Establish unambiguous domain boundaries with strongly typed API contracts between collaborating systems.',
+              'Implement decorator patterns to cross-cut logging, metrics, and security without polluting business domain models.',
+              'Automate contractual integration tests across all service boundaries prior to merging feature branches.',
+              'Define clear Service Level Objectives (SLOs) and Error Budgets to balance feature velocity with reliability.'
+            ],
+            summaryText: `Aligning ${cleanTitle} with decoupled architectural boundaries, empirical SRE resilience, and automated production guardrails ensures sustained technical excellence and long-term enterprise scalability.`
+          },
+          {
+            sec1Heading: `Distributed Observability: OpenTelemetry Traces & Structured Metrics`,
+            sec1Text: `When high-concurrency distributed systems experience degraded performance, legacy text logs and CPU graphs are insufficient to diagnose root causes. Diagnosing microservice latency anomalies requires distributed context propagation.
+
+OpenTelemetry standardizes the collection of distributed traces, structured spans, and dimensional metrics across multi-cloud infrastructure.`,
+            sec2Heading: `Correlating Spans, Context Propagation & Tail Latency Profiling`,
+            sec2Text: `Injecting trace identifiers (W3C TraceContext) across HTTP and gRPC headers connects asynchronous message queues, database calls, and API gateways into a single coherent visualization. 
+
+Engineers immediately pinpoint whether a p99 latency spike originated from database lock waits, thread pool starvation, or third-party API throttling.`,
+            codeLang: `csharp`,
+            codeSnippet: `// OpenTelemetry Distributed Tracing & Metric Instrumentation
+public static class TelemetryDiagnostics
+{
+    public static readonly ActivitySource ActivitySource = new("MagnusMinds.Platform.Diagnostics", "2.0.0");
+    public static readonly Meter DiagnosticsMeter = new("MagnusMinds.Platform.Metrics", "2.0.0");
+
+    private static readonly Counter<long> TransactionCounter = 
+        DiagnosticsMeter.CreateCounter<long>("platform.transactions.completed");
+
+    public static async Task<T> TraceOperationAsync<T>(string operationName, Func<Activity, Task<T>> work)
+    {
+        using var activity = ActivitySource.StartActivity(operationName, ActivityKind.Internal);
+        try
+        {
+            var result = await work(activity);
+            TransactionCounter.Add(1, new KeyValuePair<string, object>("status", "success"));
+            return result;
+        }
+        catch (Exception ex)
+        {
+            activity?.SetStatus(ActivityStatusCode.Error, ex.Message);
+            activity?.RecordException(ex);
+            TransactionCounter.Add(1, new KeyValuePair<string, object>("status", "failure"));
+            throw;
+        }
+    }
+}`,
+            tableRows: [
+              ['Tracing Posture', 'Siloed application text log files', 'Distributed W3C TraceContext spans across services', 'Instant root-cause isolation'],
+              ['Metrics Granularity', 'Coarse host-level CPU and memory averages', 'High-cardinality dimensional metrics per customer', 'Granular performance diagnostics'],
+              ['Alerting Strategy', 'Noisy threshold alerts triggering on transient spikes', 'SLO-based burn rate alerts tied to business impact', 'Zero alert fatigue'],
+              ['Debugging Workflow', 'Manually correlating log timestamps across servers', 'Single-click jump from exception to distributed trace', '90% faster MTTR'],
+              ['Standardization', 'Proprietary vendor lock-in monitoring SDKs', 'Vendor-neutral CNCF OpenTelemetry standard', 'Complete cloud portability']
+            ],
+            checklistItems: [
+              'Instrument all outbound HTTP, database, and message bus transitions with OpenTelemetry activity propagation.',
+              'Attach structured contextual metadata (tenant ID, request ID, deployment version) to every diagnostic span.',
+              'Implement multi-window multi-burn-rate alerting on customer-facing latency Service Level Indicators (SLIs).',
+              'Export OpenTelemetry protocol (OTLP) data to centralized observability backends with configured sampling policies.'
+            ],
+            summaryText: `Comprehensive distributed observability transforms complex distributed microservices from opaque black boxes into transparent, verifiable, and resilient production systems.`
+          }
+        ]
+      };
+
+      // 4. RESOLVE SELECTED ANGLE
+      const domainAngles = repository[topicFamily] || repository['universal'];
+      const angle = activeAngle % domainAngles.length;
+      const selected = domainAngles[angle];
+
+      const sec1Heading = selected.sec1Heading;
+      const sec1Text = selected.sec1Text;
+      const sec2Heading = selected.sec2Heading;
+      const sec2Text = selected.sec2Text;
+      const codeLang = selected.codeLang;
+      const codeSnippet = selected.codeSnippet;
+      const tableRows = selected.tableRows;
+      const checklistItems = selected.checklistItems;
+      const summaryText = selected.summaryText;
+
+      // 5. ASSEMBLE CLEAN VISUAL TEXT & SOURCE HTML
       const visual = `${hook}
 
 ${sec1Heading}
@@ -1655,37 +2043,39 @@ ${sec1Text}
 ${sec2Heading}
 ${sec2Text}
 
-Production Reference Pattern:
+Implementation Blueprint:
+\`\`\`${codeLang}
 ${codeSnippet}
+\`\`\`
 
-Architectural Benchmark & Trade-Off Matrix:
-Dimension | Unoptimized Approach | Production-Grade Standard | Architectural Benefit
-${tableRows.map(r => r.join(' | ')).join('\n')}
+Engineering Trade-Offs & Benchmark Analysis:
+${tableRows.map(r => `${r[0]} | ${r[1]} | ${r[2]} | ${r[3]}`).join('\n')}
 
-Production Hardening Checklist
+Production Hardening Checklist:
 ${checklistItems.map(c => `- ${c}`).join('\n')}
 
-Strategic Summary
+Strategic Summary:
 ${summaryText}`;
 
-      const markup = `<h2>${sec1Heading}</h2>
-<p>${hook}</p>
-<p>${sec1Text}</p>
+      const markup = `<p class="lead">${hook}</p>
+
+<h2>${sec1Heading}</h2>
+${sec1Text.split('\n\n').map(p => `<p>${p}</p>`).join('\n')}
 
 <h2>${sec2Heading}</h2>
-<p>${sec2Text}</p>
+${sec2Text.split('\n\n').map(p => `<p>${p}</p>`).join('\n')}
 
-<h2>Production Reference Implementation</h2>
-<pre><code class="language-${codeLang}">${codeSnippet.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</code></pre>
+<h2>Implementation Blueprint</h2>
+<pre><code class="language-${codeLang}">${codeSnippet.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</code></pre>
 
-<h2>Architectural Benchmark &amp; Trade-Off Matrix</h2>
-<table>
+<h2>Engineering Trade-Offs & Benchmark Analysis</h2>
+<table class="table table-bordered">
   <thead>
     <tr>
       <th>Dimension</th>
-      <th>Unoptimized Approach</th>
-      <th>Production-Grade Standard</th>
-      <th>Architectural Benefit</th>
+      <th>Legacy / Monolithic Approach</th>
+      <th>Modern Enterprise Pattern</th>
+      <th>Architectural Impact</th>
     </tr>
   </thead>
   <tbody>
@@ -1706,7 +2096,7 @@ ${summaryText}`;
 <h2>Strategic Summary</h2>
 <p>${summaryText}</p>`;
 
-      return { visual, html: markup, activeSeed };
+      return { visual, html: markup, activeSeed, angleIndex: activeAngle };
     }
 
         // Domain-Specific High-Resolution Studio Covers
@@ -2416,6 +2806,8 @@ function synthesizeCustomBanner(title, category, summary, domain, variant = 0) {
         showToast('Generate a blog first to rotate angles!');
         return;
       }
+      currentContentAngle = (currentContentAngle + 1);
+      window.currentContentAngle = currentContentAngle;
       currentGenerationSeed = (currentGenerationSeed + Math.floor(Math.random() * 70000) + 1337);
       currentBannerVariant = (currentBannerVariant + Math.floor(Math.random() * 3) + 1) % 10;
       const domain = currentActiveDetails.domain || 'universal';
@@ -2480,7 +2872,7 @@ function synthesizeCustomBanner(title, category, summary, domain, variant = 0) {
       if (!content) {
         var safeSeed = (typeof currentGenerationSeed !== 'undefined') ? currentGenerationSeed : (window.currentGenerationSeed || Math.floor(Math.random() * 900000));
         var safeAngle = (typeof currentContentAngle !== 'undefined') ? currentContentAngle : (window.currentContentAngle || 0);
-        content = generateDomainContent(domain, cleanTitle, safeSeed);
+        content = generateDomainContent(domain, cleanTitle, safeAngle, safeSeed);
         const aIndex = safeAngle % 3;
         const lower = cleanTitle.toLowerCase();
         if (lower.includes('php2shell') || (lower.includes('shell') && lower.includes('php'))) {
@@ -2547,8 +2939,8 @@ function synthesizeCustomBanner(title, category, summary, domain, variant = 0) {
       currentActiveDetails.description = content.visual;
       generateNewBannerImage();
 
-      const aIndex = currentContentAngle % 3;
-      const angleNames = ['Core Architecture & Execution', 'Memory / Benchmarks & Concurrency', 'Enterprise Resilience & Governance'];
+      const aIndex = currentContentAngle % 4;
+      const angleNames = ['Core Architecture & Indexing', 'ACID Concurrency & Resilience', 'Scale, Partitioning & Memory Optimization', 'TempDB & Production Hardening'];
       showToast(`🔄 Angle ${aIndex + 1}: ${angleNames[aIndex]} loaded!`);
     }
 
@@ -2722,7 +3114,8 @@ function synthesizeCustomBanner(title, category, summary, domain, variant = 0) {
 
       if (!content) {
         var safeSeed = (typeof currentGenerationSeed !== 'undefined') ? currentGenerationSeed : (window.currentGenerationSeed || Math.floor(Math.random() * 900000));
-        content = generateDomainContent(domain, cleanTitle, safeSeed);
+        var safeAngle = (typeof currentContentAngle !== 'undefined') ? currentContentAngle : (window.currentContentAngle || 0);
+        content = generateDomainContent(domain, cleanTitle, safeAngle, safeSeed);
       }
       document.getElementById('fieldDescriptionText').value = content.visual;
       document.getElementById('fieldDescriptionHtml').value = content.html;
